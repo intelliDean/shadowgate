@@ -6,17 +6,18 @@ ShadowGate is a local deployment regression gate for Solana x402 services. It ru
 
 The supplied Hono and Express deployments compare the published x402 middleware with a recovery example. The example persists the exact payment identity and immutable result before broadcast, reconciles ambiguous sends, and permits the verified payer to recover the stored result after an actual process restart.
 
-## Verified build — October 7, 2026 (Toronto)
+## Verified build & Independent Application Verification
 
-The latest full comparison ran **28/28 expected experiment checks** across Hono and Express in **22.88 seconds**. It correctly retained **six baseline release failures**; all **16 recovered release checks passed**. TypeScript checking passed. The baseline CLI returned exit 1, and the recovered CLI returned exit 0.
+The suite exercises **42/42 expected experiment checks** across Hono, Express, and the independent **x402 Foundation Weather Service** (`integrations/weather/`, pinned to commit `7f2b2f1f77fa5317615735e3378a6fad41cccb4e`):
+* **Official Frameworks (Hono & Express)**: 28 total checks (12 baseline + 16 recovered), retaining 6 baseline gate failures and 16 passing recovered gates.
+* **Independent Application (Weather Service)**: 14 total checks (6 baseline + 8 recovered), proving detection of unsafe baseline behavior (3 release gate failures) and release approval under recovered persistence (8/8 gates passed).
+* TypeScript checking passes cleanly (`tsc --noEmit`).
 
-The dashboard launched that real comparison in Chromium, displayed the resulting ledger evidence, filtered profiles, opened run history, and downloaded JUnit with the six failures intact. Desktop and mobile checks produced no page errors or horizontal overflow. The concurrency guard rejected a second run with HTTP 409. See `evidence/BUILD-VERIFICATION.json` and `evidence/ui-verification.json` for timestamps and source hashes.
-
-This verifies the local hackathon implementation. Public repository publication, submission video upload, external customer validation, and production deployment have not been performed.
+The dashboard launches real comparisons in Chromium, displays resulting ledger evidence, filters profiles, opens run history, and exports JUnit/JSON/HTML evidence.
 
 ## Run it
 
-Use **Node.js 24 or later** and npm. Linux x64 is the tested environment; on Windows, use WSL2 Ubuntu. LiteSVM includes a native dependency, so other platforms need their supported native package. No wallet, RPC subscription, Docker, Solana CLI, or real funds are needed.
+Use **Node.js 24 or later** and npm. Linux x64 or WSL2 Ubuntu recommended. No wallet, external RPC subscription, Docker, or real funds needed.
 
 ```bash
 npm ci
@@ -24,25 +25,27 @@ npm test
 npm run demo
 ```
 
-Open **http://127.0.0.1:4173**. Choose a baseline, recovered, or full comparison run. The interface shows actual results from the local runner, not prerecorded outcomes. `PORT=4174 npm run demo` selects another local port.
+Open **http://127.0.0.1:4173**. Choose baseline, recovered, or full comparison runs across Hono, Express, and Weather.
 
-For terminal and CI use:
+### CLI & Release Gate Commands
 
 ```bash
-# Both profiles, both middleware deployments: 28 experiment checks.
-npm run compare
+# Full matrix across all adapters (Hono, Express, Weather): 42 checks
+npm run compare -- --adapter all
 
-# A release gate for the recovered deployment: 16 checks.
-npm run gate -- --profile recovered
+# Release gate for official Hono/Express deployments:
+npm run gate -- --profile recovered --adapter hono
+npm run gate -- --profile recovered --adapter express
 
-# Expected to exit 1 when unsafe baseline behavior is reproduced.
-npm run gate -- --profile baseline
+# Release gate for the independent weather application:
+# 1. Detect unsafe baseline configuration (exits 1):
+npm run gate -- --profile baseline --adapter weather
 
-# Select one middleware deployment and an output directory.
-npm run gate -- --profile recovered --adapter express --output evidence/express
+# 2. Verify corrected durable recovery (exits 0):
+npm run gate -- --profile recovered --adapter weather
 ```
 
-`compare` exits zero when every experiment matches its stated expectation. That includes successfully detecting an unsafe baseline. `gate` exits zero only when every experiment assertion and every release check passes. **An expected failure remains a failed release check.** JUnit failures reflect release checks, so the full comparison report intentionally contains failures when it reproduces the baseline defects.
+`compare` exits zero when every experiment matches its stated expectation (including detecting baseline defects). `gate` exits zero only when all experiment assertions and release checks pass. **An expected defect remains a failed release check.**
 
 Reports are saved under `evidence/` with a unique run ID. Each report includes token balances, HTTP status, observed delivery, actual local sponsor fees, and traces. The dashboard can download all three formats.
 

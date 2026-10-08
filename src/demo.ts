@@ -91,17 +91,20 @@ export async function createDemoApp(port: number) {
     }
     if (!body || typeof body !== 'object' || Array.isArray(body) || !('profile' in body)
       || typeof body.profile !== 'string' || !PROFILES.has(body.profile)
-      || Object.keys(body).some(key => key !== 'profile'))
+      || Object.keys(body).some(key => key !== 'profile' && key !== 'adapter'))
       return context.json({ error: 'Choose profile: baseline, recovered, or all.' }, 400);
     // Recheck after the body await so simultaneous requests cannot start two suites.
     if (busy) return context.json({ error: 'A run is already in progress.' }, 409);
     const profile = body.profile as 'baseline' | 'recovered' | 'all';
+    const adapters = (body as any).adapter
+      ? [(body as any).adapter]
+      : ['hono', 'express', 'weather'];
     busy = true;
     error = undefined;
     jobId = randomUUID();
     const acceptedJobId = jobId;
     void Promise.resolve().then(async () => {
-      latest = publicReport(await runSuite({ profile, outputDir: EVIDENCE_DIR }));
+      latest = publicReport(await runSuite({ profile, adapters, outputDir: EVIDENCE_DIR }));
     }).catch((failure: unknown) => {
       error = failure instanceof Error ? failure.message.slice(0, 500) : 'The local suite failed.';
       console.error(`ShadowGate run failed: ${error}`);

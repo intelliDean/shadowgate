@@ -1,0 +1,887 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="ShadowGate SVM" tests="6" failures="3" errors="0" time="9.004"><testsuite name="baseline" tests="6" failures="3" errors="0" timestamp="2026-10-08T22:10:50.185Z" time="9.004"><properties><property name="runId" value="run-2026-10-08T22-10-50-185Z-963423a9"/><property name="experimentAssertionsPassed" value="6"/><property name="experimentAssertionsFailed" value="0"/><property name="scope" value="Local LiteSVM execution; valueless tokens; not production certification"/></properties>
+<testcase classname="shadowgate.weather" name="weather-baseline-normal: Successful payment and delivery"><system-out>{
+  &quot;expected&quot;: &quot;One payment produces one recoverable protected result&quot;,
+  &quot;observed&quot;: &quot;HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered&quot;,
+  &quot;experimentAssertionPassed&quot;: true,
+  &quot;gatePassed&quot;: true,
+  &quot;httpStatus&quot;: 200,
+  &quot;paymentTransferred&quot;: true,
+  &quot;resourceDelivered&quot;: true,
+  &quot;feeLamports&quot;: &quot;10001&quot;,
+  &quot;before&quot;: {
+    &quot;payer&quot;: &quot;10000&quot;,
+    &quot;merchant&quot;: &quot;0&quot;,
+    &quot;sponsorLamports&quot;: &quot;1994449840&quot;
+  },
+  &quot;after&quot;: {
+    &quot;payer&quot;: &quot;0&quot;,
+    &quot;merchant&quot;: &quot;10000&quot;,
+    &quot;sponsorLamports&quot;: &quot;1994439839&quot;
+  },
+  &quot;trace&quot;: [
+    {
+      &quot;event&quot;: &quot;target-started&quot;,
+      &quot;adapter&quot;: &quot;weather&quot;,
+      &quot;pid&quot;: 54346
+    },
+    {
+      &quot;source&quot;: &quot;target&quot;,
+      &quot;at&quot;: &quot;2026-10-08T22:10:51.707Z&quot;,
+      &quot;phase&quot;: &quot;verify&quot;,
+      &quot;result&quot;: {
+        &quot;isValid&quot;: true,
+        &quot;payer&quot;: &quot;64VZgduDt1LUEcy1maUdmNqTQzEhpwPKAJLJCh37J5zL&quot;
+      }
+    },
+    {
+      &quot;source&quot;: &quot;target&quot;,
+      &quot;at&quot;: &quot;2026-10-08T22:10:51.745Z&quot;,
+      &quot;phase&quot;: &quot;settle&quot;,
+      &quot;result&quot;: {
+        &quot;success&quot;: true,
+        &quot;transaction&quot;: &quot;4Mj9ujjCWDHQoNLFxi4KJ4LUk89pK1zYPV1EWW2X2yTV2QMcoR8eeKZbZVwEyTAXMRfaBFwHf92XeecHSUevjmRj&quot;,
+        &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+        &quot;payer&quot;: &quot;64VZgduDt1LUEcy1maUdmNqTQzEhpwPKAJLJCh37J5zL&quot;
+      }
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;simulate&quot;,
+      &quot;sigVerify&quot;: false,
+      &quot;err&quot;: null,
+      &quot;unitsConsumed&quot;: 692
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;simulate&quot;,
+      &quot;sigVerify&quot;: false,
+      &quot;err&quot;: null,
+      &quot;unitsConsumed&quot;: 692
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;send&quot;,
+      &quot;signature&quot;: &quot;4Mj9ujjCWDHQoNLFxi4KJ4LUk89pK1zYPV1EWW2X2yTV2QMcoR8eeKZbZVwEyTAXMRfaBFwHf92XeecHSUevjmRj&quot;,
+      &quot;err&quot;: null,
+      &quot;logs&quot;: [
+        &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+        &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+        &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+        &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+        &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+        &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units&quot;,
+        &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+        &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+        &quot;Program log: Memo (len 32)&quot;,
+        &quot;Program log: b0c41c3eca3276e2eaacc2fe0268d142&quot;,
+        &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units&quot;,
+        &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+      ],
+      &quot;unitsConsumed&quot;: 692,
+      &quot;slot&quot;: 447552000,
+      &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+      &quot;reused&quot;: false,
+      &quot;feePayer&quot;: &quot;AoxzXLgyYpUj2knQBjgRz5rRDVVPuL4jNgxcwBD5s4Wz&quot;,
+      &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+      &quot;feePayerLamportsAfter&quot;: &quot;1994439839&quot;,
+      &quot;feePayerLamportsDelta&quot;: &quot;10001&quot;
+    }
+  ],
+  &quot;limitations&quot;: []
+}</system-out></testcase>
+<testcase classname="shadowgate.weather" name="weather-baseline-lost-send-response: RPC response lost after settlement"><failure type="PaymentDeliveryInvariant" message="HTTP 402 · payer 10000→0 · merchant 0→10000 · artifact withheld">{
+  &quot;expected&quot;: &quot;Detect settled payment with no delivered result, including attempted recovery&quot;,
+  &quot;observed&quot;: &quot;HTTP 402 · payer 10000→0 · merchant 0→10000 · artifact withheld&quot;,
+  &quot;experimentAssertionPassed&quot;: true,
+  &quot;gatePassed&quot;: false,
+  &quot;httpStatus&quot;: 402,
+  &quot;paymentTransferred&quot;: true,
+  &quot;resourceDelivered&quot;: false,
+  &quot;feeLamports&quot;: &quot;10001&quot;,
+  &quot;before&quot;: {
+    &quot;payer&quot;: &quot;10000&quot;,
+    &quot;merchant&quot;: &quot;0&quot;,
+    &quot;sponsorLamports&quot;: &quot;1994449840&quot;
+  },
+  &quot;after&quot;: {
+    &quot;payer&quot;: &quot;0&quot;,
+    &quot;merchant&quot;: &quot;10000&quot;,
+    &quot;sponsorLamports&quot;: &quot;1994439839&quot;
+  },
+  &quot;trace&quot;: [
+    {
+      &quot;event&quot;: &quot;target-started&quot;,
+      &quot;adapter&quot;: &quot;weather&quot;,
+      &quot;pid&quot;: 54386
+    },
+    {
+      &quot;source&quot;: &quot;target&quot;,
+      &quot;at&quot;: &quot;2026-10-08T22:10:52.979Z&quot;,
+      &quot;phase&quot;: &quot;verify&quot;,
+      &quot;result&quot;: {
+        &quot;isValid&quot;: true,
+        &quot;payer&quot;: &quot;4znETdQpMVuNGihKCX4xFV772hqDHMfQNN6SXv2F6Swp&quot;
+      }
+    },
+    {
+      &quot;source&quot;: &quot;target&quot;,
+      &quot;at&quot;: &quot;2026-10-08T22:10:53.017Z&quot;,
+      &quot;phase&quot;: &quot;settle&quot;,
+      &quot;result&quot;: {
+        &quot;success&quot;: false,
+        &quot;errorReason&quot;: &quot;invalid_exact_svm_transaction_failed&quot;,
+        &quot;transaction&quot;: &quot;&quot;,
+        &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+        &quot;payer&quot;: &quot;4znETdQpMVuNGihKCX4xFV772hqDHMfQNN6SXv2F6Swp&quot;
+      }
+    },
+    {
+      &quot;source&quot;: &quot;target&quot;,
+      &quot;at&quot;: &quot;2026-10-08T22:10:53.040Z&quot;,
+      &quot;phase&quot;: &quot;verify&quot;,
+      &quot;result&quot;: {
+        &quot;isValid&quot;: false,
+        &quot;invalidReason&quot;: &quot;invalid_exact_svm_transaction_simulation_failed&quot;,
+        &quot;invalidMessage&quot;: &quot;Simulation failed: {\&quot;liteSvmError\&quot;:\&quot;TransactionErrorInstructionError { index: 2, error: InstructionErrorCustom { code: 1 } }\&quot;,\&quot;detail\&quot;:\&quot;FailedTransactionMetadata(FailedTransactionMetadata { err: InstructionError(2, Custom(1)), meta: TransactionMetadata { signature: 1111111111111111111111111111111111111111111111111111111111111111, logs: [\\\&quot;Program ComputeBudget111111111111111111111111111111 invoke [1]\\\&quot;, \\\&quot;Program ComputeBudget111111111111111111111111111111 success\\\&quot;, \\\&quot;Program ComputeBudget111111111111111111111111111111 invoke [1]\\\&quot;, \\\&quot;Program ComputeBudget111111111111111111111111111111 success\\\&quot;, \\\&quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]\\\&quot;, \\\&quot;Program log: Error: insufficient funds\\\&quot;, \\\&quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 193 of 19700 compute units\\\&quot;, \\\&quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA failed: custom program error: 0x1\\\&quot;], inner_instructions: [[], [], [], []], compute_units_consumed: 493, return_data: TransactionReturnData { program_id: TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA, data: [] }, fee: 10001 } })\&quot;}&quot;,
+        &quot;payer&quot;: &quot;4znETdQpMVuNGihKCX4xFV772hqDHMfQNN6SXv2F6Swp&quot;
+      }
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;simulate&quot;,
+      &quot;sigVerify&quot;: false,
+      &quot;err&quot;: null,
+      &quot;unitsConsumed&quot;: 692
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;simulate&quot;,
+      &quot;sigVerify&quot;: false,
+      &quot;err&quot;: null,
+      &quot;unitsConsumed&quot;: 692
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;send&quot;,
+      &quot;signature&quot;: &quot;2nk2zFPRzeU8jjKV1j14Bgu8TRsxnBm94kM3BjtxUdnEzjQSBYBvWy7abWgkFKHKFsywjukDmc3CdtzeCTageZWX&quot;,
+      &quot;err&quot;: null,
+      &quot;logs&quot;: [
+        &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+        &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+        &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+        &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+        &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+        &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units&quot;,
+        &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+        &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+        &quot;Program log: Memo (len 32)&quot;,
+        &quot;Program log: d15e32fc94b4a97f74820615b7db59a9&quot;,
+        &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units&quot;,
+        &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+      ],
+      &quot;unitsConsumed&quot;: 692,
+      &quot;slot&quot;: 447552000,
+      &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+      &quot;reused&quot;: false,
+      &quot;feePayer&quot;: &quot;2kwjMZsiwhEpNthfT3R2WDjxZzEqtxrEi5PTvcjYxrat&quot;,
+      &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+      &quot;feePayerLamportsAfter&quot;: &quot;1994439839&quot;,
+      &quot;feePayerLamportsDelta&quot;: &quot;10001&quot;
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;drop-send-response-after-runtime-success&quot;,
+      &quot;signature&quot;: &quot;2nk2zFPRzeU8jjKV1j14Bgu8TRsxnBm94kM3BjtxUdnEzjQSBYBvWy7abWgkFKHKFsywjukDmc3CdtzeCTageZWX&quot;,
+      &quot;requests&quot;: 6,
+      &quot;sends&quot;: 1,
+      &quot;executed&quot;: 1,
+      &quot;simulations&quot;: 2,
+      &quot;droppedResponses&quot;: 1
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;simulate&quot;,
+      &quot;sigVerify&quot;: false,
+      &quot;err&quot;: {
+        &quot;liteSvmError&quot;: &quot;TransactionErrorInstructionError { index: 2, error: InstructionErrorCustom { code: 1 } }&quot;,
+        &quot;detail&quot;: &quot;FailedTransactionMetadata(FailedTransactionMetadata { err: InstructionError(2, Custom(1)), meta: TransactionMetadata { signature: 1111111111111111111111111111111111111111111111111111111111111111, logs: [\&quot;Program ComputeBudget111111111111111111111111111111 invoke [1]\&quot;, \&quot;Program ComputeBudget111111111111111111111111111111 success\&quot;, \&quot;Program ComputeBudget111111111111111111111111111111 invoke [1]\&quot;, \&quot;Program ComputeBudget111111111111111111111111111111 success\&quot;, \&quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]\&quot;, \&quot;Program log: Error: insufficient funds\&quot;, \&quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 193 of 19700 compute units\&quot;, \&quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA failed: custom program error: 0x1\&quot;], inner_instructions: [[], [], [], []], compute_units_consumed: 493, return_data: TransactionReturnData { program_id: TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA, data: [] }, fee: 10001 } })&quot;
+      },
+      &quot;unitsConsumed&quot;: 493
+    }
+  ],
+  &quot;limitations&quot;: []
+}</failure><system-out>{
+  &quot;expected&quot;: &quot;Detect settled payment with no delivered result, including attempted recovery&quot;,
+  &quot;observed&quot;: &quot;HTTP 402 · payer 10000→0 · merchant 0→10000 · artifact withheld&quot;,
+  &quot;experimentAssertionPassed&quot;: true,
+  &quot;gatePassed&quot;: false,
+  &quot;httpStatus&quot;: 402,
+  &quot;paymentTransferred&quot;: true,
+  &quot;resourceDelivered&quot;: false,
+  &quot;feeLamports&quot;: &quot;10001&quot;,
+  &quot;before&quot;: {
+    &quot;payer&quot;: &quot;10000&quot;,
+    &quot;merchant&quot;: &quot;0&quot;,
+    &quot;sponsorLamports&quot;: &quot;1994449840&quot;
+  },
+  &quot;after&quot;: {
+    &quot;payer&quot;: &quot;0&quot;,
+    &quot;merchant&quot;: &quot;10000&quot;,
+    &quot;sponsorLamports&quot;: &quot;1994439839&quot;
+  },
+  &quot;trace&quot;: [
+    {
+      &quot;event&quot;: &quot;target-started&quot;,
+      &quot;adapter&quot;: &quot;weather&quot;,
+      &quot;pid&quot;: 54386
+    },
+    {
+      &quot;source&quot;: &quot;target&quot;,
+      &quot;at&quot;: &quot;2026-10-08T22:10:52.979Z&quot;,
+      &quot;phase&quot;: &quot;verify&quot;,
+      &quot;result&quot;: {
+        &quot;isValid&quot;: true,
+        &quot;payer&quot;: &quot;4znETdQpMVuNGihKCX4xFV772hqDHMfQNN6SXv2F6Swp&quot;
+      }
+    },
+    {
+      &quot;source&quot;: &quot;target&quot;,
+      &quot;at&quot;: &quot;2026-10-08T22:10:53.017Z&quot;,
+      &quot;phase&quot;: &quot;settle&quot;,
+      &quot;result&quot;: {
+        &quot;success&quot;: false,
+        &quot;errorReason&quot;: &quot;invalid_exact_svm_transaction_failed&quot;,
+        &quot;transaction&quot;: &quot;&quot;,
+        &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+        &quot;payer&quot;: &quot;4znETdQpMVuNGihKCX4xFV772hqDHMfQNN6SXv2F6Swp&quot;
+      }
+    },
+    {
+      &quot;source&quot;: &quot;target&quot;,
+      &quot;at&quot;: &quot;2026-10-08T22:10:53.040Z&quot;,
+      &quot;phase&quot;: &quot;verify&quot;,
+      &quot;result&quot;: {
+        &quot;isValid&quot;: false,
+        &quot;invalidReason&quot;: &quot;invalid_exact_svm_transaction_simulation_failed&quot;,
+        &quot;invalidMessage&quot;: &quot;Simulation failed: {\&quot;liteSvmError\&quot;:\&quot;TransactionErrorInstructionError { index: 2, error: InstructionErrorCustom { code: 1 } }\&quot;,\&quot;detail\&quot;:\&quot;FailedTransactionMetadata(FailedTransactionMetadata { err: InstructionError(2, Custom(1)), meta: TransactionMetadata { signature: 1111111111111111111111111111111111111111111111111111111111111111, logs: [\\\&quot;Program ComputeBudget111111111111111111111111111111 invoke [1]\\\&quot;, \\\&quot;Program ComputeBudget111111111111111111111111111111 success\\\&quot;, \\\&quot;Program ComputeBudget111111111111111111111111111111 invoke [1]\\\&quot;, \\\&quot;Program ComputeBudget111111111111111111111111111111 success\\\&quot;, \\\&quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]\\\&quot;, \\\&quot;Program log: Error: insufficient funds\\\&quot;, \\\&quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 193 of 19700 compute units\\\&quot;, \\\&quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA failed: custom program error: 0x1\\\&quot;], inner_instructions: [[], [], [], []], compute_units_consumed: 493, return_data: TransactionReturnData { program_id: TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA, data: [] }, fee: 10001 } })\&quot;}&quot;,
+        &quot;payer&quot;: &quot;4znETdQpMVuNGihKCX4xFV772hqDHMfQNN6SXv2F6Swp&quot;
+      }
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;simulate&quot;,
+      &quot;sigVerify&quot;: false,
+      &quot;err&quot;: null,
+      &quot;unitsConsumed&quot;: 692
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;simulate&quot;,
+      &quot;sigVerify&quot;: false,
+      &quot;err&quot;: null,
+      &quot;unitsConsumed&quot;: 692
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;send&quot;,
+      &quot;signature&quot;: &quot;2nk2zFPRzeU8jjKV1j14Bgu8TRsxnBm94kM3BjtxUdnEzjQSBYBvWy7abWgkFKHKFsywjukDmc3CdtzeCTageZWX&quot;,
+      &quot;err&quot;: null,
+      &quot;logs&quot;: [
+        &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+        &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+        &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+        &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+        &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+        &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units&quot;,
+        &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+        &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+        &quot;Program log: Memo (len 32)&quot;,
+        &quot;Program log: d15e32fc94b4a97f74820615b7db59a9&quot;,
+        &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units&quot;,
+        &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+      ],
+      &quot;unitsConsumed&quot;: 692,
+      &quot;slot&quot;: 447552000,
+      &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+      &quot;reused&quot;: false,
+      &quot;feePayer&quot;: &quot;2kwjMZsiwhEpNthfT3R2WDjxZzEqtxrEi5PTvcjYxrat&quot;,
+      &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+      &quot;feePayerLamportsAfter&quot;: &quot;1994439839&quot;,
+      &quot;feePayerLamportsDelta&quot;: &quot;10001&quot;
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;drop-send-response-after-runtime-success&quot;,
+      &quot;signature&quot;: &quot;2nk2zFPRzeU8jjKV1j14Bgu8TRsxnBm94kM3BjtxUdnEzjQSBYBvWy7abWgkFKHKFsywjukDmc3CdtzeCTageZWX&quot;,
+      &quot;requests&quot;: 6,
+      &quot;sends&quot;: 1,
+      &quot;executed&quot;: 1,
+      &quot;simulations&quot;: 2,
+      &quot;droppedResponses&quot;: 1
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;simulate&quot;,
+      &quot;sigVerify&quot;: false,
+      &quot;err&quot;: {
+        &quot;liteSvmError&quot;: &quot;TransactionErrorInstructionError { index: 2, error: InstructionErrorCustom { code: 1 } }&quot;,
+        &quot;detail&quot;: &quot;FailedTransactionMetadata(FailedTransactionMetadata { err: InstructionError(2, Custom(1)), meta: TransactionMetadata { signature: 1111111111111111111111111111111111111111111111111111111111111111, logs: [\&quot;Program ComputeBudget111111111111111111111111111111 invoke [1]\&quot;, \&quot;Program ComputeBudget111111111111111111111111111111 success\&quot;, \&quot;Program ComputeBudget111111111111111111111111111111 invoke [1]\&quot;, \&quot;Program ComputeBudget111111111111111111111111111111 success\&quot;, \&quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]\&quot;, \&quot;Program log: Error: insufficient funds\&quot;, \&quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 193 of 19700 compute units\&quot;, \&quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA failed: custom program error: 0x1\&quot;], inner_instructions: [[], [], [], []], compute_units_consumed: 493, return_data: TransactionReturnData { program_id: TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA, data: [] }, fee: 10001 } })&quot;
+      },
+      &quot;unitsConsumed&quot;: 493
+    }
+  ],
+  &quot;limitations&quot;: []
+}</system-out></testcase>
+<testcase classname="shadowgate.weather" name="weather-baseline-prebroadcast-failure: Failure before broadcast"><system-out>{
+  &quot;expected&quot;: &quot;No payment and no protected result, including authenticated recovery&quot;,
+  &quot;observed&quot;: &quot;HTTP 402 · payer 10000→10000 · merchant 0→0 · artifact withheld&quot;,
+  &quot;experimentAssertionPassed&quot;: true,
+  &quot;gatePassed&quot;: true,
+  &quot;httpStatus&quot;: 402,
+  &quot;paymentTransferred&quot;: false,
+  &quot;resourceDelivered&quot;: false,
+  &quot;feeLamports&quot;: &quot;0&quot;,
+  &quot;before&quot;: {
+    &quot;payer&quot;: &quot;10000&quot;,
+    &quot;merchant&quot;: &quot;0&quot;,
+    &quot;sponsorLamports&quot;: &quot;1994449840&quot;
+  },
+  &quot;after&quot;: {
+    &quot;payer&quot;: &quot;10000&quot;,
+    &quot;merchant&quot;: &quot;0&quot;,
+    &quot;sponsorLamports&quot;: &quot;1994449840&quot;
+  },
+  &quot;trace&quot;: [
+    {
+      &quot;event&quot;: &quot;target-started&quot;,
+      &quot;adapter&quot;: &quot;weather&quot;,
+      &quot;pid&quot;: 54420
+    },
+    {
+      &quot;source&quot;: &quot;target&quot;,
+      &quot;at&quot;: &quot;2026-10-08T22:10:54.262Z&quot;,
+      &quot;phase&quot;: &quot;verify&quot;,
+      &quot;result&quot;: {
+        &quot;isValid&quot;: true,
+        &quot;payer&quot;: &quot;9kU2J2Xgtb5mi7F5LgYiZbZW9GWivDa7JFjhg3DL2AYa&quot;
+      }
+    },
+    {
+      &quot;source&quot;: &quot;target&quot;,
+      &quot;at&quot;: &quot;2026-10-08T22:10:54.284Z&quot;,
+      &quot;phase&quot;: &quot;before_send_failure&quot;,
+      &quot;signature&quot;: &quot;3HaTmHsMGPS3h9zVoa1Vk8b5VMdgXvH6n2Z432YF3Ng8VK72LjD4jwHC8YZMaveP8VcuSziFWXkc53pUdhHcHwHb&quot;
+    },
+    {
+      &quot;source&quot;: &quot;target&quot;,
+      &quot;at&quot;: &quot;2026-10-08T22:10:54.291Z&quot;,
+      &quot;phase&quot;: &quot;settle&quot;,
+      &quot;result&quot;: {
+        &quot;success&quot;: false,
+        &quot;errorReason&quot;: &quot;invalid_exact_svm_transaction_failed&quot;,
+        &quot;transaction&quot;: &quot;&quot;,
+        &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+        &quot;payer&quot;: &quot;9kU2J2Xgtb5mi7F5LgYiZbZW9GWivDa7JFjhg3DL2AYa&quot;
+      }
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;simulate&quot;,
+      &quot;sigVerify&quot;: false,
+      &quot;err&quot;: null,
+      &quot;unitsConsumed&quot;: 692
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;simulate&quot;,
+      &quot;sigVerify&quot;: false,
+      &quot;err&quot;: null,
+      &quot;unitsConsumed&quot;: 692
+    }
+  ],
+  &quot;limitations&quot;: []
+}</system-out></testcase>
+<testcase classname="shadowgate.weather" name="weather-baseline-confirmation-failure: Confirmation observation failure"><system-out>{
+  &quot;expected&quot;: &quot;One payment produces one recoverable protected result&quot;,
+  &quot;observed&quot;: &quot;HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered&quot;,
+  &quot;experimentAssertionPassed&quot;: true,
+  &quot;gatePassed&quot;: true,
+  &quot;httpStatus&quot;: 200,
+  &quot;paymentTransferred&quot;: true,
+  &quot;resourceDelivered&quot;: true,
+  &quot;feeLamports&quot;: &quot;10001&quot;,
+  &quot;before&quot;: {
+    &quot;payer&quot;: &quot;10000&quot;,
+    &quot;merchant&quot;: &quot;0&quot;,
+    &quot;sponsorLamports&quot;: &quot;1994449840&quot;
+  },
+  &quot;after&quot;: {
+    &quot;payer&quot;: &quot;0&quot;,
+    &quot;merchant&quot;: &quot;10000&quot;,
+    &quot;sponsorLamports&quot;: &quot;1994439839&quot;
+  },
+  &quot;trace&quot;: [
+    {
+      &quot;event&quot;: &quot;target-started&quot;,
+      &quot;adapter&quot;: &quot;weather&quot;,
+      &quot;pid&quot;: 54451
+    },
+    {
+      &quot;source&quot;: &quot;target&quot;,
+      &quot;at&quot;: &quot;2026-10-08T22:10:55.457Z&quot;,
+      &quot;phase&quot;: &quot;verify&quot;,
+      &quot;result&quot;: {
+        &quot;isValid&quot;: true,
+        &quot;payer&quot;: &quot;hFM4s2Z2sEGaQQ8GNNfdUcX9bHL5XdBaqzE5NZh5jFU&quot;
+      }
+    },
+    {
+      &quot;source&quot;: &quot;target&quot;,
+      &quot;at&quot;: &quot;2026-10-08T22:10:55.499Z&quot;,
+      &quot;phase&quot;: &quot;confirm_observation_failure&quot;
+    },
+    {
+      &quot;source&quot;: &quot;target&quot;,
+      &quot;at&quot;: &quot;2026-10-08T22:10:55.509Z&quot;,
+      &quot;phase&quot;: &quot;settle&quot;,
+      &quot;result&quot;: {
+        &quot;success&quot;: false,
+        &quot;errorReason&quot;: &quot;settlement_pending&quot;,
+        &quot;errorMessage&quot;: &quot;CONTROLLED_CONFIRM_OBSERVATION_FAILURE&quot;,
+        &quot;transaction&quot;: &quot;5Ja7txyEA5ZqWaT1hZRFimucaebQUvHoumnoWRjWEDq7ra7Tfwk3WsCRieDemwX2psv3VDYuBdLZMUioRQYmHMyZ&quot;,
+        &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+        &quot;payer&quot;: &quot;hFM4s2Z2sEGaQQ8GNNfdUcX9bHL5XdBaqzE5NZh5jFU&quot;
+      }
+    },
+    {
+      &quot;source&quot;: &quot;target&quot;,
+      &quot;at&quot;: &quot;2026-10-08T22:10:55.521Z&quot;,
+      &quot;phase&quot;: &quot;settle&quot;,
+      &quot;result&quot;: {
+        &quot;success&quot;: true,
+        &quot;transaction&quot;: &quot;5Ja7txyEA5ZqWaT1hZRFimucaebQUvHoumnoWRjWEDq7ra7Tfwk3WsCRieDemwX2psv3VDYuBdLZMUioRQYmHMyZ&quot;,
+        &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+        &quot;payer&quot;: &quot;hFM4s2Z2sEGaQQ8GNNfdUcX9bHL5XdBaqzE5NZh5jFU&quot;
+      }
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;simulate&quot;,
+      &quot;sigVerify&quot;: false,
+      &quot;err&quot;: null,
+      &quot;unitsConsumed&quot;: 692
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;simulate&quot;,
+      &quot;sigVerify&quot;: false,
+      &quot;err&quot;: null,
+      &quot;unitsConsumed&quot;: 692
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;send&quot;,
+      &quot;signature&quot;: &quot;5Ja7txyEA5ZqWaT1hZRFimucaebQUvHoumnoWRjWEDq7ra7Tfwk3WsCRieDemwX2psv3VDYuBdLZMUioRQYmHMyZ&quot;,
+      &quot;err&quot;: null,
+      &quot;logs&quot;: [
+        &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+        &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+        &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+        &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+        &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+        &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units&quot;,
+        &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+        &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+        &quot;Program log: Memo (len 32)&quot;,
+        &quot;Program log: 48c398ccd4e456b2eca14e1f37cecf6a&quot;,
+        &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units&quot;,
+        &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+      ],
+      &quot;unitsConsumed&quot;: 692,
+      &quot;slot&quot;: 447552000,
+      &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+      &quot;reused&quot;: false,
+      &quot;feePayer&quot;: &quot;6QGHz6wkCwxoSWtayok5FD9Yhptupvj83Y1vETWrSNju&quot;,
+      &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+      &quot;feePayerLamportsAfter&quot;: &quot;1994439839&quot;,
+      &quot;feePayerLamportsDelta&quot;: &quot;10001&quot;
+    }
+  ],
+  &quot;limitations&quot;: []
+}</system-out></testcase>
+<testcase classname="shadowgate.weather" name="weather-baseline-process-restart: Process dies after settlement"><failure type="PaymentDeliveryInvariant" message="HTTP 404 · payer 10000→0 · merchant 0→10000 · artifact withheld">{
+  &quot;expected&quot;: &quot;Detect settled payment with no delivered result, including attempted recovery&quot;,
+  &quot;observed&quot;: &quot;HTTP 404 · payer 10000→0 · merchant 0→10000 · artifact withheld&quot;,
+  &quot;experimentAssertionPassed&quot;: true,
+  &quot;gatePassed&quot;: false,
+  &quot;httpStatus&quot;: 404,
+  &quot;paymentTransferred&quot;: true,
+  &quot;resourceDelivered&quot;: false,
+  &quot;feeLamports&quot;: &quot;10001&quot;,
+  &quot;before&quot;: {
+    &quot;payer&quot;: &quot;10000&quot;,
+    &quot;merchant&quot;: &quot;0&quot;,
+    &quot;sponsorLamports&quot;: &quot;1994449840&quot;
+  },
+  &quot;after&quot;: {
+    &quot;payer&quot;: &quot;0&quot;,
+    &quot;merchant&quot;: &quot;10000&quot;,
+    &quot;sponsorLamports&quot;: &quot;1994439839&quot;
+  },
+  &quot;trace&quot;: [
+    {
+      &quot;event&quot;: &quot;target-started&quot;,
+      &quot;adapter&quot;: &quot;weather&quot;,
+      &quot;pid&quot;: 54463
+    },
+    {
+      &quot;source&quot;: &quot;target&quot;,
+      &quot;at&quot;: &quot;2026-10-08T22:10:56.655Z&quot;,
+      &quot;phase&quot;: &quot;verify&quot;,
+      &quot;result&quot;: {
+        &quot;isValid&quot;: true,
+        &quot;payer&quot;: &quot;66z9RUmD21iUdqTDuVZzdZeVRJDxEXRkCwBgEJjuV4FS&quot;
+      }
+    },
+    {
+      &quot;source&quot;: &quot;target&quot;,
+      &quot;at&quot;: &quot;2026-10-08T22:10:56.682Z&quot;,
+      &quot;phase&quot;: &quot;crash_after_send&quot;,
+      &quot;signature&quot;: &quot;4edKrz7yjEaVjBU8kUFNM2bcJAhmtKg8eVwJV7eMrkoWwQNai9iuGH15xroYx4RFLG6xbZWrPSPbQRipzWG7yvBK&quot;,
+      &quot;messageHash&quot;: &quot;ee5ac5e215fb665b827fa404cae1eb2d1ca192442a551d2d11145c9cb66155d5&quot;
+    },
+    {
+      &quot;event&quot;: &quot;target-process-terminated&quot;,
+      &quot;exitCode&quot;: 86,
+      &quot;signal&quot;: null
+    },
+    {
+      &quot;event&quot;: &quot;target-started&quot;,
+      &quot;adapter&quot;: &quot;weather&quot;,
+      &quot;pid&quot;: 54475
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;simulate&quot;,
+      &quot;sigVerify&quot;: false,
+      &quot;err&quot;: null,
+      &quot;unitsConsumed&quot;: 692
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;simulate&quot;,
+      &quot;sigVerify&quot;: false,
+      &quot;err&quot;: null,
+      &quot;unitsConsumed&quot;: 692
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;send&quot;,
+      &quot;signature&quot;: &quot;4edKrz7yjEaVjBU8kUFNM2bcJAhmtKg8eVwJV7eMrkoWwQNai9iuGH15xroYx4RFLG6xbZWrPSPbQRipzWG7yvBK&quot;,
+      &quot;err&quot;: null,
+      &quot;logs&quot;: [
+        &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+        &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+        &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+        &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+        &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+        &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units&quot;,
+        &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+        &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+        &quot;Program log: Memo (len 32)&quot;,
+        &quot;Program log: 99822709fc0aeda6e0842d9f63b2fbdf&quot;,
+        &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units&quot;,
+        &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+      ],
+      &quot;unitsConsumed&quot;: 692,
+      &quot;slot&quot;: 447552000,
+      &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+      &quot;reused&quot;: false,
+      &quot;feePayer&quot;: &quot;F4iimTe5PMjUNAZ8TDELgGUzoCQV3jvc3Li155i8gMRP&quot;,
+      &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+      &quot;feePayerLamportsAfter&quot;: &quot;1994439839&quot;,
+      &quot;feePayerLamportsDelta&quot;: &quot;10001&quot;
+    }
+  ],
+  &quot;limitations&quot;: []
+}</failure><system-out>{
+  &quot;expected&quot;: &quot;Detect settled payment with no delivered result, including attempted recovery&quot;,
+  &quot;observed&quot;: &quot;HTTP 404 · payer 10000→0 · merchant 0→10000 · artifact withheld&quot;,
+  &quot;experimentAssertionPassed&quot;: true,
+  &quot;gatePassed&quot;: false,
+  &quot;httpStatus&quot;: 404,
+  &quot;paymentTransferred&quot;: true,
+  &quot;resourceDelivered&quot;: false,
+  &quot;feeLamports&quot;: &quot;10001&quot;,
+  &quot;before&quot;: {
+    &quot;payer&quot;: &quot;10000&quot;,
+    &quot;merchant&quot;: &quot;0&quot;,
+    &quot;sponsorLamports&quot;: &quot;1994449840&quot;
+  },
+  &quot;after&quot;: {
+    &quot;payer&quot;: &quot;0&quot;,
+    &quot;merchant&quot;: &quot;10000&quot;,
+    &quot;sponsorLamports&quot;: &quot;1994439839&quot;
+  },
+  &quot;trace&quot;: [
+    {
+      &quot;event&quot;: &quot;target-started&quot;,
+      &quot;adapter&quot;: &quot;weather&quot;,
+      &quot;pid&quot;: 54463
+    },
+    {
+      &quot;source&quot;: &quot;target&quot;,
+      &quot;at&quot;: &quot;2026-10-08T22:10:56.655Z&quot;,
+      &quot;phase&quot;: &quot;verify&quot;,
+      &quot;result&quot;: {
+        &quot;isValid&quot;: true,
+        &quot;payer&quot;: &quot;66z9RUmD21iUdqTDuVZzdZeVRJDxEXRkCwBgEJjuV4FS&quot;
+      }
+    },
+    {
+      &quot;source&quot;: &quot;target&quot;,
+      &quot;at&quot;: &quot;2026-10-08T22:10:56.682Z&quot;,
+      &quot;phase&quot;: &quot;crash_after_send&quot;,
+      &quot;signature&quot;: &quot;4edKrz7yjEaVjBU8kUFNM2bcJAhmtKg8eVwJV7eMrkoWwQNai9iuGH15xroYx4RFLG6xbZWrPSPbQRipzWG7yvBK&quot;,
+      &quot;messageHash&quot;: &quot;ee5ac5e215fb665b827fa404cae1eb2d1ca192442a551d2d11145c9cb66155d5&quot;
+    },
+    {
+      &quot;event&quot;: &quot;target-process-terminated&quot;,
+      &quot;exitCode&quot;: 86,
+      &quot;signal&quot;: null
+    },
+    {
+      &quot;event&quot;: &quot;target-started&quot;,
+      &quot;adapter&quot;: &quot;weather&quot;,
+      &quot;pid&quot;: 54475
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;simulate&quot;,
+      &quot;sigVerify&quot;: false,
+      &quot;err&quot;: null,
+      &quot;unitsConsumed&quot;: 692
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;simulate&quot;,
+      &quot;sigVerify&quot;: false,
+      &quot;err&quot;: null,
+      &quot;unitsConsumed&quot;: 692
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;send&quot;,
+      &quot;signature&quot;: &quot;4edKrz7yjEaVjBU8kUFNM2bcJAhmtKg8eVwJV7eMrkoWwQNai9iuGH15xroYx4RFLG6xbZWrPSPbQRipzWG7yvBK&quot;,
+      &quot;err&quot;: null,
+      &quot;logs&quot;: [
+        &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+        &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+        &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+        &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+        &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+        &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units&quot;,
+        &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+        &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+        &quot;Program log: Memo (len 32)&quot;,
+        &quot;Program log: 99822709fc0aeda6e0842d9f63b2fbdf&quot;,
+        &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units&quot;,
+        &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+      ],
+      &quot;unitsConsumed&quot;: 692,
+      &quot;slot&quot;: 447552000,
+      &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+      &quot;reused&quot;: false,
+      &quot;feePayer&quot;: &quot;F4iimTe5PMjUNAZ8TDELgGUzoCQV3jvc3Li155i8gMRP&quot;,
+      &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+      &quot;feePayerLamportsAfter&quot;: &quot;1994439839&quot;,
+      &quot;feePayerLamportsDelta&quot;: &quot;10001&quot;
+    }
+  ],
+  &quot;limitations&quot;: []
+}</system-out></testcase>
+<testcase classname="shadowgate.weather" name="weather-baseline-fee-policy: Sponsor compute-budget policy"><failure type="PaymentDeliveryInvariant" message="HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered">{
+  &quot;expected&quot;: &quot;Uncapped fixture accepts compute budget above sponsor policy&quot;,
+  &quot;observed&quot;: &quot;HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered&quot;,
+  &quot;experimentAssertionPassed&quot;: true,
+  &quot;gatePassed&quot;: false,
+  &quot;httpStatus&quot;: 200,
+  &quot;paymentTransferred&quot;: true,
+  &quot;resourceDelivered&quot;: true,
+  &quot;feeLamports&quot;: &quot;1010000&quot;,
+  &quot;before&quot;: {
+    &quot;payer&quot;: &quot;10000&quot;,
+    &quot;merchant&quot;: &quot;0&quot;,
+    &quot;sponsorLamports&quot;: &quot;1994449840&quot;
+  },
+  &quot;after&quot;: {
+    &quot;payer&quot;: &quot;0&quot;,
+    &quot;merchant&quot;: &quot;10000&quot;,
+    &quot;sponsorLamports&quot;: &quot;1993439840&quot;
+  },
+  &quot;trace&quot;: [
+    {
+      &quot;event&quot;: &quot;target-started&quot;,
+      &quot;adapter&quot;: &quot;weather&quot;,
+      &quot;pid&quot;: 54487
+    },
+    {
+      &quot;source&quot;: &quot;target&quot;,
+      &quot;at&quot;: &quot;2026-10-08T22:10:59.121Z&quot;,
+      &quot;phase&quot;: &quot;verify&quot;,
+      &quot;result&quot;: {
+        &quot;isValid&quot;: true,
+        &quot;payer&quot;: &quot;H6dtsE7Azq7Bq29nTEpdxSUsWsuv2sud22uYEPCXXkov&quot;
+      }
+    },
+    {
+      &quot;source&quot;: &quot;target&quot;,
+      &quot;at&quot;: &quot;2026-10-08T22:10:59.168Z&quot;,
+      &quot;phase&quot;: &quot;settle&quot;,
+      &quot;result&quot;: {
+        &quot;success&quot;: true,
+        &quot;transaction&quot;: &quot;2E5mP3UVTywvx6jXUEaivgakmZw4GALHsmYZCTi1RYnTvEY2zDBFExHmihjAHJjjL7ZKz222GwLUZFxbEdvkVQAQ&quot;,
+        &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+        &quot;payer&quot;: &quot;H6dtsE7Azq7Bq29nTEpdxSUsWsuv2sud22uYEPCXXkov&quot;
+      }
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;simulate&quot;,
+      &quot;sigVerify&quot;: false,
+      &quot;err&quot;: null,
+      &quot;unitsConsumed&quot;: 692
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;simulate&quot;,
+      &quot;sigVerify&quot;: false,
+      &quot;err&quot;: null,
+      &quot;unitsConsumed&quot;: 692
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;send&quot;,
+      &quot;signature&quot;: &quot;2E5mP3UVTywvx6jXUEaivgakmZw4GALHsmYZCTi1RYnTvEY2zDBFExHmihjAHJjjL7ZKz222GwLUZFxbEdvkVQAQ&quot;,
+      &quot;err&quot;: null,
+      &quot;logs&quot;: [
+        &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+        &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+        &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+        &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+        &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+        &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 999700 compute units&quot;,
+        &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+        &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+        &quot;Program log: Memo (len 32)&quot;,
+        &quot;Program log: e0d62c76c4a3ebc81ac1cf71df9103dc&quot;,
+        &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 999595 compute units&quot;,
+        &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+      ],
+      &quot;unitsConsumed&quot;: 692,
+      &quot;slot&quot;: 447552000,
+      &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+      &quot;reused&quot;: false,
+      &quot;feePayer&quot;: &quot;CcPPvbgyLbMwFUd5W1Vsf1Tv2adBNwAbRXCv3Dzc3gtF&quot;,
+      &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+      &quot;feePayerLamportsAfter&quot;: &quot;1993439840&quot;,
+      &quot;feePayerLamportsDelta&quot;: &quot;1010000&quot;
+    }
+  ],
+  &quot;limitations&quot;: [
+    &quot;Compute-limit rejection proven; signature-count and price caps are configured but not independently exercised.&quot;
+  ]
+}</failure><system-out>{
+  &quot;expected&quot;: &quot;Uncapped fixture accepts compute budget above sponsor policy&quot;,
+  &quot;observed&quot;: &quot;HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered&quot;,
+  &quot;experimentAssertionPassed&quot;: true,
+  &quot;gatePassed&quot;: false,
+  &quot;httpStatus&quot;: 200,
+  &quot;paymentTransferred&quot;: true,
+  &quot;resourceDelivered&quot;: true,
+  &quot;feeLamports&quot;: &quot;1010000&quot;,
+  &quot;before&quot;: {
+    &quot;payer&quot;: &quot;10000&quot;,
+    &quot;merchant&quot;: &quot;0&quot;,
+    &quot;sponsorLamports&quot;: &quot;1994449840&quot;
+  },
+  &quot;after&quot;: {
+    &quot;payer&quot;: &quot;0&quot;,
+    &quot;merchant&quot;: &quot;10000&quot;,
+    &quot;sponsorLamports&quot;: &quot;1993439840&quot;
+  },
+  &quot;trace&quot;: [
+    {
+      &quot;event&quot;: &quot;target-started&quot;,
+      &quot;adapter&quot;: &quot;weather&quot;,
+      &quot;pid&quot;: 54487
+    },
+    {
+      &quot;source&quot;: &quot;target&quot;,
+      &quot;at&quot;: &quot;2026-10-08T22:10:59.121Z&quot;,
+      &quot;phase&quot;: &quot;verify&quot;,
+      &quot;result&quot;: {
+        &quot;isValid&quot;: true,
+        &quot;payer&quot;: &quot;H6dtsE7Azq7Bq29nTEpdxSUsWsuv2sud22uYEPCXXkov&quot;
+      }
+    },
+    {
+      &quot;source&quot;: &quot;target&quot;,
+      &quot;at&quot;: &quot;2026-10-08T22:10:59.168Z&quot;,
+      &quot;phase&quot;: &quot;settle&quot;,
+      &quot;result&quot;: {
+        &quot;success&quot;: true,
+        &quot;transaction&quot;: &quot;2E5mP3UVTywvx6jXUEaivgakmZw4GALHsmYZCTi1RYnTvEY2zDBFExHmihjAHJjjL7ZKz222GwLUZFxbEdvkVQAQ&quot;,
+        &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+        &quot;payer&quot;: &quot;H6dtsE7Azq7Bq29nTEpdxSUsWsuv2sud22uYEPCXXkov&quot;
+      }
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;simulate&quot;,
+      &quot;sigVerify&quot;: false,
+      &quot;err&quot;: null,
+      &quot;unitsConsumed&quot;: 692
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;simulate&quot;,
+      &quot;sigVerify&quot;: false,
+      &quot;err&quot;: null,
+      &quot;unitsConsumed&quot;: 692
+    },
+    {
+      &quot;source&quot;: &quot;rpc&quot;,
+      &quot;event&quot;: &quot;send&quot;,
+      &quot;signature&quot;: &quot;2E5mP3UVTywvx6jXUEaivgakmZw4GALHsmYZCTi1RYnTvEY2zDBFExHmihjAHJjjL7ZKz222GwLUZFxbEdvkVQAQ&quot;,
+      &quot;err&quot;: null,
+      &quot;logs&quot;: [
+        &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+        &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+        &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+        &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+        &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+        &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 999700 compute units&quot;,
+        &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+        &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+        &quot;Program log: Memo (len 32)&quot;,
+        &quot;Program log: e0d62c76c4a3ebc81ac1cf71df9103dc&quot;,
+        &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 999595 compute units&quot;,
+        &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+      ],
+      &quot;unitsConsumed&quot;: 692,
+      &quot;slot&quot;: 447552000,
+      &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+      &quot;reused&quot;: false,
+      &quot;feePayer&quot;: &quot;CcPPvbgyLbMwFUd5W1Vsf1Tv2adBNwAbRXCv3Dzc3gtF&quot;,
+      &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+      &quot;feePayerLamportsAfter&quot;: &quot;1993439840&quot;,
+      &quot;feePayerLamportsDelta&quot;: &quot;1010000&quot;
+    }
+  ],
+  &quot;limitations&quot;: [
+    &quot;Compute-limit rejection proven; signature-count and price caps are configured but not independently exercised.&quot;
+  ]
+}</system-out></testcase>
+</testsuite></testsuites>
