@@ -1,0 +1,18 @@
+{
+  "name": "shadowgate-svm", "version": "0.1.0", "private": true, "type": "module",
+  "description": "Local settlement-versus-delivery fault gates for Solana x402 deployments",
+  "engines": {"node": ">=24"},
+  "scripts": {
+    "demo": "node --import tsx src/demo.ts",
+    "gate": "node --import tsx src/cli.ts gate",
+    "compare": "node --import tsx src/cli.ts compare",
+    "test": "node --import tsx src/selftest.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@x402/core": "2.28.0", "@x402/svm": "2.28.0", "@x402/hono": "2.28.0", "@x402/express": "2.28.0",
+    "@solana/kit": "5.5.1", "@solana/web3.js": "1.98.4", "@solana/spl-token": "0.4.14",
+    "litesvm": "1.5.0", "hono": "4.13.13", "@hono/node-server": "1.19.17", "express": "5.1.0", "tsx": "4.23.15"
+  },
+  "devDependencies": {"typescript": "5.9.3", "@types/node": "24.10.1", "@types/express": "5.0.5"}
+}

@@ -1,0 +1,10 @@
+node_modules/
+.shadowgate/
+*.db
+*.db-shm
+*.db-wal
+npm-debug.log
+
+# Local workspace files
+ShadowGate-SVM-Hackathon-2026-10-07.zip
+shadowgate.txt

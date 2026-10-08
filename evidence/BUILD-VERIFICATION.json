@@ -1,0 +1,72 @@
+{
+  "verifiedAt": "2026-10-08T00:03:24.787Z",
+  "comparisonRun": "run-2026-10-08T00-02-30-294Z-97ec38bc",
+  "summary": {
+    "passed": 28,
+    "failed": 0,
+    "total": 28,
+    "gatePassed": 22,
+    "gateFailed": 6
+  },
+  "commands": {
+    "npm run typecheck": 0,
+    "npm test": 0,
+    "npm run gate -- --profile recovered": 0,
+    "npm run gate -- --profile baseline --adapter hono": 1
+  },
+  "baselineExitOneIsExpected": true,
+  "recoveredGateChecks": 16,
+  "browserChecks": {
+    "checkedAt": "2026-10-08T00:02:53.821Z",
+    "runId": "run-2026-10-08T00-02-30-294Z-97ec38bc",
+    "summary": {
+      "passed": 28,
+      "failed": 0,
+      "total": 28,
+      "gatePassed": 22,
+      "gateFailed": 6
+    },
+    "browser": "Chromium 133 via Playwright",
+    "desktop": "1440x1040",
+    "mobile": "390x844",
+    "mobileOverflow": false,
+    "pageErrors": [],
+    "concurrentRunStatus": 409,
+    "junitFailures": 6,
+    "interactions": [
+      "real comparison launched by button",
+      "scenario selection",
+      "evidence history",
+      "report inspection",
+      "JUnit download"
+    ],
+    "interfaceCheckedAt": "2026-10-08T00:03:24.787Z",
+    "profileFilterVisible": 16,
+    "requestEvidenceStatuses": [
+      409,
+      403,
+      200
+    ]
+  },
+  "independentReview": "Ignore-crash custom target rejected in all three required crash cases; artifact identity, paid-payload replay and unpaid journal recovery assertions strengthened after review.",
+  "limits": [
+    "Two middleware deployments share the same official facilitator implementation.",
+    "All assets are ephemeral local test tokens; no mainnet or devnet transactions.",
+    "Recovery example assumes trusted RPC, single journal writer and stored immutable demo artifacts.",
+    "No arbitrary business-side-effect exactly-once guarantee, chain reorg, blockhash-expiry, database-corruption or distributed-consensus coverage.",
+    "A passing release gate covers these scenarios and is not a security audit."
+  ],
+  "sourceSha256": {
+    "src/cli.ts": "b6585e71d208c9550dc161330b79dd0f6937fce60a1e1ead2aabe126c42fa6ac",
+    "src/demo.ts": "52270c1c91ab39b6b2232acad25e4fee91d2bd45dd24d7e47b8604741ee6ae8a",
+    "src/fixture.ts": "81f89cbe9b381a106e975e2c7ee52673ea6a3adc5c8adf24ea9596e7d0016b82",
+    "src/journal.ts": "15182e9b3cf16dc2845a4bf17d0ce409879da648bfe02e219174db383e103614",
+    "src/ledger.ts": "770708349eb4bb26a07626e212666c1cc1da48a0108f40d7bc173d46ba7ede34",
+    "src/reports.ts": "a1fbf4205ddf50f7916ebe92dd31f9ab7beef977d5b32e1fb9717fd42ea705cf",
+    "src/runner.ts": "081ee65f0ec0f41d6c873940aab184e53b9b853f643f1069b623bfe98d2b376d",
+    "src/selftest.ts": "aafe622e219100c22ebf36c2f9f9fc5290b6b7e490a641e2ee2aebfd4f4fbb75",
+    "src/target.ts": "9934ed11da0f7b736d86c00cb624aceb29b86578a07e71085137d73f5b92dda1",
+    "src/types.ts": "73bad3a2ceae1b493e47aa9571d411bee82687a711c22a60ecf8af4ef65a0d73",
+    "web/index.html": "8d07d6d01062f90889b1d5062652449d6d843f69e59e7ec6159a63638265090d"
+  }
+}

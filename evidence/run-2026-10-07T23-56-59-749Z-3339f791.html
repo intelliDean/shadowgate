@@ -1,0 +1,2745 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ShadowGate evidence · run-2026-10-07T23-56-59-749Z-3339f791</title>
+  <style>:root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,sans-serif;background:#091013;color:#ecf4f4}*{box-sizing:border-box}body{margin:0;padding:40px 24px 72px}main{max-width:1040px;margin:auto}header{margin-bottom:30px}.eyebrow{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#9fb7bd}h1{font-size:clamp(30px,5vw,52px);letter-spacing:-.05em;line-height:1.04;margin:14px 0}h2{font-size:22px;letter-spacing:-.03em;margin:14px 0}p{line-height:1.65;color:#b6c9cc}.intro{max-width:760px}.summary,.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.summary>div,.metrics>div{padding:16px;background:#132025;border:1px solid #26383f;border-radius:10px}b{display:block;margin-top:5px;font-size:24px}.summary span,.metrics span{font-size:12px;color:#a7bec5}.metadata{overflow-wrap:anywhere;font-size:12px}.case{padding:24px;margin-top:18px;border:1px solid #2a3e45;border-left:4px solid #4bc8a2;border-radius:12px;background:#101a1e}.case.unsafe{border-left-color:#ef856d}.case-top{display:flex;justify-content:space-between;align-items:center;gap:12px}.badge{font-size:11px;white-space:nowrap;border-radius:30px;padding:6px 10px}.pass{color:#8bf0c5;background:#19382d}.fail{color:#ffb5a5;background:#42261e}.experiment{font-size:13px}.experiment strong{color:#dce9eb}dl{display:grid;grid-template-columns:84px 1fr;gap:10px;font-size:13px;line-height:1.6}dt{color:#8da7b0}dd{margin:0;overflow-wrap:anywhere}.metrics{margin:20px 0}.metrics b{font-size:17px}table{width:100%;border-collapse:collapse;font-size:13px;margin:18px 0}caption{text-align:left;margin:10px 0;color:#91adb5;font-size:12px}th,td{text-align:left;border-bottom:1px solid #26383f;padding:10px 8px;overflow-wrap:anywhere}thead th{font-weight:500;color:#91adb5}.limits{font-size:12px;line-height:1.7;color:#b5bbc6;padding-left:20px}details{margin-top:20px}summary{cursor:pointer;font-size:13px;color:#84d8c2}pre{padding:18px;background:#091013;border-radius:8px;font-size:11px;line-height:1.7;overflow:auto;max-height:480px;white-space:pre-wrap;overflow-wrap:anywhere}.notice{padding:18px;border:1px solid #494137;background:#221e17;border-radius:10px;font-size:13px;margin-top:24px}footer{font-size:12px;color:#8ca4ad;margin-top:28px}@media(max-width:640px){body{padding:22px 14px}.summary,.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.case{padding:18px}dl{grid-template-columns:1fr;gap:4px}dd{margin-bottom:10px}.case-top{align-items:flex-start}}</style></head><body><main>
+  <header><div class="eyebrow">ShadowGate SVM / Reproducible local evidence</div><h1>Payment landed.<br>Did the result arrive?</h1><p class="intro">This report compares actual local Solana token execution with the HTTP result the payer received. Experiment success means the expected behavior was reproduced. A gate failure remains unsafe even when the experiment correctly detected it.</p><p class="metadata">Run run-2026-10-07T23-56-59-749Z-3339f791 · 2026-10-07T23:56:59.749Z · Profile all · 21593 ms</p></header>
+  <section class="summary" aria-label="Run summary"><div><span>Experiment assertions passed</span><b>28 / 28</b></div><div><span>Gate checks passed</span><b>22</b></div><div><span>Gate checks failed</span><b>6</b></div><div><span>Runtime</span><b style="font-size:14px">LiteSVM 1.5.0, genuine signed SPL execution, bounded local JSON-RPC. Local execution is not validator consensus or finality.</b></div></section>
+  <div class="notice">Local execution with valueless tokens. LiteSVM evidence does not establish mainnet consensus, finality, production security, or a complete payment-system audit. A safe result applies only to the scenarios and pinned deployment tested.</div>
+  <article class="case safe">
+    <div class="case-top"><span class="eyebrow">hono / normal</span>
+      <span class="badge pass">Gate passed</span></div>
+    <h2>Successful payment and delivery</h2>
+    <p class="experiment">Experiment assertion: <strong>matched the expected outcome</strong></p>
+    <dl><dt>Expected</dt><dd>One payment produces one recoverable protected result</dd><dt>Observed</dt><dd>HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered</dd></dl>
+    <div class="metrics"><div><span>HTTP</span><b>200</b></div><div><span>Payment transferred</span><b>Yes</b></div><div><span>Resource delivered</span><b>Yes</b></div><div><span>Fee (lamports)</span><b>10001</b></div></div>
+    <table><caption>Token balance evidence (raw units)</caption><thead><tr><th>Account</th><th>Before</th><th>After</th></tr></thead><tbody><tr><th>Payer</th><td>10000</td><td>0</td></tr><tr><th>Merchant</th><td>0</td><td>10000</td></tr></tbody></table>
+    
+    <details><summary>Execution trace (7 events)</summary><pre>[
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;hono&quot;,
+    &quot;pid&quot;: 42
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:00.512Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: true,
+      &quot;payer&quot;: &quot;EiPtJ61qMzRF4VNNkWt2BwZvHYTwdkjvvSfgB1QrWttD&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:00.513Z&quot;,
+    &quot;phase&quot;: &quot;artifact_prepared&quot;,
+    &quot;messageHash&quot;: &quot;01a94b80dd77b2656c9874e8e3d3ab42f2cc0e74f16fa27b24906a656d744d7c&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:00.531Z&quot;,
+    &quot;phase&quot;: &quot;settle&quot;,
+    &quot;result&quot;: {
+      &quot;success&quot;: true,
+      &quot;transaction&quot;: &quot;5Xafu3YHr7eQYRCXrnXDfR79T3mxzLbKFbCJ7LXeRL5WRLSaC9uvCG3t3WqBRWVck6jDmyoMcf7GLYoCNSvWhtXg&quot;,
+      &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+      &quot;payer&quot;: &quot;EiPtJ61qMzRF4VNNkWt2BwZvHYTwdkjvvSfgB1QrWttD&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;send&quot;,
+    &quot;signature&quot;: &quot;5Xafu3YHr7eQYRCXrnXDfR79T3mxzLbKFbCJ7LXeRL5WRLSaC9uvCG3t3WqBRWVck6jDmyoMcf7GLYoCNSvWhtXg&quot;,
+    &quot;err&quot;: null,
+    &quot;logs&quot;: [
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+      &quot;Program log: Memo (len 32)&quot;,
+      &quot;Program log: 1fde48b0ada22ef2fa35631462258142&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+    ],
+    &quot;unitsConsumed&quot;: 692,
+    &quot;slot&quot;: 447552000,
+    &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+    &quot;reused&quot;: false,
+    &quot;feePayer&quot;: &quot;H9eECNYzjmnaBZ9fYUH27yAaYAVZpqGye5UuLDNqLAcd&quot;,
+    &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+    &quot;feePayerLamportsAfter&quot;: &quot;1994439839&quot;,
+    &quot;feePayerLamportsDelta&quot;: &quot;10001&quot;
+  }
+]</pre></details>
+  </article>
+<article class="case unsafe">
+    <div class="case-top"><span class="eyebrow">hono / lost-send-response</span>
+      <span class="badge fail">Gate failed</span></div>
+    <h2>RPC response lost after settlement</h2>
+    <p class="experiment">Experiment assertion: <strong>matched the expected outcome</strong></p>
+    <dl><dt>Expected</dt><dd>Detect settled payment with no delivered result</dd><dt>Observed</dt><dd>HTTP 402 · payer 10000→0 · merchant 0→10000 · artifact withheld</dd></dl>
+    <div class="metrics"><div><span>HTTP</span><b>402</b></div><div><span>Payment transferred</span><b>Yes</b></div><div><span>Resource delivered</span><b>No</b></div><div><span>Fee (lamports)</span><b>10001</b></div></div>
+    <table><caption>Token balance evidence (raw units)</caption><thead><tr><th>Account</th><th>Before</th><th>After</th></tr></thead><tbody><tr><th>Payer</th><td>10000</td><td>0</td></tr><tr><th>Merchant</th><td>0</td><td>10000</td></tr></tbody></table>
+    
+    <details><summary>Execution trace (10 events)</summary><pre>[
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;hono&quot;,
+    &quot;pid&quot;: 63
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:01.115Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: true,
+      &quot;payer&quot;: &quot;F8DZCgQEJotMXSdjQ6hMiUPvzSxa6T8kR1b9ERxArWaa&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:01.116Z&quot;,
+    &quot;phase&quot;: &quot;artifact_prepared&quot;,
+    &quot;messageHash&quot;: &quot;949ff9c4043f0866e51256826c1957acf0d4bce303962c6ea695611a92d0cbc1&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:01.135Z&quot;,
+    &quot;phase&quot;: &quot;settle&quot;,
+    &quot;result&quot;: {
+      &quot;success&quot;: false,
+      &quot;errorReason&quot;: &quot;invalid_exact_svm_transaction_failed&quot;,
+      &quot;transaction&quot;: &quot;&quot;,
+      &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+      &quot;payer&quot;: &quot;F8DZCgQEJotMXSdjQ6hMiUPvzSxa6T8kR1b9ERxArWaa&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:01.149Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: false,
+      &quot;invalidReason&quot;: &quot;invalid_exact_svm_transaction_simulation_failed&quot;,
+      &quot;invalidMessage&quot;: &quot;Simulation failed: {\&quot;liteSvmError\&quot;:\&quot;TransactionErrorInstructionError { index: 2, error: InstructionErrorCustom { code: 1 } }\&quot;,\&quot;detail\&quot;:\&quot;FailedTransactionMetadata(FailedTransactionMetadata { err: InstructionError(2, Custom(1)), meta: TransactionMetadata { signature: 1111111111111111111111111111111111111111111111111111111111111111, logs: [\\\&quot;Program ComputeBudget111111111111111111111111111111 invoke [1]\\\&quot;, \\\&quot;Program ComputeBudget111111111111111111111111111111 success\\\&quot;, \\\&quot;Program ComputeBudget111111111111111111111111111111 invoke [1]\\\&quot;, \\\&quot;Program ComputeBudget111111111111111111111111111111 success\\\&quot;, \\\&quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]\\\&quot;, \\\&quot;Program log: Error: insufficient funds\\\&quot;, \\\&quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 193 of 19700 compute units\\\&quot;, \\\&quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA failed: custom program error: 0x1\\\&quot;], inner_instructions: [[], [], [], []], compute_units_consumed: 493, return_data: TransactionReturnData { program_id: TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA, data: [] }, fee: 10001 } })\&quot;}&quot;,
+      &quot;payer&quot;: &quot;F8DZCgQEJotMXSdjQ6hMiUPvzSxa6T8kR1b9ERxArWaa&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;send&quot;,
+    &quot;signature&quot;: &quot;67GgsC2bgZTZBrmdUL6E7LTJdgbgefWpVp8jT2ojRaH4pacsMhhCJbq5tGCNKsFgGvthTbWhHSfv7G1Njn1GaLmA&quot;,
+    &quot;err&quot;: null,
+    &quot;logs&quot;: [
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+      &quot;Program log: Memo (len 32)&quot;,
+      &quot;Program log: 24e88ddd51c96ddd015f62444d9bb5bc&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+    ],
+    &quot;unitsConsumed&quot;: 692,
+    &quot;slot&quot;: 447552000,
+    &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+    &quot;reused&quot;: false,
+    &quot;feePayer&quot;: &quot;AuhUtjBSMaTqAGTum8S6po5jmziqAqZ1D5f4pHwYSgEJ&quot;,
+    &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+    &quot;feePayerLamportsAfter&quot;: &quot;1994439839&quot;,
+    &quot;feePayerLamportsDelta&quot;: &quot;10001&quot;
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;drop-send-response-after-runtime-success&quot;,
+    &quot;signature&quot;: &quot;67GgsC2bgZTZBrmdUL6E7LTJdgbgefWpVp8jT2ojRaH4pacsMhhCJbq5tGCNKsFgGvthTbWhHSfv7G1Njn1GaLmA&quot;,
+    &quot;requests&quot;: 6,
+    &quot;sends&quot;: 1,
+    &quot;executed&quot;: 1,
+    &quot;simulations&quot;: 2,
+    &quot;droppedResponses&quot;: 1
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: {
+      &quot;liteSvmError&quot;: &quot;TransactionErrorInstructionError { index: 2, error: InstructionErrorCustom { code: 1 } }&quot;,
+      &quot;detail&quot;: &quot;FailedTransactionMetadata(FailedTransactionMetadata { err: InstructionError(2, Custom(1)), meta: TransactionMetadata { signature: 1111111111111111111111111111111111111111111111111111111111111111, logs: [\&quot;Program ComputeBudget111111111111111111111111111111 invoke [1]\&quot;, \&quot;Program ComputeBudget111111111111111111111111111111 success\&quot;, \&quot;Program ComputeBudget111111111111111111111111111111 invoke [1]\&quot;, \&quot;Program ComputeBudget111111111111111111111111111111 success\&quot;, \&quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]\&quot;, \&quot;Program log: Error: insufficient funds\&quot;, \&quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 193 of 19700 compute units\&quot;, \&quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA failed: custom program error: 0x1\&quot;], inner_instructions: [[], [], [], []], compute_units_consumed: 493, return_data: TransactionReturnData { program_id: TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA, data: [] }, fee: 10001 } })&quot;
+    },
+    &quot;unitsConsumed&quot;: 493
+  }
+]</pre></details>
+  </article>
+<article class="case safe">
+    <div class="case-top"><span class="eyebrow">hono / prebroadcast-failure</span>
+      <span class="badge pass">Gate passed</span></div>
+    <h2>Failure before broadcast</h2>
+    <p class="experiment">Experiment assertion: <strong>matched the expected outcome</strong></p>
+    <dl><dt>Expected</dt><dd>No payment and no protected result</dd><dt>Observed</dt><dd>HTTP 402 · payer 10000→10000 · merchant 0→0 · artifact withheld</dd></dl>
+    <div class="metrics"><div><span>HTTP</span><b>402</b></div><div><span>Payment transferred</span><b>No</b></div><div><span>Resource delivered</span><b>No</b></div><div><span>Fee (lamports)</span><b>0</b></div></div>
+    <table><caption>Token balance evidence (raw units)</caption><thead><tr><th>Account</th><th>Before</th><th>After</th></tr></thead><tbody><tr><th>Payer</th><td>10000</td><td>10000</td></tr><tr><th>Merchant</th><td>0</td><td>0</td></tr></tbody></table>
+    
+    <details><summary>Execution trace (7 events)</summary><pre>[
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;hono&quot;,
+    &quot;pid&quot;: 75
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:01.768Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: true,
+      &quot;payer&quot;: &quot;FqE5qHpFnPgFPdW684yb2EiTjeSg6NjGcQSEVWk6uVkW&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:01.770Z&quot;,
+    &quot;phase&quot;: &quot;artifact_prepared&quot;,
+    &quot;messageHash&quot;: &quot;cd00be9fb8e8bd8b7062f64859067ad148ae7ac59cd125d60f4d7eb625d1846e&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:01.783Z&quot;,
+    &quot;phase&quot;: &quot;before_send_failure&quot;,
+    &quot;signature&quot;: &quot;3EKGLHM6XUYbSMYq81TqWBQ8vE74UTPkov9Dnw6FbAgkZSzzXAsWT6PqMyyW5Y5eybQLvXyrgrHcbFnSSNvQtktn&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:01.787Z&quot;,
+    &quot;phase&quot;: &quot;settle&quot;,
+    &quot;result&quot;: {
+      &quot;success&quot;: false,
+      &quot;errorReason&quot;: &quot;invalid_exact_svm_transaction_failed&quot;,
+      &quot;transaction&quot;: &quot;&quot;,
+      &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+      &quot;payer&quot;: &quot;FqE5qHpFnPgFPdW684yb2EiTjeSg6NjGcQSEVWk6uVkW&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  }
+]</pre></details>
+  </article>
+<article class="case safe">
+    <div class="case-top"><span class="eyebrow">hono / confirmation-failure</span>
+      <span class="badge pass">Gate passed</span></div>
+    <h2>Confirmation observation failure</h2>
+    <p class="experiment">Experiment assertion: <strong>matched the expected outcome</strong></p>
+    <dl><dt>Expected</dt><dd>One payment produces one recoverable protected result</dd><dt>Observed</dt><dd>HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered</dd></dl>
+    <div class="metrics"><div><span>HTTP</span><b>200</b></div><div><span>Payment transferred</span><b>Yes</b></div><div><span>Resource delivered</span><b>Yes</b></div><div><span>Fee (lamports)</span><b>10001</b></div></div>
+    <table><caption>Token balance evidence (raw units)</caption><thead><tr><th>Account</th><th>Before</th><th>After</th></tr></thead><tbody><tr><th>Payer</th><td>10000</td><td>0</td></tr><tr><th>Merchant</th><td>0</td><td>10000</td></tr></tbody></table>
+    
+    <details><summary>Execution trace (9 events)</summary><pre>[
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;hono&quot;,
+    &quot;pid&quot;: 87
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:02.359Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: true,
+      &quot;payer&quot;: &quot;7sA35ihYjJtmDW3wEHtfV7fP8PCZnnfyNhfTXjR2tByJ&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:02.361Z&quot;,
+    &quot;phase&quot;: &quot;artifact_prepared&quot;,
+    &quot;messageHash&quot;: &quot;42e91023e103097364322252505edd099a84884ab3ff776e3cf70f79d9a25bae&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:02.375Z&quot;,
+    &quot;phase&quot;: &quot;confirm_observation_failure&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:02.379Z&quot;,
+    &quot;phase&quot;: &quot;settle&quot;,
+    &quot;result&quot;: {
+      &quot;success&quot;: false,
+      &quot;errorReason&quot;: &quot;settlement_pending&quot;,
+      &quot;errorMessage&quot;: &quot;CONTROLLED_CONFIRM_OBSERVATION_FAILURE&quot;,
+      &quot;transaction&quot;: &quot;2BBsMxZNF4Q4rtVP4aHrqV8W4T6pfkgbeYkuJ9C66HuQVxGAuvL8Bys7NfKHKJnYP4jx4SFZm3LheMdgoaRvu6an&quot;,
+      &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+      &quot;payer&quot;: &quot;7sA35ihYjJtmDW3wEHtfV7fP8PCZnnfyNhfTXjR2tByJ&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:02.387Z&quot;,
+    &quot;phase&quot;: &quot;settle&quot;,
+    &quot;result&quot;: {
+      &quot;success&quot;: true,
+      &quot;transaction&quot;: &quot;2BBsMxZNF4Q4rtVP4aHrqV8W4T6pfkgbeYkuJ9C66HuQVxGAuvL8Bys7NfKHKJnYP4jx4SFZm3LheMdgoaRvu6an&quot;,
+      &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+      &quot;payer&quot;: &quot;7sA35ihYjJtmDW3wEHtfV7fP8PCZnnfyNhfTXjR2tByJ&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;send&quot;,
+    &quot;signature&quot;: &quot;2BBsMxZNF4Q4rtVP4aHrqV8W4T6pfkgbeYkuJ9C66HuQVxGAuvL8Bys7NfKHKJnYP4jx4SFZm3LheMdgoaRvu6an&quot;,
+    &quot;err&quot;: null,
+    &quot;logs&quot;: [
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+      &quot;Program log: Memo (len 32)&quot;,
+      &quot;Program log: 6bba1e4293fe9e2d1531740b89c6c314&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+    ],
+    &quot;unitsConsumed&quot;: 692,
+    &quot;slot&quot;: 447552000,
+    &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+    &quot;reused&quot;: false,
+    &quot;feePayer&quot;: &quot;CwCMgH2hKc3gTSy1WicUSqVdGFZwRxX6vvvv6XwGQij6&quot;,
+    &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+    &quot;feePayerLamportsAfter&quot;: &quot;1994439839&quot;,
+    &quot;feePayerLamportsDelta&quot;: &quot;10001&quot;
+  }
+]</pre></details>
+  </article>
+<article class="case unsafe">
+    <div class="case-top"><span class="eyebrow">hono / process-restart</span>
+      <span class="badge fail">Gate failed</span></div>
+    <h2>Process dies after settlement</h2>
+    <p class="experiment">Experiment assertion: <strong>matched the expected outcome</strong></p>
+    <dl><dt>Expected</dt><dd>Detect settled payment with no delivered result</dd><dt>Observed</dt><dd>HTTP 404 · payer 10000→0 · merchant 0→10000 · artifact withheld</dd></dl>
+    <div class="metrics"><div><span>HTTP</span><b>404</b></div><div><span>Payment transferred</span><b>Yes</b></div><div><span>Resource delivered</span><b>No</b></div><div><span>Fee (lamports)</span><b>10001</b></div></div>
+    <table><caption>Token balance evidence (raw units)</caption><thead><tr><th>Account</th><th>Before</th><th>After</th></tr></thead><tbody><tr><th>Payer</th><td>10000</td><td>0</td></tr><tr><th>Merchant</th><td>0</td><td>10000</td></tr></tbody></table>
+    
+    <details><summary>Execution trace (9 events)</summary><pre>[
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;hono&quot;,
+    &quot;pid&quot;: 99
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:02.962Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: true,
+      &quot;payer&quot;: &quot;J3FUUhDKbT35UKSwgE3DLo4UfFn23o7foTiBQcVUzr6z&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:02.964Z&quot;,
+    &quot;phase&quot;: &quot;artifact_prepared&quot;,
+    &quot;messageHash&quot;: &quot;f968607dfbfe09085375f7e61d79a4499983f7b1c0602ede46e5f09c7465accf&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:02.978Z&quot;,
+    &quot;phase&quot;: &quot;crash_after_send&quot;,
+    &quot;signature&quot;: &quot;5NYYQ1BGTocRkS3MLHV93bMCiiMQyYtJKJEfFKxuPjMYXebD1vrTVAEDATp1B3i77DgA19Afe2nZDdVdZgjgNVFt&quot;,
+    &quot;messageHash&quot;: &quot;f968607dfbfe09085375f7e61d79a4499983f7b1c0602ede46e5f09c7465accf&quot;
+  },
+  {
+    &quot;event&quot;: &quot;target-process-terminated&quot;,
+    &quot;exitCode&quot;: 86,
+    &quot;signal&quot;: null
+  },
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;hono&quot;,
+    &quot;pid&quot;: 111
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;send&quot;,
+    &quot;signature&quot;: &quot;5NYYQ1BGTocRkS3MLHV93bMCiiMQyYtJKJEfFKxuPjMYXebD1vrTVAEDATp1B3i77DgA19Afe2nZDdVdZgjgNVFt&quot;,
+    &quot;err&quot;: null,
+    &quot;logs&quot;: [
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+      &quot;Program log: Memo (len 32)&quot;,
+      &quot;Program log: f3df63e9902cd1e6c1f189771eb4085a&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+    ],
+    &quot;unitsConsumed&quot;: 692,
+    &quot;slot&quot;: 447552000,
+    &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+    &quot;reused&quot;: false,
+    &quot;feePayer&quot;: &quot;9J2ybdpdg4Jgw7t5XiD8kNsPVwYxXGooLhab2wDgXNii&quot;,
+    &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+    &quot;feePayerLamportsAfter&quot;: &quot;1994439839&quot;,
+    &quot;feePayerLamportsDelta&quot;: &quot;10001&quot;
+  }
+]</pre></details>
+  </article>
+<article class="case unsafe">
+    <div class="case-top"><span class="eyebrow">hono / fee-policy</span>
+      <span class="badge fail">Gate failed</span></div>
+    <h2>Sponsor compute-budget policy</h2>
+    <p class="experiment">Experiment assertion: <strong>matched the expected outcome</strong></p>
+    <dl><dt>Expected</dt><dd>Uncapped fixture accepts compute budget above sponsor policy</dd><dt>Observed</dt><dd>HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered</dd></dl>
+    <div class="metrics"><div><span>HTTP</span><b>200</b></div><div><span>Payment transferred</span><b>Yes</b></div><div><span>Resource delivered</span><b>Yes</b></div><div><span>Fee (lamports)</span><b>1010000</b></div></div>
+    <table><caption>Token balance evidence (raw units)</caption><thead><tr><th>Account</th><th>Before</th><th>After</th></tr></thead><tbody><tr><th>Payer</th><td>10000</td><td>0</td></tr><tr><th>Merchant</th><td>0</td><td>10000</td></tr></tbody></table>
+    <ul class="limits"><li>Compute-limit rejection proven; signature-count and price caps are configured but not independently exercised.</li></ul>
+    <details><summary>Execution trace (7 events)</summary><pre>[
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;hono&quot;,
+    &quot;pid&quot;: 123
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:04.195Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: true,
+      &quot;payer&quot;: &quot;6dEJtVM2D1JFLoTd62ejVrvC6fGKg1jKagZE3xqeZ4of&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:04.197Z&quot;,
+    &quot;phase&quot;: &quot;artifact_prepared&quot;,
+    &quot;messageHash&quot;: &quot;116ffec0dba409763f858ea09883571f54aa93bb2580d317d3a84c1167c8f274&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:04.213Z&quot;,
+    &quot;phase&quot;: &quot;settle&quot;,
+    &quot;result&quot;: {
+      &quot;success&quot;: true,
+      &quot;transaction&quot;: &quot;wjeWJt43ctpghmyP3TugnDHtUfE7ZbgPkuuA3G5QTL2hfQ8CyWjkTnVagyEC2RZhqr1aN1hpuLzzT1scsfbYNds&quot;,
+      &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+      &quot;payer&quot;: &quot;6dEJtVM2D1JFLoTd62ejVrvC6fGKg1jKagZE3xqeZ4of&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;send&quot;,
+    &quot;signature&quot;: &quot;wjeWJt43ctpghmyP3TugnDHtUfE7ZbgPkuuA3G5QTL2hfQ8CyWjkTnVagyEC2RZhqr1aN1hpuLzzT1scsfbYNds&quot;,
+    &quot;err&quot;: null,
+    &quot;logs&quot;: [
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 999700 compute units&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+      &quot;Program log: Memo (len 32)&quot;,
+      &quot;Program log: 5e3bf65237d20fc8f562e27346d8f9f1&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 999595 compute units&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+    ],
+    &quot;unitsConsumed&quot;: 692,
+    &quot;slot&quot;: 447552000,
+    &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+    &quot;reused&quot;: false,
+    &quot;feePayer&quot;: &quot;37M74re3JXtUasqXbgKkfDktHAEhHjbW5JxEr3u34eyL&quot;,
+    &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+    &quot;feePayerLamportsAfter&quot;: &quot;1993439840&quot;,
+    &quot;feePayerLamportsDelta&quot;: &quot;1010000&quot;
+  }
+]</pre></details>
+  </article>
+<article class="case safe">
+    <div class="case-top"><span class="eyebrow">hono / normal</span>
+      <span class="badge pass">Gate passed</span></div>
+    <h2>Successful payment and delivery</h2>
+    <p class="experiment">Experiment assertion: <strong>matched the expected outcome</strong></p>
+    <dl><dt>Expected</dt><dd>One payment produces one recoverable protected result</dd><dt>Observed</dt><dd>HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered</dd></dl>
+    <div class="metrics"><div><span>HTTP</span><b>200</b></div><div><span>Payment transferred</span><b>Yes</b></div><div><span>Resource delivered</span><b>Yes</b></div><div><span>Fee (lamports)</span><b>10001</b></div></div>
+    <table><caption>Token balance evidence (raw units)</caption><thead><tr><th>Account</th><th>Before</th><th>After</th></tr></thead><tbody><tr><th>Payer</th><td>10000</td><td>0</td></tr><tr><th>Merchant</th><td>0</td><td>10000</td></tr></tbody></table>
+    
+    <details><summary>Execution trace (9 events)</summary><pre>[
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;hono&quot;,
+    &quot;pid&quot;: 135
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:04.815Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: true,
+      &quot;payer&quot;: &quot;EeWbpoiWNUcEjBQGHCL8dadiQd7qysCLtXAobG5W4uLD&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:04.817Z&quot;,
+    &quot;phase&quot;: &quot;artifact_prepared&quot;,
+    &quot;messageHash&quot;: &quot;550a41ea55ad9eeb8cf8d8320e482a047befd119b3443cd741e87d414320ec4b&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:04.833Z&quot;,
+    &quot;phase&quot;: &quot;journal_prepared&quot;,
+    &quot;messageHash&quot;: &quot;550a41ea55ad9eeb8cf8d8320e482a047befd119b3443cd741e87d414320ec4b&quot;,
+    &quot;signature&quot;: &quot;5RmRHzJDjBnbcdJgobuKWWe2JMcYmQRHj6sppTYw97a5MXchbbSvKNezPRQhhF9swJUMd6WMq2pJSdBnWpiGGbKB&quot;,
+    &quot;artifactPersisted&quot;: true
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:04.839Z&quot;,
+    &quot;phase&quot;: &quot;settle&quot;,
+    &quot;result&quot;: {
+      &quot;success&quot;: true,
+      &quot;transaction&quot;: &quot;5RmRHzJDjBnbcdJgobuKWWe2JMcYmQRHj6sppTYw97a5MXchbbSvKNezPRQhhF9swJUMd6WMq2pJSdBnWpiGGbKB&quot;,
+      &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+      &quot;payer&quot;: &quot;EeWbpoiWNUcEjBQGHCL8dadiQd7qysCLtXAobG5W4uLD&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;send&quot;,
+    &quot;signature&quot;: &quot;5RmRHzJDjBnbcdJgobuKWWe2JMcYmQRHj6sppTYw97a5MXchbbSvKNezPRQhhF9swJUMd6WMq2pJSdBnWpiGGbKB&quot;,
+    &quot;err&quot;: null,
+    &quot;logs&quot;: [
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+      &quot;Program log: Memo (len 32)&quot;,
+      &quot;Program log: c48ad317e325f46383efbe4781028698&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+    ],
+    &quot;unitsConsumed&quot;: 692,
+    &quot;slot&quot;: 447552000,
+    &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+    &quot;reused&quot;: false,
+    &quot;feePayer&quot;: &quot;GrkhY4YVCPiqnP2X7tYiaAC9fx41JxX8ru7zv2WERieq&quot;,
+    &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+    &quot;feePayerLamportsAfter&quot;: &quot;1994439839&quot;,
+    &quot;feePayerLamportsDelta&quot;: &quot;10001&quot;
+  }
+]</pre></details>
+  </article>
+<article class="case safe">
+    <div class="case-top"><span class="eyebrow">hono / lost-send-response</span>
+      <span class="badge pass">Gate passed</span></div>
+    <h2>RPC response lost after settlement</h2>
+    <p class="experiment">Experiment assertion: <strong>matched the expected outcome</strong></p>
+    <dl><dt>Expected</dt><dd>One payment produces one recoverable protected result</dd><dt>Observed</dt><dd>HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered</dd></dl>
+    <div class="metrics"><div><span>HTTP</span><b>200</b></div><div><span>Payment transferred</span><b>Yes</b></div><div><span>Resource delivered</span><b>Yes</b></div><div><span>Fee (lamports)</span><b>10001</b></div></div>
+    <table><caption>Token balance evidence (raw units)</caption><thead><tr><th>Account</th><th>Before</th><th>After</th></tr></thead><tbody><tr><th>Payer</th><td>10000</td><td>0</td></tr><tr><th>Merchant</th><td>0</td><td>10000</td></tr></tbody></table>
+    
+    <details><summary>Execution trace (11 events)</summary><pre>[
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;hono&quot;,
+    &quot;pid&quot;: 147
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:05.415Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: true,
+      &quot;payer&quot;: &quot;6rP1YZaRwKuGXX6QVnRnxhj56MhMzDE3fw5QWCoaHdNp&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:05.416Z&quot;,
+    &quot;phase&quot;: &quot;artifact_prepared&quot;,
+    &quot;messageHash&quot;: &quot;331cd90a38a03b69906da4b30a4ca409d40dc1be9996f2e54c78f0298d4c2079&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:05.434Z&quot;,
+    &quot;phase&quot;: &quot;journal_prepared&quot;,
+    &quot;messageHash&quot;: &quot;331cd90a38a03b69906da4b30a4ca409d40dc1be9996f2e54c78f0298d4c2079&quot;,
+    &quot;signature&quot;: &quot;62oxYjit3jFgK8GQvNv1VivrF4i7apWeqKYzUqPdYLTKxXgK5Vpu2boWahAigmL5y4ThQ2sCACfhGcCr5Gr5CfiE&quot;,
+    &quot;artifactPersisted&quot;: true
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:05.442Z&quot;,
+    &quot;phase&quot;: &quot;ambiguous_send_reconciliation&quot;,
+    &quot;signature&quot;: &quot;62oxYjit3jFgK8GQvNv1VivrF4i7apWeqKYzUqPdYLTKxXgK5Vpu2boWahAigmL5y4ThQ2sCACfhGcCr5Gr5CfiE&quot;,
+    &quot;status&quot;: {
+      &quot;slot&quot;: 447552000,
+      &quot;confirmations&quot;: 1,
+      &quot;err&quot;: null,
+      &quot;confirmationStatus&quot;: &quot;confirmed&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:05.445Z&quot;,
+    &quot;phase&quot;: &quot;settle&quot;,
+    &quot;result&quot;: {
+      &quot;success&quot;: true,
+      &quot;transaction&quot;: &quot;62oxYjit3jFgK8GQvNv1VivrF4i7apWeqKYzUqPdYLTKxXgK5Vpu2boWahAigmL5y4ThQ2sCACfhGcCr5Gr5CfiE&quot;,
+      &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+      &quot;payer&quot;: &quot;6rP1YZaRwKuGXX6QVnRnxhj56MhMzDE3fw5QWCoaHdNp&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;send&quot;,
+    &quot;signature&quot;: &quot;62oxYjit3jFgK8GQvNv1VivrF4i7apWeqKYzUqPdYLTKxXgK5Vpu2boWahAigmL5y4ThQ2sCACfhGcCr5Gr5CfiE&quot;,
+    &quot;err&quot;: null,
+    &quot;logs&quot;: [
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+      &quot;Program log: Memo (len 32)&quot;,
+      &quot;Program log: f6a6035aa841e655bffb05f490dac574&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+    ],
+    &quot;unitsConsumed&quot;: 692,
+    &quot;slot&quot;: 447552000,
+    &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+    &quot;reused&quot;: false,
+    &quot;feePayer&quot;: &quot;7QTK2XKz1yCoiWAR32wGBaP8AcpSxB9j3Cns4Ap8RJUc&quot;,
+    &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+    &quot;feePayerLamportsAfter&quot;: &quot;1994439839&quot;,
+    &quot;feePayerLamportsDelta&quot;: &quot;10001&quot;
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;drop-send-response-after-runtime-success&quot;,
+    &quot;signature&quot;: &quot;62oxYjit3jFgK8GQvNv1VivrF4i7apWeqKYzUqPdYLTKxXgK5Vpu2boWahAigmL5y4ThQ2sCACfhGcCr5Gr5CfiE&quot;,
+    &quot;requests&quot;: 7,
+    &quot;sends&quot;: 1,
+    &quot;executed&quot;: 1,
+    &quot;simulations&quot;: 3,
+    &quot;droppedResponses&quot;: 1
+  }
+]</pre></details>
+  </article>
+<article class="case safe">
+    <div class="case-top"><span class="eyebrow">hono / prebroadcast-failure</span>
+      <span class="badge pass">Gate passed</span></div>
+    <h2>Failure before broadcast</h2>
+    <p class="experiment">Experiment assertion: <strong>matched the expected outcome</strong></p>
+    <dl><dt>Expected</dt><dd>No payment and no protected result</dd><dt>Observed</dt><dd>HTTP 402 · payer 10000→10000 · merchant 0→0 · artifact withheld</dd></dl>
+    <div class="metrics"><div><span>HTTP</span><b>402</b></div><div><span>Payment transferred</span><b>No</b></div><div><span>Resource delivered</span><b>No</b></div><div><span>Fee (lamports)</span><b>0</b></div></div>
+    <table><caption>Token balance evidence (raw units)</caption><thead><tr><th>Account</th><th>Before</th><th>After</th></tr></thead><tbody><tr><th>Payer</th><td>10000</td><td>10000</td></tr><tr><th>Merchant</th><td>0</td><td>0</td></tr></tbody></table>
+    
+    <details><summary>Execution trace (9 events)</summary><pre>[
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;hono&quot;,
+    &quot;pid&quot;: 159
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:06.065Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: true,
+      &quot;payer&quot;: &quot;6WRw8iRpBWyEqWJSrfcmQ4bNKM8qiMJsB7qBo9c39tTL&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:06.067Z&quot;,
+    &quot;phase&quot;: &quot;artifact_prepared&quot;,
+    &quot;messageHash&quot;: &quot;91b5beeb953829f9449047ab66be30ebaebbd403f93c9f92597b259b32d3a598&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:06.084Z&quot;,
+    &quot;phase&quot;: &quot;journal_prepared&quot;,
+    &quot;messageHash&quot;: &quot;91b5beeb953829f9449047ab66be30ebaebbd403f93c9f92597b259b32d3a598&quot;,
+    &quot;signature&quot;: &quot;b8Q4FCDnqiqZZdsmk8eCwUDUXCEqUrD9nVyiAg8Dt2zE4SAAaxyW59wUgzJaXkzYrCBddav9nA1ZKx9ECKqAmTL&quot;,
+    &quot;artifactPersisted&quot;: true
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:06.084Z&quot;,
+    &quot;phase&quot;: &quot;before_send_failure&quot;,
+    &quot;signature&quot;: &quot;b8Q4FCDnqiqZZdsmk8eCwUDUXCEqUrD9nVyiAg8Dt2zE4SAAaxyW59wUgzJaXkzYrCBddav9nA1ZKx9ECKqAmTL&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:06.088Z&quot;,
+    &quot;phase&quot;: &quot;settle&quot;,
+    &quot;result&quot;: {
+      &quot;success&quot;: false,
+      &quot;errorReason&quot;: &quot;invalid_exact_svm_transaction_failed&quot;,
+      &quot;transaction&quot;: &quot;&quot;,
+      &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+      &quot;payer&quot;: &quot;6WRw8iRpBWyEqWJSrfcmQ4bNKM8qiMJsB7qBo9c39tTL&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  }
+]</pre></details>
+  </article>
+<article class="case safe">
+    <div class="case-top"><span class="eyebrow">hono / confirmation-failure</span>
+      <span class="badge pass">Gate passed</span></div>
+    <h2>Confirmation observation failure</h2>
+    <p class="experiment">Experiment assertion: <strong>matched the expected outcome</strong></p>
+    <dl><dt>Expected</dt><dd>One payment produces one recoverable protected result</dd><dt>Observed</dt><dd>HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered</dd></dl>
+    <div class="metrics"><div><span>HTTP</span><b>200</b></div><div><span>Payment transferred</span><b>Yes</b></div><div><span>Resource delivered</span><b>Yes</b></div><div><span>Fee (lamports)</span><b>10001</b></div></div>
+    <table><caption>Token balance evidence (raw units)</caption><thead><tr><th>Account</th><th>Before</th><th>After</th></tr></thead><tbody><tr><th>Payer</th><td>10000</td><td>0</td></tr><tr><th>Merchant</th><td>0</td><td>10000</td></tr></tbody></table>
+    
+    <details><summary>Execution trace (12 events)</summary><pre>[
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;hono&quot;,
+    &quot;pid&quot;: 171
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:06.693Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: true,
+      &quot;payer&quot;: &quot;B7mkjhTsjUG9vaNBnWqR13cs4QrobJyjQnHtCeoyen22&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:06.695Z&quot;,
+    &quot;phase&quot;: &quot;artifact_prepared&quot;,
+    &quot;messageHash&quot;: &quot;fea9c569e8acfbeef8b97a66cebc62545d34391a94faa2ef162572acc9a79864&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:06.712Z&quot;,
+    &quot;phase&quot;: &quot;journal_prepared&quot;,
+    &quot;messageHash&quot;: &quot;fea9c569e8acfbeef8b97a66cebc62545d34391a94faa2ef162572acc9a79864&quot;,
+    &quot;signature&quot;: &quot;5e3Eztc7m9iEduztm9n5qWHXqPSE2m1jfm4KBWNYK62ddfz1qWJScBCpLbvjo4UnnnDnarcT1HJNXPhk5ohTKnk1&quot;,
+    &quot;artifactPersisted&quot;: true
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:06.716Z&quot;,
+    &quot;phase&quot;: &quot;confirm_observation_failure&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:06.720Z&quot;,
+    &quot;phase&quot;: &quot;settle&quot;,
+    &quot;result&quot;: {
+      &quot;success&quot;: false,
+      &quot;errorReason&quot;: &quot;settlement_pending&quot;,
+      &quot;errorMessage&quot;: &quot;CONTROLLED_CONFIRM_OBSERVATION_FAILURE&quot;,
+      &quot;transaction&quot;: &quot;5e3Eztc7m9iEduztm9n5qWHXqPSE2m1jfm4KBWNYK62ddfz1qWJScBCpLbvjo4UnnnDnarcT1HJNXPhk5ohTKnk1&quot;,
+      &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+      &quot;payer&quot;: &quot;B7mkjhTsjUG9vaNBnWqR13cs4QrobJyjQnHtCeoyen22&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:06.727Z&quot;,
+    &quot;phase&quot;: &quot;settlement_retry_reconciled&quot;,
+    &quot;messageHash&quot;: &quot;fea9c569e8acfbeef8b97a66cebc62545d34391a94faa2ef162572acc9a79864&quot;,
+    &quot;signature&quot;: &quot;5e3Eztc7m9iEduztm9n5qWHXqPSE2m1jfm4KBWNYK62ddfz1qWJScBCpLbvjo4UnnnDnarcT1HJNXPhk5ohTKnk1&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:06.727Z&quot;,
+    &quot;phase&quot;: &quot;settle&quot;,
+    &quot;result&quot;: {
+      &quot;success&quot;: true,
+      &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+      &quot;transaction&quot;: &quot;5e3Eztc7m9iEduztm9n5qWHXqPSE2m1jfm4KBWNYK62ddfz1qWJScBCpLbvjo4UnnnDnarcT1HJNXPhk5ohTKnk1&quot;,
+      &quot;payer&quot;: &quot;B7mkjhTsjUG9vaNBnWqR13cs4QrobJyjQnHtCeoyen22&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;send&quot;,
+    &quot;signature&quot;: &quot;5e3Eztc7m9iEduztm9n5qWHXqPSE2m1jfm4KBWNYK62ddfz1qWJScBCpLbvjo4UnnnDnarcT1HJNXPhk5ohTKnk1&quot;,
+    &quot;err&quot;: null,
+    &quot;logs&quot;: [
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+      &quot;Program log: Memo (len 32)&quot;,
+      &quot;Program log: 63ec08a27465b58f5d95bb08c8eec5c4&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+    ],
+    &quot;unitsConsumed&quot;: 692,
+    &quot;slot&quot;: 447552000,
+    &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+    &quot;reused&quot;: false,
+    &quot;feePayer&quot;: &quot;EqDTmxBKBqhSxzTvRK3nSbBwyAKRMwUJpkGofF5SeVxs&quot;,
+    &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+    &quot;feePayerLamportsAfter&quot;: &quot;1994439839&quot;,
+    &quot;feePayerLamportsDelta&quot;: &quot;10001&quot;
+  }
+]</pre></details>
+  </article>
+<article class="case safe">
+    <div class="case-top"><span class="eyebrow">hono / process-restart</span>
+      <span class="badge pass">Gate passed</span></div>
+    <h2>Process dies after settlement</h2>
+    <p class="experiment">Experiment assertion: <strong>matched the expected outcome</strong></p>
+    <dl><dt>Expected</dt><dd>One payment produces one recoverable protected result</dd><dt>Observed</dt><dd>HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered</dd></dl>
+    <div class="metrics"><div><span>HTTP</span><b>200</b></div><div><span>Payment transferred</span><b>Yes</b></div><div><span>Resource delivered</span><b>Yes</b></div><div><span>Fee (lamports)</span><b>10001</b></div></div>
+    <table><caption>Token balance evidence (raw units)</caption><thead><tr><th>Account</th><th>Before</th><th>After</th></tr></thead><tbody><tr><th>Payer</th><td>10000</td><td>0</td></tr><tr><th>Merchant</th><td>0</td><td>10000</td></tr></tbody></table>
+    
+    <details><summary>Execution trace (12 events)</summary><pre>[
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;hono&quot;,
+    &quot;pid&quot;: 183
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:07.274Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: true,
+      &quot;payer&quot;: &quot;9cw2W8UjdWsfy29EvbEj1FdCSDPuH6HRwEaxzRs3iAEq&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:07.275Z&quot;,
+    &quot;phase&quot;: &quot;artifact_prepared&quot;,
+    &quot;messageHash&quot;: &quot;55dd399ca05668aa62ce9c766ba874edb1918d2ba2cd869bbdb75bf47ef72787&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:07.293Z&quot;,
+    &quot;phase&quot;: &quot;journal_prepared&quot;,
+    &quot;messageHash&quot;: &quot;55dd399ca05668aa62ce9c766ba874edb1918d2ba2cd869bbdb75bf47ef72787&quot;,
+    &quot;signature&quot;: &quot;4YnP1xKvXxLfsDhWvNDtXaie3db7Z2eyXGUeKBfaM1iR3jV216zdFVWvkBchYo4i4hDAPzPYTF6yJBv3HCBTP6nG&quot;,
+    &quot;artifactPersisted&quot;: true
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:07.296Z&quot;,
+    &quot;phase&quot;: &quot;crash_after_send&quot;,
+    &quot;signature&quot;: &quot;4YnP1xKvXxLfsDhWvNDtXaie3db7Z2eyXGUeKBfaM1iR3jV216zdFVWvkBchYo4i4hDAPzPYTF6yJBv3HCBTP6nG&quot;,
+    &quot;messageHash&quot;: &quot;55dd399ca05668aa62ce9c766ba874edb1918d2ba2cd869bbdb75bf47ef72787&quot;
+  },
+  {
+    &quot;event&quot;: &quot;target-process-terminated&quot;,
+    &quot;exitCode&quot;: 86,
+    &quot;signal&quot;: null
+  },
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;hono&quot;,
+    &quot;pid&quot;: 195
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:07.807Z&quot;,
+    &quot;phase&quot;: &quot;artifact_recovered&quot;,
+    &quot;messageHash&quot;: &quot;55dd399ca05668aa62ce9c766ba874edb1918d2ba2cd869bbdb75bf47ef72787&quot;,
+    &quot;signature&quot;: &quot;4YnP1xKvXxLfsDhWvNDtXaie3db7Z2eyXGUeKBfaM1iR3jV216zdFVWvkBchYo4i4hDAPzPYTF6yJBv3HCBTP6nG&quot;,
+    &quot;payerAuthenticated&quot;: true
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;send&quot;,
+    &quot;signature&quot;: &quot;4YnP1xKvXxLfsDhWvNDtXaie3db7Z2eyXGUeKBfaM1iR3jV216zdFVWvkBchYo4i4hDAPzPYTF6yJBv3HCBTP6nG&quot;,
+    &quot;err&quot;: null,
+    &quot;logs&quot;: [
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+      &quot;Program log: Memo (len 32)&quot;,
+      &quot;Program log: e9b080e41bf97eb559bcf3a7a42c81e6&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+    ],
+    &quot;unitsConsumed&quot;: 692,
+    &quot;slot&quot;: 447552000,
+    &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+    &quot;reused&quot;: false,
+    &quot;feePayer&quot;: &quot;trfiZhHfj31tXKVFVnAixUoqgPvHfdbt3FejEPzf5zw&quot;,
+    &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+    &quot;feePayerLamportsAfter&quot;: &quot;1994439839&quot;,
+    &quot;feePayerLamportsDelta&quot;: &quot;10001&quot;
+  }
+]</pre></details>
+  </article>
+<article class="case safe">
+    <div class="case-top"><span class="eyebrow">hono / fee-policy</span>
+      <span class="badge pass">Gate passed</span></div>
+    <h2>Sponsor compute-budget policy</h2>
+    <p class="experiment">Experiment assertion: <strong>matched the expected outcome</strong></p>
+    <dl><dt>Expected</dt><dd>Configured SDK cap rejects before payment</dd><dt>Observed</dt><dd>HTTP 402 · payer 10000→10000 · merchant 0→0 · artifact withheld</dd></dl>
+    <div class="metrics"><div><span>HTTP</span><b>402</b></div><div><span>Payment transferred</span><b>No</b></div><div><span>Resource delivered</span><b>No</b></div><div><span>Fee (lamports)</span><b>0</b></div></div>
+    <table><caption>Token balance evidence (raw units)</caption><thead><tr><th>Account</th><th>Before</th><th>After</th></tr></thead><tbody><tr><th>Payer</th><td>10000</td><td>10000</td></tr><tr><th>Merchant</th><td>0</td><td>0</td></tr></tbody></table>
+    <ul class="limits"><li>Compute-limit rejection proven; signature-count and price caps are configured but not independently exercised.</li></ul>
+    <details><summary>Execution trace (2 events)</summary><pre>[
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;hono&quot;,
+    &quot;pid&quot;: 207
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:08.390Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: false,
+      &quot;invalidReason&quot;: &quot;invalid_exact_svm_payload_transaction_instructions_compute_limit_instruction_too_high&quot;,
+      &quot;payer&quot;: &quot;&quot;
+    }
+  }
+]</pre></details>
+  </article>
+<article class="case safe">
+    <div class="case-top"><span class="eyebrow">hono / wrong-payer</span>
+      <span class="badge pass">Gate passed</span></div>
+    <h2>Wrong wallet attempts recovery</h2>
+    <p class="experiment">Experiment assertion: <strong>matched the expected outcome</strong></p>
+    <dl><dt>Expected</dt><dd>Reject wrong wallet; rightful payer recovers stored result</dd><dt>Observed</dt><dd>HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered</dd></dl>
+    <div class="metrics"><div><span>HTTP</span><b>200</b></div><div><span>Payment transferred</span><b>Yes</b></div><div><span>Resource delivered</span><b>Yes</b></div><div><span>Fee (lamports)</span><b>10001</b></div></div>
+    <table><caption>Token balance evidence (raw units)</caption><thead><tr><th>Account</th><th>Before</th><th>After</th></tr></thead><tbody><tr><th>Payer</th><td>10000</td><td>0</td></tr><tr><th>Merchant</th><td>0</td><td>10000</td></tr></tbody></table>
+    
+    <details><summary>Execution trace (13 events)</summary><pre>[
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;hono&quot;,
+    &quot;pid&quot;: 219
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:08.954Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: true,
+      &quot;payer&quot;: &quot;ARRjn1WSz7CLTVhqDznSXJLxJHfwJeyRQkztV5AtuAaT&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:08.955Z&quot;,
+    &quot;phase&quot;: &quot;artifact_prepared&quot;,
+    &quot;messageHash&quot;: &quot;345bbf191ed521a96961d6812cb182529c48c549dc05ee539c1ca362b3445a81&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:08.978Z&quot;,
+    &quot;phase&quot;: &quot;journal_prepared&quot;,
+    &quot;messageHash&quot;: &quot;345bbf191ed521a96961d6812cb182529c48c549dc05ee539c1ca362b3445a81&quot;,
+    &quot;signature&quot;: &quot;2iiHHonAviC4G4a9o3eabiTF5BZ1tGz1yZhQ7nELVaF9jm8svjAXGzTQsrqtSSQBaQbGcFtyS2EJAvJcbiuxsh2s&quot;,
+    &quot;artifactPersisted&quot;: true
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:08.982Z&quot;,
+    &quot;phase&quot;: &quot;crash_after_send&quot;,
+    &quot;signature&quot;: &quot;2iiHHonAviC4G4a9o3eabiTF5BZ1tGz1yZhQ7nELVaF9jm8svjAXGzTQsrqtSSQBaQbGcFtyS2EJAvJcbiuxsh2s&quot;,
+    &quot;messageHash&quot;: &quot;345bbf191ed521a96961d6812cb182529c48c549dc05ee539c1ca362b3445a81&quot;
+  },
+  {
+    &quot;event&quot;: &quot;target-process-terminated&quot;,
+    &quot;exitCode&quot;: 86,
+    &quot;signal&quot;: null
+  },
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;hono&quot;,
+    &quot;pid&quot;: 231
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:09.513Z&quot;,
+    &quot;phase&quot;: &quot;recovery_auth_rejected&quot;,
+    &quot;messageHash&quot;: &quot;345bbf191ed521a96961d6812cb182529c48c549dc05ee539c1ca362b3445a81&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:09.526Z&quot;,
+    &quot;phase&quot;: &quot;artifact_recovered&quot;,
+    &quot;messageHash&quot;: &quot;345bbf191ed521a96961d6812cb182529c48c549dc05ee539c1ca362b3445a81&quot;,
+    &quot;signature&quot;: &quot;2iiHHonAviC4G4a9o3eabiTF5BZ1tGz1yZhQ7nELVaF9jm8svjAXGzTQsrqtSSQBaQbGcFtyS2EJAvJcbiuxsh2s&quot;,
+    &quot;payerAuthenticated&quot;: true
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;send&quot;,
+    &quot;signature&quot;: &quot;2iiHHonAviC4G4a9o3eabiTF5BZ1tGz1yZhQ7nELVaF9jm8svjAXGzTQsrqtSSQBaQbGcFtyS2EJAvJcbiuxsh2s&quot;,
+    &quot;err&quot;: null,
+    &quot;logs&quot;: [
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+      &quot;Program log: Memo (len 32)&quot;,
+      &quot;Program log: 11a407beb94f6c254529e3a634b8c37b&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+    ],
+    &quot;unitsConsumed&quot;: 692,
+    &quot;slot&quot;: 447552000,
+    &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+    &quot;reused&quot;: false,
+    &quot;feePayer&quot;: &quot;BJdncT8iNaJwuiCNkBecyU1yMX4mKhmiuUAANcHh5SoN&quot;,
+    &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+    &quot;feePayerLamportsAfter&quot;: &quot;1994439839&quot;,
+    &quot;feePayerLamportsDelta&quot;: &quot;10001&quot;
+  }
+]</pre></details>
+  </article>
+<article class="case safe">
+    <div class="case-top"><span class="eyebrow">hono / recovery-replay</span>
+      <span class="badge pass">Gate passed</span></div>
+    <h2>Repeated authorized recovery</h2>
+    <p class="experiment">Experiment assertion: <strong>matched the expected outcome</strong></p>
+    <dl><dt>Expected</dt><dd>Repeated recovery returns same artifact without another debit</dd><dt>Observed</dt><dd>HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered</dd></dl>
+    <div class="metrics"><div><span>HTTP</span><b>200</b></div><div><span>Payment transferred</span><b>Yes</b></div><div><span>Resource delivered</span><b>Yes</b></div><div><span>Fee (lamports)</span><b>10001</b></div></div>
+    <table><caption>Token balance evidence (raw units)</caption><thead><tr><th>Account</th><th>Before</th><th>After</th></tr></thead><tbody><tr><th>Payer</th><td>10000</td><td>0</td></tr><tr><th>Merchant</th><td>0</td><td>10000</td></tr></tbody></table>
+    
+    <details><summary>Execution trace (15 events)</summary><pre>[
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;hono&quot;,
+    &quot;pid&quot;: 243
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:10.145Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: true,
+      &quot;payer&quot;: &quot;4ug22nC9xCHB96YEjXVUFRoRb6e8vBt3Giod5Pa73rsV&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:10.147Z&quot;,
+    &quot;phase&quot;: &quot;artifact_prepared&quot;,
+    &quot;messageHash&quot;: &quot;c0583da6be7243f841e5799dcfd9f9805821f515dbddff91287599dfa33f02df&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:10.163Z&quot;,
+    &quot;phase&quot;: &quot;journal_prepared&quot;,
+    &quot;messageHash&quot;: &quot;c0583da6be7243f841e5799dcfd9f9805821f515dbddff91287599dfa33f02df&quot;,
+    &quot;signature&quot;: &quot;4BSyM642Zfxkgg6EHQqwNi5uVkxxGW56du8EqfgodheWWtfaPQuU3g8UGydwMjHCBtwumoeJAMComsqHZGyth3xT&quot;,
+    &quot;artifactPersisted&quot;: true
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:10.167Z&quot;,
+    &quot;phase&quot;: &quot;crash_after_send&quot;,
+    &quot;signature&quot;: &quot;4BSyM642Zfxkgg6EHQqwNi5uVkxxGW56du8EqfgodheWWtfaPQuU3g8UGydwMjHCBtwumoeJAMComsqHZGyth3xT&quot;,
+    &quot;messageHash&quot;: &quot;c0583da6be7243f841e5799dcfd9f9805821f515dbddff91287599dfa33f02df&quot;
+  },
+  {
+    &quot;event&quot;: &quot;target-process-terminated&quot;,
+    &quot;exitCode&quot;: 86,
+    &quot;signal&quot;: null
+  },
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;hono&quot;,
+    &quot;pid&quot;: 255
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:10.719Z&quot;,
+    &quot;phase&quot;: &quot;artifact_recovered&quot;,
+    &quot;messageHash&quot;: &quot;c0583da6be7243f841e5799dcfd9f9805821f515dbddff91287599dfa33f02df&quot;,
+    &quot;signature&quot;: &quot;4BSyM642Zfxkgg6EHQqwNi5uVkxxGW56du8EqfgodheWWtfaPQuU3g8UGydwMjHCBtwumoeJAMComsqHZGyth3xT&quot;,
+    &quot;payerAuthenticated&quot;: true
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:10.729Z&quot;,
+    &quot;phase&quot;: &quot;artifact_recovered&quot;,
+    &quot;messageHash&quot;: &quot;c0583da6be7243f841e5799dcfd9f9805821f515dbddff91287599dfa33f02df&quot;,
+    &quot;signature&quot;: &quot;4BSyM642Zfxkgg6EHQqwNi5uVkxxGW56du8EqfgodheWWtfaPQuU3g8UGydwMjHCBtwumoeJAMComsqHZGyth3xT&quot;,
+    &quot;payerAuthenticated&quot;: true
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:10.729Z&quot;,
+    &quot;phase&quot;: &quot;artifact_recovered&quot;,
+    &quot;messageHash&quot;: &quot;c0583da6be7243f841e5799dcfd9f9805821f515dbddff91287599dfa33f02df&quot;,
+    &quot;signature&quot;: &quot;4BSyM642Zfxkgg6EHQqwNi5uVkxxGW56du8EqfgodheWWtfaPQuU3g8UGydwMjHCBtwumoeJAMComsqHZGyth3xT&quot;,
+    &quot;payerAuthenticated&quot;: true
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:10.730Z&quot;,
+    &quot;phase&quot;: &quot;artifact_recovered&quot;,
+    &quot;messageHash&quot;: &quot;c0583da6be7243f841e5799dcfd9f9805821f515dbddff91287599dfa33f02df&quot;,
+    &quot;signature&quot;: &quot;4BSyM642Zfxkgg6EHQqwNi5uVkxxGW56du8EqfgodheWWtfaPQuU3g8UGydwMjHCBtwumoeJAMComsqHZGyth3xT&quot;,
+    &quot;payerAuthenticated&quot;: true
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;send&quot;,
+    &quot;signature&quot;: &quot;4BSyM642Zfxkgg6EHQqwNi5uVkxxGW56du8EqfgodheWWtfaPQuU3g8UGydwMjHCBtwumoeJAMComsqHZGyth3xT&quot;,
+    &quot;err&quot;: null,
+    &quot;logs&quot;: [
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+      &quot;Program log: Memo (len 32)&quot;,
+      &quot;Program log: b6653c9b16aeb89b7358b3ef11ebd256&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+    ],
+    &quot;unitsConsumed&quot;: 692,
+    &quot;slot&quot;: 447552000,
+    &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+    &quot;reused&quot;: false,
+    &quot;feePayer&quot;: &quot;9o1gwGdojgnufLzDsTHjKqgD8kesavQQgQXeMK2BLfby&quot;,
+    &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+    &quot;feePayerLamportsAfter&quot;: &quot;1994439839&quot;,
+    &quot;feePayerLamportsDelta&quot;: &quot;10001&quot;
+  }
+]</pre></details>
+  </article>
+<article class="case safe">
+    <div class="case-top"><span class="eyebrow">express / normal</span>
+      <span class="badge pass">Gate passed</span></div>
+    <h2>Successful payment and delivery</h2>
+    <p class="experiment">Experiment assertion: <strong>matched the expected outcome</strong></p>
+    <dl><dt>Expected</dt><dd>One payment produces one recoverable protected result</dd><dt>Observed</dt><dd>HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered</dd></dl>
+    <div class="metrics"><div><span>HTTP</span><b>200</b></div><div><span>Payment transferred</span><b>Yes</b></div><div><span>Resource delivered</span><b>Yes</b></div><div><span>Fee (lamports)</span><b>10001</b></div></div>
+    <table><caption>Token balance evidence (raw units)</caption><thead><tr><th>Account</th><th>Before</th><th>After</th></tr></thead><tbody><tr><th>Payer</th><td>10000</td><td>0</td></tr><tr><th>Merchant</th><td>0</td><td>10000</td></tr></tbody></table>
+    
+    <details><summary>Execution trace (7 events)</summary><pre>[
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;express&quot;,
+    &quot;pid&quot;: 267
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:11.287Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: true,
+      &quot;payer&quot;: &quot;Ggkuf4eu1Q4eAUxzKEeaqqYFRmFMYEUs4QsVpJBSuE6n&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:11.289Z&quot;,
+    &quot;phase&quot;: &quot;artifact_prepared&quot;,
+    &quot;messageHash&quot;: &quot;73267603620494f54a5bc83b242c7f477abe5ea63c46c68f67fb5c8545874f09&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:11.305Z&quot;,
+    &quot;phase&quot;: &quot;settle&quot;,
+    &quot;result&quot;: {
+      &quot;success&quot;: true,
+      &quot;transaction&quot;: &quot;izbQcmebazFY5B3vhLLSivuWj2tdKNboTiR2JUafkUkhbyfYPv1a59HeZ6K7pKPaNRzNFVT5F6ENMjkfxawzYzX&quot;,
+      &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+      &quot;payer&quot;: &quot;Ggkuf4eu1Q4eAUxzKEeaqqYFRmFMYEUs4QsVpJBSuE6n&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;send&quot;,
+    &quot;signature&quot;: &quot;izbQcmebazFY5B3vhLLSivuWj2tdKNboTiR2JUafkUkhbyfYPv1a59HeZ6K7pKPaNRzNFVT5F6ENMjkfxawzYzX&quot;,
+    &quot;err&quot;: null,
+    &quot;logs&quot;: [
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+      &quot;Program log: Memo (len 32)&quot;,
+      &quot;Program log: e970b0e8e4d80bd31830d4613c3e7656&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+    ],
+    &quot;unitsConsumed&quot;: 692,
+    &quot;slot&quot;: 447552000,
+    &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+    &quot;reused&quot;: false,
+    &quot;feePayer&quot;: &quot;EApcAsZBD8JgpGNqLzfjhuBojpWi9tc6M16FY8qX9UhJ&quot;,
+    &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+    &quot;feePayerLamportsAfter&quot;: &quot;1994439839&quot;,
+    &quot;feePayerLamportsDelta&quot;: &quot;10001&quot;
+  }
+]</pre></details>
+  </article>
+<article class="case unsafe">
+    <div class="case-top"><span class="eyebrow">express / lost-send-response</span>
+      <span class="badge fail">Gate failed</span></div>
+    <h2>RPC response lost after settlement</h2>
+    <p class="experiment">Experiment assertion: <strong>matched the expected outcome</strong></p>
+    <dl><dt>Expected</dt><dd>Detect settled payment with no delivered result</dd><dt>Observed</dt><dd>HTTP 402 · payer 10000→0 · merchant 0→10000 · artifact withheld</dd></dl>
+    <div class="metrics"><div><span>HTTP</span><b>402</b></div><div><span>Payment transferred</span><b>Yes</b></div><div><span>Resource delivered</span><b>No</b></div><div><span>Fee (lamports)</span><b>10001</b></div></div>
+    <table><caption>Token balance evidence (raw units)</caption><thead><tr><th>Account</th><th>Before</th><th>After</th></tr></thead><tbody><tr><th>Payer</th><td>10000</td><td>0</td></tr><tr><th>Merchant</th><td>0</td><td>10000</td></tr></tbody></table>
+    
+    <details><summary>Execution trace (10 events)</summary><pre>[
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;express&quot;,
+    &quot;pid&quot;: 279
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:11.922Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: true,
+      &quot;payer&quot;: &quot;BaEdFSTk1moDEJEuszSravqhx6e217VP6CoUAeSJ7fJx&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:11.923Z&quot;,
+    &quot;phase&quot;: &quot;artifact_prepared&quot;,
+    &quot;messageHash&quot;: &quot;a9aa934cf813e869127ea3b562c28d76b956f63066a9936158c9d238c88f7123&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:11.943Z&quot;,
+    &quot;phase&quot;: &quot;settle&quot;,
+    &quot;result&quot;: {
+      &quot;success&quot;: false,
+      &quot;errorReason&quot;: &quot;invalid_exact_svm_transaction_failed&quot;,
+      &quot;transaction&quot;: &quot;&quot;,
+      &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+      &quot;payer&quot;: &quot;BaEdFSTk1moDEJEuszSravqhx6e217VP6CoUAeSJ7fJx&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:11.955Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: false,
+      &quot;invalidReason&quot;: &quot;invalid_exact_svm_transaction_simulation_failed&quot;,
+      &quot;invalidMessage&quot;: &quot;Simulation failed: {\&quot;liteSvmError\&quot;:\&quot;TransactionErrorInstructionError { index: 2, error: InstructionErrorCustom { code: 1 } }\&quot;,\&quot;detail\&quot;:\&quot;FailedTransactionMetadata(FailedTransactionMetadata { err: InstructionError(2, Custom(1)), meta: TransactionMetadata { signature: 1111111111111111111111111111111111111111111111111111111111111111, logs: [\\\&quot;Program ComputeBudget111111111111111111111111111111 invoke [1]\\\&quot;, \\\&quot;Program ComputeBudget111111111111111111111111111111 success\\\&quot;, \\\&quot;Program ComputeBudget111111111111111111111111111111 invoke [1]\\\&quot;, \\\&quot;Program ComputeBudget111111111111111111111111111111 success\\\&quot;, \\\&quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]\\\&quot;, \\\&quot;Program log: Error: insufficient funds\\\&quot;, \\\&quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 193 of 19700 compute units\\\&quot;, \\\&quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA failed: custom program error: 0x1\\\&quot;], inner_instructions: [[], [], [], []], compute_units_consumed: 493, return_data: TransactionReturnData { program_id: TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA, data: [] }, fee: 10001 } })\&quot;}&quot;,
+      &quot;payer&quot;: &quot;BaEdFSTk1moDEJEuszSravqhx6e217VP6CoUAeSJ7fJx&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;send&quot;,
+    &quot;signature&quot;: &quot;37MHXxQJF87hFpSZJur1nJNvN7jaDKqiG37rFKsxoh7P52mqVCiAuvFkVebHx55sT3oRhpRkHRQJ3bkpcfwF5neN&quot;,
+    &quot;err&quot;: null,
+    &quot;logs&quot;: [
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+      &quot;Program log: Memo (len 32)&quot;,
+      &quot;Program log: 8b3de7d88fd98d4583c389a25394f038&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+    ],
+    &quot;unitsConsumed&quot;: 692,
+    &quot;slot&quot;: 447552000,
+    &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+    &quot;reused&quot;: false,
+    &quot;feePayer&quot;: &quot;ZBqL6Cn9zYoepcpzvSH49pG3rTWmiMyqEJH93JqvoXf&quot;,
+    &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+    &quot;feePayerLamportsAfter&quot;: &quot;1994439839&quot;,
+    &quot;feePayerLamportsDelta&quot;: &quot;10001&quot;
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;drop-send-response-after-runtime-success&quot;,
+    &quot;signature&quot;: &quot;37MHXxQJF87hFpSZJur1nJNvN7jaDKqiG37rFKsxoh7P52mqVCiAuvFkVebHx55sT3oRhpRkHRQJ3bkpcfwF5neN&quot;,
+    &quot;requests&quot;: 6,
+    &quot;sends&quot;: 1,
+    &quot;executed&quot;: 1,
+    &quot;simulations&quot;: 2,
+    &quot;droppedResponses&quot;: 1
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: {
+      &quot;liteSvmError&quot;: &quot;TransactionErrorInstructionError { index: 2, error: InstructionErrorCustom { code: 1 } }&quot;,
+      &quot;detail&quot;: &quot;FailedTransactionMetadata(FailedTransactionMetadata { err: InstructionError(2, Custom(1)), meta: TransactionMetadata { signature: 1111111111111111111111111111111111111111111111111111111111111111, logs: [\&quot;Program ComputeBudget111111111111111111111111111111 invoke [1]\&quot;, \&quot;Program ComputeBudget111111111111111111111111111111 success\&quot;, \&quot;Program ComputeBudget111111111111111111111111111111 invoke [1]\&quot;, \&quot;Program ComputeBudget111111111111111111111111111111 success\&quot;, \&quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]\&quot;, \&quot;Program log: Error: insufficient funds\&quot;, \&quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 193 of 19700 compute units\&quot;, \&quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA failed: custom program error: 0x1\&quot;], inner_instructions: [[], [], [], []], compute_units_consumed: 493, return_data: TransactionReturnData { program_id: TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA, data: [] }, fee: 10001 } })&quot;
+    },
+    &quot;unitsConsumed&quot;: 493
+  }
+]</pre></details>
+  </article>
+<article class="case safe">
+    <div class="case-top"><span class="eyebrow">express / prebroadcast-failure</span>
+      <span class="badge pass">Gate passed</span></div>
+    <h2>Failure before broadcast</h2>
+    <p class="experiment">Experiment assertion: <strong>matched the expected outcome</strong></p>
+    <dl><dt>Expected</dt><dd>No payment and no protected result</dd><dt>Observed</dt><dd>HTTP 402 · payer 10000→10000 · merchant 0→0 · artifact withheld</dd></dl>
+    <div class="metrics"><div><span>HTTP</span><b>402</b></div><div><span>Payment transferred</span><b>No</b></div><div><span>Resource delivered</span><b>No</b></div><div><span>Fee (lamports)</span><b>0</b></div></div>
+    <table><caption>Token balance evidence (raw units)</caption><thead><tr><th>Account</th><th>Before</th><th>After</th></tr></thead><tbody><tr><th>Payer</th><td>10000</td><td>10000</td></tr><tr><th>Merchant</th><td>0</td><td>0</td></tr></tbody></table>
+    
+    <details><summary>Execution trace (7 events)</summary><pre>[
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;express&quot;,
+    &quot;pid&quot;: 291
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:12.524Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: true,
+      &quot;payer&quot;: &quot;3Tp4fiszEStQxEmtZTV34CKv9n1qKNrKnbnUPgacxTqF&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:12.526Z&quot;,
+    &quot;phase&quot;: &quot;artifact_prepared&quot;,
+    &quot;messageHash&quot;: &quot;944d36cde8a5148bf2704b3693cedabb54853bff49e2bb3b9a024afb623a86cd&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:12.537Z&quot;,
+    &quot;phase&quot;: &quot;before_send_failure&quot;,
+    &quot;signature&quot;: &quot;2d1NsxrJJZKAvBqdQjj4fxtmoYcY7PFxxPjbukex9Dt5xChsyvdWpeUpgPANFdDtARiM8qiH94MAfLTcYjMd9FEU&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:12.542Z&quot;,
+    &quot;phase&quot;: &quot;settle&quot;,
+    &quot;result&quot;: {
+      &quot;success&quot;: false,
+      &quot;errorReason&quot;: &quot;invalid_exact_svm_transaction_failed&quot;,
+      &quot;transaction&quot;: &quot;&quot;,
+      &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+      &quot;payer&quot;: &quot;3Tp4fiszEStQxEmtZTV34CKv9n1qKNrKnbnUPgacxTqF&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  }
+]</pre></details>
+  </article>
+<article class="case safe">
+    <div class="case-top"><span class="eyebrow">express / confirmation-failure</span>
+      <span class="badge pass">Gate passed</span></div>
+    <h2>Confirmation observation failure</h2>
+    <p class="experiment">Experiment assertion: <strong>matched the expected outcome</strong></p>
+    <dl><dt>Expected</dt><dd>One payment produces one recoverable protected result</dd><dt>Observed</dt><dd>HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered</dd></dl>
+    <div class="metrics"><div><span>HTTP</span><b>200</b></div><div><span>Payment transferred</span><b>Yes</b></div><div><span>Resource delivered</span><b>Yes</b></div><div><span>Fee (lamports)</span><b>10001</b></div></div>
+    <table><caption>Token balance evidence (raw units)</caption><thead><tr><th>Account</th><th>Before</th><th>After</th></tr></thead><tbody><tr><th>Payer</th><td>10000</td><td>0</td></tr><tr><th>Merchant</th><td>0</td><td>10000</td></tr></tbody></table>
+    
+    <details><summary>Execution trace (9 events)</summary><pre>[
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;express&quot;,
+    &quot;pid&quot;: 303
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:13.136Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: true,
+      &quot;payer&quot;: &quot;JDR5CK3ehPbJ2xinM6KSPKw2eFaxMJEpfmRcFvt326Ko&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:13.138Z&quot;,
+    &quot;phase&quot;: &quot;artifact_prepared&quot;,
+    &quot;messageHash&quot;: &quot;e49afd3f8e5250189c1f8faa7cb0420fc712021210e42653a80634f5aa589c51&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:13.153Z&quot;,
+    &quot;phase&quot;: &quot;confirm_observation_failure&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:13.157Z&quot;,
+    &quot;phase&quot;: &quot;settle&quot;,
+    &quot;result&quot;: {
+      &quot;success&quot;: false,
+      &quot;errorReason&quot;: &quot;settlement_pending&quot;,
+      &quot;errorMessage&quot;: &quot;CONTROLLED_CONFIRM_OBSERVATION_FAILURE&quot;,
+      &quot;transaction&quot;: &quot;4FHE7hZXRhQVLZ4DbBbPokSf3uv6TtPzK1KWV9EBrUTtoCDYyKHvFT2qs7UzNwuu2zpxo26xQHhdLMP1i1nBT1fQ&quot;,
+      &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+      &quot;payer&quot;: &quot;JDR5CK3ehPbJ2xinM6KSPKw2eFaxMJEpfmRcFvt326Ko&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:13.165Z&quot;,
+    &quot;phase&quot;: &quot;settle&quot;,
+    &quot;result&quot;: {
+      &quot;success&quot;: true,
+      &quot;transaction&quot;: &quot;4FHE7hZXRhQVLZ4DbBbPokSf3uv6TtPzK1KWV9EBrUTtoCDYyKHvFT2qs7UzNwuu2zpxo26xQHhdLMP1i1nBT1fQ&quot;,
+      &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+      &quot;payer&quot;: &quot;JDR5CK3ehPbJ2xinM6KSPKw2eFaxMJEpfmRcFvt326Ko&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;send&quot;,
+    &quot;signature&quot;: &quot;4FHE7hZXRhQVLZ4DbBbPokSf3uv6TtPzK1KWV9EBrUTtoCDYyKHvFT2qs7UzNwuu2zpxo26xQHhdLMP1i1nBT1fQ&quot;,
+    &quot;err&quot;: null,
+    &quot;logs&quot;: [
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+      &quot;Program log: Memo (len 32)&quot;,
+      &quot;Program log: 1a06cbe2512da67f48e4e2c061e37347&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+    ],
+    &quot;unitsConsumed&quot;: 692,
+    &quot;slot&quot;: 447552000,
+    &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+    &quot;reused&quot;: false,
+    &quot;feePayer&quot;: &quot;FMmVoyn9s5XEUWi3syxesgoL7Ck63anUZ3rFduiqFSdY&quot;,
+    &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+    &quot;feePayerLamportsAfter&quot;: &quot;1994439839&quot;,
+    &quot;feePayerLamportsDelta&quot;: &quot;10001&quot;
+  }
+]</pre></details>
+  </article>
+<article class="case unsafe">
+    <div class="case-top"><span class="eyebrow">express / process-restart</span>
+      <span class="badge fail">Gate failed</span></div>
+    <h2>Process dies after settlement</h2>
+    <p class="experiment">Experiment assertion: <strong>matched the expected outcome</strong></p>
+    <dl><dt>Expected</dt><dd>Detect settled payment with no delivered result</dd><dt>Observed</dt><dd>HTTP 404 · payer 10000→0 · merchant 0→10000 · artifact withheld</dd></dl>
+    <div class="metrics"><div><span>HTTP</span><b>404</b></div><div><span>Payment transferred</span><b>Yes</b></div><div><span>Resource delivered</span><b>No</b></div><div><span>Fee (lamports)</span><b>10001</b></div></div>
+    <table><caption>Token balance evidence (raw units)</caption><thead><tr><th>Account</th><th>Before</th><th>After</th></tr></thead><tbody><tr><th>Payer</th><td>10000</td><td>0</td></tr><tr><th>Merchant</th><td>0</td><td>10000</td></tr></tbody></table>
+    
+    <details><summary>Execution trace (9 events)</summary><pre>[
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;express&quot;,
+    &quot;pid&quot;: 315
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:13.734Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: true,
+      &quot;payer&quot;: &quot;AViQg2A6sV5tzwrbYT5Ps9ZPpXFA4FAs5JRxN2HdCTHD&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:13.737Z&quot;,
+    &quot;phase&quot;: &quot;artifact_prepared&quot;,
+    &quot;messageHash&quot;: &quot;e06de8f50911502c81ca497812a85d8f3ad137aad3082fd98cdae519e18d9c65&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:13.755Z&quot;,
+    &quot;phase&quot;: &quot;crash_after_send&quot;,
+    &quot;signature&quot;: &quot;2sKshra9R1H6e18nB8GLceqzGGLFuqiekiLGupKcNUnGhv3wgSdeZZBE8XBiARmvNoH7vDfZPajHfPX24spcdxvV&quot;,
+    &quot;messageHash&quot;: &quot;e06de8f50911502c81ca497812a85d8f3ad137aad3082fd98cdae519e18d9c65&quot;
+  },
+  {
+    &quot;event&quot;: &quot;target-process-terminated&quot;,
+    &quot;exitCode&quot;: 86,
+    &quot;signal&quot;: null
+  },
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;express&quot;,
+    &quot;pid&quot;: 327
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;send&quot;,
+    &quot;signature&quot;: &quot;2sKshra9R1H6e18nB8GLceqzGGLFuqiekiLGupKcNUnGhv3wgSdeZZBE8XBiARmvNoH7vDfZPajHfPX24spcdxvV&quot;,
+    &quot;err&quot;: null,
+    &quot;logs&quot;: [
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+      &quot;Program log: Memo (len 32)&quot;,
+      &quot;Program log: e50593512cc5dc3add30ed26eff61a27&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+    ],
+    &quot;unitsConsumed&quot;: 692,
+    &quot;slot&quot;: 447552000,
+    &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+    &quot;reused&quot;: false,
+    &quot;feePayer&quot;: &quot;FYNzGtBr2qzbQNbR3BfRjsnz1PfH85jUD7YN13DGmGrm&quot;,
+    &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+    &quot;feePayerLamportsAfter&quot;: &quot;1994439839&quot;,
+    &quot;feePayerLamportsDelta&quot;: &quot;10001&quot;
+  }
+]</pre></details>
+  </article>
+<article class="case unsafe">
+    <div class="case-top"><span class="eyebrow">express / fee-policy</span>
+      <span class="badge fail">Gate failed</span></div>
+    <h2>Sponsor compute-budget policy</h2>
+    <p class="experiment">Experiment assertion: <strong>matched the expected outcome</strong></p>
+    <dl><dt>Expected</dt><dd>Uncapped fixture accepts compute budget above sponsor policy</dd><dt>Observed</dt><dd>HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered</dd></dl>
+    <div class="metrics"><div><span>HTTP</span><b>200</b></div><div><span>Payment transferred</span><b>Yes</b></div><div><span>Resource delivered</span><b>Yes</b></div><div><span>Fee (lamports)</span><b>1010000</b></div></div>
+    <table><caption>Token balance evidence (raw units)</caption><thead><tr><th>Account</th><th>Before</th><th>After</th></tr></thead><tbody><tr><th>Payer</th><td>10000</td><td>0</td></tr><tr><th>Merchant</th><td>0</td><td>10000</td></tr></tbody></table>
+    <ul class="limits"><li>Compute-limit rejection proven; signature-count and price caps are configured but not independently exercised.</li></ul>
+    <details><summary>Execution trace (7 events)</summary><pre>[
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;express&quot;,
+    &quot;pid&quot;: 339
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:14.862Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: true,
+      &quot;payer&quot;: &quot;DrMZg1MGH2WgegsejegguUFZgoxEMQZci3JcGUvK6ikJ&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:14.865Z&quot;,
+    &quot;phase&quot;: &quot;artifact_prepared&quot;,
+    &quot;messageHash&quot;: &quot;9cd0f2edfedb80d39f7897ef7dc791449ff99ef206b6785ae356974a0b5815b1&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:14.885Z&quot;,
+    &quot;phase&quot;: &quot;settle&quot;,
+    &quot;result&quot;: {
+      &quot;success&quot;: true,
+      &quot;transaction&quot;: &quot;5YCVYpoMKYinYfDKbvZQv6TWNrr4eCYW4wmbdvxw3qo14G8tTPMLTDnfhpzgXEMfZ8hqS9ePWdEsYaGmJ1MBWFuZ&quot;,
+      &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+      &quot;payer&quot;: &quot;DrMZg1MGH2WgegsejegguUFZgoxEMQZci3JcGUvK6ikJ&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;send&quot;,
+    &quot;signature&quot;: &quot;5YCVYpoMKYinYfDKbvZQv6TWNrr4eCYW4wmbdvxw3qo14G8tTPMLTDnfhpzgXEMfZ8hqS9ePWdEsYaGmJ1MBWFuZ&quot;,
+    &quot;err&quot;: null,
+    &quot;logs&quot;: [
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 999700 compute units&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+      &quot;Program log: Memo (len 32)&quot;,
+      &quot;Program log: 8bb16308265116984d3720e4dfb1d5f6&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 999595 compute units&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+    ],
+    &quot;unitsConsumed&quot;: 692,
+    &quot;slot&quot;: 447552000,
+    &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+    &quot;reused&quot;: false,
+    &quot;feePayer&quot;: &quot;5VewDGL6PRETLw49RiwhzqPvVs3SiwUG4SXPLCDzMDCr&quot;,
+    &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+    &quot;feePayerLamportsAfter&quot;: &quot;1993439840&quot;,
+    &quot;feePayerLamportsDelta&quot;: &quot;1010000&quot;
+  }
+]</pre></details>
+  </article>
+<article class="case safe">
+    <div class="case-top"><span class="eyebrow">express / normal</span>
+      <span class="badge pass">Gate passed</span></div>
+    <h2>Successful payment and delivery</h2>
+    <p class="experiment">Experiment assertion: <strong>matched the expected outcome</strong></p>
+    <dl><dt>Expected</dt><dd>One payment produces one recoverable protected result</dd><dt>Observed</dt><dd>HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered</dd></dl>
+    <div class="metrics"><div><span>HTTP</span><b>200</b></div><div><span>Payment transferred</span><b>Yes</b></div><div><span>Resource delivered</span><b>Yes</b></div><div><span>Fee (lamports)</span><b>10001</b></div></div>
+    <table><caption>Token balance evidence (raw units)</caption><thead><tr><th>Account</th><th>Before</th><th>After</th></tr></thead><tbody><tr><th>Payer</th><td>10000</td><td>0</td></tr><tr><th>Merchant</th><td>0</td><td>10000</td></tr></tbody></table>
+    
+    <details><summary>Execution trace (9 events)</summary><pre>[
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;express&quot;,
+    &quot;pid&quot;: 351
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:15.448Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: true,
+      &quot;payer&quot;: &quot;AWzWH4smezZdQdS6dyJbrBUwf2gbiDMoPcUUXxZrF7Cu&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:15.450Z&quot;,
+    &quot;phase&quot;: &quot;artifact_prepared&quot;,
+    &quot;messageHash&quot;: &quot;701937328c815c21253bd2a226b25d86fb80cdd1bb701b40cd4044ce5e0a5462&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:15.468Z&quot;,
+    &quot;phase&quot;: &quot;journal_prepared&quot;,
+    &quot;messageHash&quot;: &quot;701937328c815c21253bd2a226b25d86fb80cdd1bb701b40cd4044ce5e0a5462&quot;,
+    &quot;signature&quot;: &quot;5HkNtC9vQYtAaciENnjeNT6eYKCX1Sfp44Be8r5SD5ECPdQgUpqkFLC5TAHUiieicTi52P4WVeshomPDqVrywkQy&quot;,
+    &quot;artifactPersisted&quot;: true
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:15.474Z&quot;,
+    &quot;phase&quot;: &quot;settle&quot;,
+    &quot;result&quot;: {
+      &quot;success&quot;: true,
+      &quot;transaction&quot;: &quot;5HkNtC9vQYtAaciENnjeNT6eYKCX1Sfp44Be8r5SD5ECPdQgUpqkFLC5TAHUiieicTi52P4WVeshomPDqVrywkQy&quot;,
+      &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+      &quot;payer&quot;: &quot;AWzWH4smezZdQdS6dyJbrBUwf2gbiDMoPcUUXxZrF7Cu&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;send&quot;,
+    &quot;signature&quot;: &quot;5HkNtC9vQYtAaciENnjeNT6eYKCX1Sfp44Be8r5SD5ECPdQgUpqkFLC5TAHUiieicTi52P4WVeshomPDqVrywkQy&quot;,
+    &quot;err&quot;: null,
+    &quot;logs&quot;: [
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+      &quot;Program log: Memo (len 32)&quot;,
+      &quot;Program log: 1e45908d423c752397cdd6da9a9e12e1&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+    ],
+    &quot;unitsConsumed&quot;: 692,
+    &quot;slot&quot;: 447552000,
+    &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+    &quot;reused&quot;: false,
+    &quot;feePayer&quot;: &quot;AkRJVDJ23kw5ZF6G8Gws1Soi5TLWKxJ9kU9qgtLUPyu6&quot;,
+    &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+    &quot;feePayerLamportsAfter&quot;: &quot;1994439839&quot;,
+    &quot;feePayerLamportsDelta&quot;: &quot;10001&quot;
+  }
+]</pre></details>
+  </article>
+<article class="case safe">
+    <div class="case-top"><span class="eyebrow">express / lost-send-response</span>
+      <span class="badge pass">Gate passed</span></div>
+    <h2>RPC response lost after settlement</h2>
+    <p class="experiment">Experiment assertion: <strong>matched the expected outcome</strong></p>
+    <dl><dt>Expected</dt><dd>One payment produces one recoverable protected result</dd><dt>Observed</dt><dd>HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered</dd></dl>
+    <div class="metrics"><div><span>HTTP</span><b>200</b></div><div><span>Payment transferred</span><b>Yes</b></div><div><span>Resource delivered</span><b>Yes</b></div><div><span>Fee (lamports)</span><b>10001</b></div></div>
+    <table><caption>Token balance evidence (raw units)</caption><thead><tr><th>Account</th><th>Before</th><th>After</th></tr></thead><tbody><tr><th>Payer</th><td>10000</td><td>0</td></tr><tr><th>Merchant</th><td>0</td><td>10000</td></tr></tbody></table>
+    
+    <details><summary>Execution trace (11 events)</summary><pre>[
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;express&quot;,
+    &quot;pid&quot;: 363
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:16.029Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: true,
+      &quot;payer&quot;: &quot;BFXidNnxnrsq6yyuqDSh3ucKuEzDD22WZPW4xyfrkmhs&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:16.031Z&quot;,
+    &quot;phase&quot;: &quot;artifact_prepared&quot;,
+    &quot;messageHash&quot;: &quot;36963a9d774354e2b59f029eacb33bdf531ff10cd8edeff8f264ee24ca97b43c&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:16.049Z&quot;,
+    &quot;phase&quot;: &quot;journal_prepared&quot;,
+    &quot;messageHash&quot;: &quot;36963a9d774354e2b59f029eacb33bdf531ff10cd8edeff8f264ee24ca97b43c&quot;,
+    &quot;signature&quot;: &quot;3HTJz4eK4nGUrwBpwQVjX4r13tXnevtfgvnN1xo7LQyj8Dshi4VsUtvcZjME4Sd55wh1LfYAC1KfpRKAND9Nj8S5&quot;,
+    &quot;artifactPersisted&quot;: true
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:16.056Z&quot;,
+    &quot;phase&quot;: &quot;ambiguous_send_reconciliation&quot;,
+    &quot;signature&quot;: &quot;3HTJz4eK4nGUrwBpwQVjX4r13tXnevtfgvnN1xo7LQyj8Dshi4VsUtvcZjME4Sd55wh1LfYAC1KfpRKAND9Nj8S5&quot;,
+    &quot;status&quot;: {
+      &quot;slot&quot;: 447552000,
+      &quot;confirmations&quot;: 1,
+      &quot;err&quot;: null,
+      &quot;confirmationStatus&quot;: &quot;confirmed&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:16.059Z&quot;,
+    &quot;phase&quot;: &quot;settle&quot;,
+    &quot;result&quot;: {
+      &quot;success&quot;: true,
+      &quot;transaction&quot;: &quot;3HTJz4eK4nGUrwBpwQVjX4r13tXnevtfgvnN1xo7LQyj8Dshi4VsUtvcZjME4Sd55wh1LfYAC1KfpRKAND9Nj8S5&quot;,
+      &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+      &quot;payer&quot;: &quot;BFXidNnxnrsq6yyuqDSh3ucKuEzDD22WZPW4xyfrkmhs&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;send&quot;,
+    &quot;signature&quot;: &quot;3HTJz4eK4nGUrwBpwQVjX4r13tXnevtfgvnN1xo7LQyj8Dshi4VsUtvcZjME4Sd55wh1LfYAC1KfpRKAND9Nj8S5&quot;,
+    &quot;err&quot;: null,
+    &quot;logs&quot;: [
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+      &quot;Program log: Memo (len 32)&quot;,
+      &quot;Program log: e9662aec42ce0daad63efbed09156232&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+    ],
+    &quot;unitsConsumed&quot;: 692,
+    &quot;slot&quot;: 447552000,
+    &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+    &quot;reused&quot;: false,
+    &quot;feePayer&quot;: &quot;5SAwFwQFEFja2UH9DBqwMMt7A7YDDtZrsf48YxQJPa26&quot;,
+    &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+    &quot;feePayerLamportsAfter&quot;: &quot;1994439839&quot;,
+    &quot;feePayerLamportsDelta&quot;: &quot;10001&quot;
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;drop-send-response-after-runtime-success&quot;,
+    &quot;signature&quot;: &quot;3HTJz4eK4nGUrwBpwQVjX4r13tXnevtfgvnN1xo7LQyj8Dshi4VsUtvcZjME4Sd55wh1LfYAC1KfpRKAND9Nj8S5&quot;,
+    &quot;requests&quot;: 7,
+    &quot;sends&quot;: 1,
+    &quot;executed&quot;: 1,
+    &quot;simulations&quot;: 3,
+    &quot;droppedResponses&quot;: 1
+  }
+]</pre></details>
+  </article>
+<article class="case safe">
+    <div class="case-top"><span class="eyebrow">express / prebroadcast-failure</span>
+      <span class="badge pass">Gate passed</span></div>
+    <h2>Failure before broadcast</h2>
+    <p class="experiment">Experiment assertion: <strong>matched the expected outcome</strong></p>
+    <dl><dt>Expected</dt><dd>No payment and no protected result</dd><dt>Observed</dt><dd>HTTP 402 · payer 10000→10000 · merchant 0→0 · artifact withheld</dd></dl>
+    <div class="metrics"><div><span>HTTP</span><b>402</b></div><div><span>Payment transferred</span><b>No</b></div><div><span>Resource delivered</span><b>No</b></div><div><span>Fee (lamports)</span><b>0</b></div></div>
+    <table><caption>Token balance evidence (raw units)</caption><thead><tr><th>Account</th><th>Before</th><th>After</th></tr></thead><tbody><tr><th>Payer</th><td>10000</td><td>10000</td></tr><tr><th>Merchant</th><td>0</td><td>0</td></tr></tbody></table>
+    
+    <details><summary>Execution trace (9 events)</summary><pre>[
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;express&quot;,
+    &quot;pid&quot;: 375
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:16.603Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: true,
+      &quot;payer&quot;: &quot;HU2vsPoQ5JagMxrmAMFAt5kSUMd6JCD6raSQqVKH91yM&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:16.604Z&quot;,
+    &quot;phase&quot;: &quot;artifact_prepared&quot;,
+    &quot;messageHash&quot;: &quot;e06b9f84f2a50fbd1f96e10144477f8fe0bfc0915d0b25da7c5c8870995acc2a&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:16.620Z&quot;,
+    &quot;phase&quot;: &quot;journal_prepared&quot;,
+    &quot;messageHash&quot;: &quot;e06b9f84f2a50fbd1f96e10144477f8fe0bfc0915d0b25da7c5c8870995acc2a&quot;,
+    &quot;signature&quot;: &quot;5UEhAYiQkDomXWx44SzbvrpdVt27eYwCtNMWBvVCKCBcfKhyGrau9GgSVjiadPaWUbohVSnbBZH2B7A4iodiMueh&quot;,
+    &quot;artifactPersisted&quot;: true
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:16.620Z&quot;,
+    &quot;phase&quot;: &quot;before_send_failure&quot;,
+    &quot;signature&quot;: &quot;5UEhAYiQkDomXWx44SzbvrpdVt27eYwCtNMWBvVCKCBcfKhyGrau9GgSVjiadPaWUbohVSnbBZH2B7A4iodiMueh&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:16.624Z&quot;,
+    &quot;phase&quot;: &quot;settle&quot;,
+    &quot;result&quot;: {
+      &quot;success&quot;: false,
+      &quot;errorReason&quot;: &quot;invalid_exact_svm_transaction_failed&quot;,
+      &quot;transaction&quot;: &quot;&quot;,
+      &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+      &quot;payer&quot;: &quot;HU2vsPoQ5JagMxrmAMFAt5kSUMd6JCD6raSQqVKH91yM&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  }
+]</pre></details>
+  </article>
+<article class="case safe">
+    <div class="case-top"><span class="eyebrow">express / confirmation-failure</span>
+      <span class="badge pass">Gate passed</span></div>
+    <h2>Confirmation observation failure</h2>
+    <p class="experiment">Experiment assertion: <strong>matched the expected outcome</strong></p>
+    <dl><dt>Expected</dt><dd>One payment produces one recoverable protected result</dd><dt>Observed</dt><dd>HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered</dd></dl>
+    <div class="metrics"><div><span>HTTP</span><b>200</b></div><div><span>Payment transferred</span><b>Yes</b></div><div><span>Resource delivered</span><b>Yes</b></div><div><span>Fee (lamports)</span><b>10001</b></div></div>
+    <table><caption>Token balance evidence (raw units)</caption><thead><tr><th>Account</th><th>Before</th><th>After</th></tr></thead><tbody><tr><th>Payer</th><td>10000</td><td>0</td></tr><tr><th>Merchant</th><td>0</td><td>10000</td></tr></tbody></table>
+    
+    <details><summary>Execution trace (12 events)</summary><pre>[
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;express&quot;,
+    &quot;pid&quot;: 387
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:17.194Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: true,
+      &quot;payer&quot;: &quot;GcBeGPXu3yECgwiXbVNtVu59X4v1C5kjQYvYiqaPrJy5&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:17.196Z&quot;,
+    &quot;phase&quot;: &quot;artifact_prepared&quot;,
+    &quot;messageHash&quot;: &quot;19dee01ff4939ea6ff8fdfb3bf716e6ce4f5295b22c041c3c39a68fdee06646e&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:17.211Z&quot;,
+    &quot;phase&quot;: &quot;journal_prepared&quot;,
+    &quot;messageHash&quot;: &quot;19dee01ff4939ea6ff8fdfb3bf716e6ce4f5295b22c041c3c39a68fdee06646e&quot;,
+    &quot;signature&quot;: &quot;2SHqsJpWc6uNo2toChKx6yXSdcvbPXWxSvY6fFUjpfiRTqsKTXrtB3UnNvNwd6FqE8uG7gJsJWws68cZgfJaeAi2&quot;,
+    &quot;artifactPersisted&quot;: true
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:17.215Z&quot;,
+    &quot;phase&quot;: &quot;confirm_observation_failure&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:17.219Z&quot;,
+    &quot;phase&quot;: &quot;settle&quot;,
+    &quot;result&quot;: {
+      &quot;success&quot;: false,
+      &quot;errorReason&quot;: &quot;settlement_pending&quot;,
+      &quot;errorMessage&quot;: &quot;CONTROLLED_CONFIRM_OBSERVATION_FAILURE&quot;,
+      &quot;transaction&quot;: &quot;2SHqsJpWc6uNo2toChKx6yXSdcvbPXWxSvY6fFUjpfiRTqsKTXrtB3UnNvNwd6FqE8uG7gJsJWws68cZgfJaeAi2&quot;,
+      &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+      &quot;payer&quot;: &quot;GcBeGPXu3yECgwiXbVNtVu59X4v1C5kjQYvYiqaPrJy5&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:17.225Z&quot;,
+    &quot;phase&quot;: &quot;settlement_retry_reconciled&quot;,
+    &quot;messageHash&quot;: &quot;19dee01ff4939ea6ff8fdfb3bf716e6ce4f5295b22c041c3c39a68fdee06646e&quot;,
+    &quot;signature&quot;: &quot;2SHqsJpWc6uNo2toChKx6yXSdcvbPXWxSvY6fFUjpfiRTqsKTXrtB3UnNvNwd6FqE8uG7gJsJWws68cZgfJaeAi2&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:17.225Z&quot;,
+    &quot;phase&quot;: &quot;settle&quot;,
+    &quot;result&quot;: {
+      &quot;success&quot;: true,
+      &quot;network&quot;: &quot;solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1&quot;,
+      &quot;transaction&quot;: &quot;2SHqsJpWc6uNo2toChKx6yXSdcvbPXWxSvY6fFUjpfiRTqsKTXrtB3UnNvNwd6FqE8uG7gJsJWws68cZgfJaeAi2&quot;,
+      &quot;payer&quot;: &quot;GcBeGPXu3yECgwiXbVNtVu59X4v1C5kjQYvYiqaPrJy5&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;send&quot;,
+    &quot;signature&quot;: &quot;2SHqsJpWc6uNo2toChKx6yXSdcvbPXWxSvY6fFUjpfiRTqsKTXrtB3UnNvNwd6FqE8uG7gJsJWws68cZgfJaeAi2&quot;,
+    &quot;err&quot;: null,
+    &quot;logs&quot;: [
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+      &quot;Program log: Memo (len 32)&quot;,
+      &quot;Program log: f6babbd8c1d8d205ef1ff89928e95a56&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+    ],
+    &quot;unitsConsumed&quot;: 692,
+    &quot;slot&quot;: 447552000,
+    &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+    &quot;reused&quot;: false,
+    &quot;feePayer&quot;: &quot;A3gi3VoHnoVTTyvF8id4AcUQkXPwjNozhzojc3ZQUD4V&quot;,
+    &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+    &quot;feePayerLamportsAfter&quot;: &quot;1994439839&quot;,
+    &quot;feePayerLamportsDelta&quot;: &quot;10001&quot;
+  }
+]</pre></details>
+  </article>
+<article class="case safe">
+    <div class="case-top"><span class="eyebrow">express / process-restart</span>
+      <span class="badge pass">Gate passed</span></div>
+    <h2>Process dies after settlement</h2>
+    <p class="experiment">Experiment assertion: <strong>matched the expected outcome</strong></p>
+    <dl><dt>Expected</dt><dd>One payment produces one recoverable protected result</dd><dt>Observed</dt><dd>HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered</dd></dl>
+    <div class="metrics"><div><span>HTTP</span><b>200</b></div><div><span>Payment transferred</span><b>Yes</b></div><div><span>Resource delivered</span><b>Yes</b></div><div><span>Fee (lamports)</span><b>10001</b></div></div>
+    <table><caption>Token balance evidence (raw units)</caption><thead><tr><th>Account</th><th>Before</th><th>After</th></tr></thead><tbody><tr><th>Payer</th><td>10000</td><td>0</td></tr><tr><th>Merchant</th><td>0</td><td>10000</td></tr></tbody></table>
+    
+    <details><summary>Execution trace (12 events)</summary><pre>[
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;express&quot;,
+    &quot;pid&quot;: 399
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:17.798Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: true,
+      &quot;payer&quot;: &quot;3ebcJm3nv7VfV3LPhe4khH5Lmz1PC1mnsxJgH5Avf4CZ&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:17.800Z&quot;,
+    &quot;phase&quot;: &quot;artifact_prepared&quot;,
+    &quot;messageHash&quot;: &quot;15621d1d2cb71ab8585cfac902aca3ef102111bacd03f7074d666f13af3ca0da&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:17.820Z&quot;,
+    &quot;phase&quot;: &quot;journal_prepared&quot;,
+    &quot;messageHash&quot;: &quot;15621d1d2cb71ab8585cfac902aca3ef102111bacd03f7074d666f13af3ca0da&quot;,
+    &quot;signature&quot;: &quot;5DBPrcYQBjkM2vYbMKRbfza8fUgyqHZPmBXVtJKzm4BnUnnqzXibnvyYhJPwXyrQpGfv5YPZUy9XKiLs5vm1TmzY&quot;,
+    &quot;artifactPersisted&quot;: true
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:17.824Z&quot;,
+    &quot;phase&quot;: &quot;crash_after_send&quot;,
+    &quot;signature&quot;: &quot;5DBPrcYQBjkM2vYbMKRbfza8fUgyqHZPmBXVtJKzm4BnUnnqzXibnvyYhJPwXyrQpGfv5YPZUy9XKiLs5vm1TmzY&quot;,
+    &quot;messageHash&quot;: &quot;15621d1d2cb71ab8585cfac902aca3ef102111bacd03f7074d666f13af3ca0da&quot;
+  },
+  {
+    &quot;event&quot;: &quot;target-process-terminated&quot;,
+    &quot;exitCode&quot;: 86,
+    &quot;signal&quot;: null
+  },
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;express&quot;,
+    &quot;pid&quot;: 411
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:18.359Z&quot;,
+    &quot;phase&quot;: &quot;artifact_recovered&quot;,
+    &quot;messageHash&quot;: &quot;15621d1d2cb71ab8585cfac902aca3ef102111bacd03f7074d666f13af3ca0da&quot;,
+    &quot;signature&quot;: &quot;5DBPrcYQBjkM2vYbMKRbfza8fUgyqHZPmBXVtJKzm4BnUnnqzXibnvyYhJPwXyrQpGfv5YPZUy9XKiLs5vm1TmzY&quot;,
+    &quot;payerAuthenticated&quot;: true
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;send&quot;,
+    &quot;signature&quot;: &quot;5DBPrcYQBjkM2vYbMKRbfza8fUgyqHZPmBXVtJKzm4BnUnnqzXibnvyYhJPwXyrQpGfv5YPZUy9XKiLs5vm1TmzY&quot;,
+    &quot;err&quot;: null,
+    &quot;logs&quot;: [
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+      &quot;Program log: Memo (len 32)&quot;,
+      &quot;Program log: 151bee112c03578117fbf9f8c3138247&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+    ],
+    &quot;unitsConsumed&quot;: 692,
+    &quot;slot&quot;: 447552000,
+    &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+    &quot;reused&quot;: false,
+    &quot;feePayer&quot;: &quot;47sxCakbxoE8M8No75dMkGw6Xm9hN53WVVPo2s9aydJh&quot;,
+    &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+    &quot;feePayerLamportsAfter&quot;: &quot;1994439839&quot;,
+    &quot;feePayerLamportsDelta&quot;: &quot;10001&quot;
+  }
+]</pre></details>
+  </article>
+<article class="case safe">
+    <div class="case-top"><span class="eyebrow">express / fee-policy</span>
+      <span class="badge pass">Gate passed</span></div>
+    <h2>Sponsor compute-budget policy</h2>
+    <p class="experiment">Experiment assertion: <strong>matched the expected outcome</strong></p>
+    <dl><dt>Expected</dt><dd>Configured SDK cap rejects before payment</dd><dt>Observed</dt><dd>HTTP 402 · payer 10000→10000 · merchant 0→0 · artifact withheld</dd></dl>
+    <div class="metrics"><div><span>HTTP</span><b>402</b></div><div><span>Payment transferred</span><b>No</b></div><div><span>Resource delivered</span><b>No</b></div><div><span>Fee (lamports)</span><b>0</b></div></div>
+    <table><caption>Token balance evidence (raw units)</caption><thead><tr><th>Account</th><th>Before</th><th>After</th></tr></thead><tbody><tr><th>Payer</th><td>10000</td><td>10000</td></tr><tr><th>Merchant</th><td>0</td><td>0</td></tr></tbody></table>
+    <ul class="limits"><li>Compute-limit rejection proven; signature-count and price caps are configured but not independently exercised.</li></ul>
+    <details><summary>Execution trace (2 events)</summary><pre>[
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;express&quot;,
+    &quot;pid&quot;: 423
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:18.927Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: false,
+      &quot;invalidReason&quot;: &quot;invalid_exact_svm_payload_transaction_instructions_compute_limit_instruction_too_high&quot;,
+      &quot;payer&quot;: &quot;&quot;
+    }
+  }
+]</pre></details>
+  </article>
+<article class="case safe">
+    <div class="case-top"><span class="eyebrow">express / wrong-payer</span>
+      <span class="badge pass">Gate passed</span></div>
+    <h2>Wrong wallet attempts recovery</h2>
+    <p class="experiment">Experiment assertion: <strong>matched the expected outcome</strong></p>
+    <dl><dt>Expected</dt><dd>Reject wrong wallet; rightful payer recovers stored result</dd><dt>Observed</dt><dd>HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered</dd></dl>
+    <div class="metrics"><div><span>HTTP</span><b>200</b></div><div><span>Payment transferred</span><b>Yes</b></div><div><span>Resource delivered</span><b>Yes</b></div><div><span>Fee (lamports)</span><b>10001</b></div></div>
+    <table><caption>Token balance evidence (raw units)</caption><thead><tr><th>Account</th><th>Before</th><th>After</th></tr></thead><tbody><tr><th>Payer</th><td>10000</td><td>0</td></tr><tr><th>Merchant</th><td>0</td><td>10000</td></tr></tbody></table>
+    
+    <details><summary>Execution trace (13 events)</summary><pre>[
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;express&quot;,
+    &quot;pid&quot;: 435
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:19.480Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: true,
+      &quot;payer&quot;: &quot;AwspxCJvVVvk9T6eBGS6CW6eLLx3USnRY1TwMgbvjG6z&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:19.482Z&quot;,
+    &quot;phase&quot;: &quot;artifact_prepared&quot;,
+    &quot;messageHash&quot;: &quot;73ca469b7a690288b48eee6a99928d76f69a24c31d724b1b0f16d7fb82b5899b&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:19.501Z&quot;,
+    &quot;phase&quot;: &quot;journal_prepared&quot;,
+    &quot;messageHash&quot;: &quot;73ca469b7a690288b48eee6a99928d76f69a24c31d724b1b0f16d7fb82b5899b&quot;,
+    &quot;signature&quot;: &quot;3Trgyf7Vb65v1TxEmpgndUDs9SbDd5Vrntcv8tDbTpNtnJPGGtfBpUbc5sTXT2LGnsbSUyUBBEmEshFZrvnrwoUD&quot;,
+    &quot;artifactPersisted&quot;: true
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:19.504Z&quot;,
+    &quot;phase&quot;: &quot;crash_after_send&quot;,
+    &quot;signature&quot;: &quot;3Trgyf7Vb65v1TxEmpgndUDs9SbDd5Vrntcv8tDbTpNtnJPGGtfBpUbc5sTXT2LGnsbSUyUBBEmEshFZrvnrwoUD&quot;,
+    &quot;messageHash&quot;: &quot;73ca469b7a690288b48eee6a99928d76f69a24c31d724b1b0f16d7fb82b5899b&quot;
+  },
+  {
+    &quot;event&quot;: &quot;target-process-terminated&quot;,
+    &quot;exitCode&quot;: 86,
+    &quot;signal&quot;: null
+  },
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;express&quot;,
+    &quot;pid&quot;: 447
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:20.035Z&quot;,
+    &quot;phase&quot;: &quot;recovery_auth_rejected&quot;,
+    &quot;messageHash&quot;: &quot;73ca469b7a690288b48eee6a99928d76f69a24c31d724b1b0f16d7fb82b5899b&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:20.044Z&quot;,
+    &quot;phase&quot;: &quot;artifact_recovered&quot;,
+    &quot;messageHash&quot;: &quot;73ca469b7a690288b48eee6a99928d76f69a24c31d724b1b0f16d7fb82b5899b&quot;,
+    &quot;signature&quot;: &quot;3Trgyf7Vb65v1TxEmpgndUDs9SbDd5Vrntcv8tDbTpNtnJPGGtfBpUbc5sTXT2LGnsbSUyUBBEmEshFZrvnrwoUD&quot;,
+    &quot;payerAuthenticated&quot;: true
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;send&quot;,
+    &quot;signature&quot;: &quot;3Trgyf7Vb65v1TxEmpgndUDs9SbDd5Vrntcv8tDbTpNtnJPGGtfBpUbc5sTXT2LGnsbSUyUBBEmEshFZrvnrwoUD&quot;,
+    &quot;err&quot;: null,
+    &quot;logs&quot;: [
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+      &quot;Program log: Memo (len 32)&quot;,
+      &quot;Program log: 0b685ab33daaff05821bff527a5a6b63&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+    ],
+    &quot;unitsConsumed&quot;: 692,
+    &quot;slot&quot;: 447552000,
+    &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+    &quot;reused&quot;: false,
+    &quot;feePayer&quot;: &quot;52HZvgND8PTP5rzK9xawRpvgMz1VBPjbKL8Q1ikMhKuN&quot;,
+    &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+    &quot;feePayerLamportsAfter&quot;: &quot;1994439839&quot;,
+    &quot;feePayerLamportsDelta&quot;: &quot;10001&quot;
+  }
+]</pre></details>
+  </article>
+<article class="case safe">
+    <div class="case-top"><span class="eyebrow">express / recovery-replay</span>
+      <span class="badge pass">Gate passed</span></div>
+    <h2>Repeated authorized recovery</h2>
+    <p class="experiment">Experiment assertion: <strong>matched the expected outcome</strong></p>
+    <dl><dt>Expected</dt><dd>Repeated recovery returns same artifact without another debit</dd><dt>Observed</dt><dd>HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered</dd></dl>
+    <div class="metrics"><div><span>HTTP</span><b>200</b></div><div><span>Payment transferred</span><b>Yes</b></div><div><span>Resource delivered</span><b>Yes</b></div><div><span>Fee (lamports)</span><b>10001</b></div></div>
+    <table><caption>Token balance evidence (raw units)</caption><thead><tr><th>Account</th><th>Before</th><th>After</th></tr></thead><tbody><tr><th>Payer</th><td>10000</td><td>0</td></tr><tr><th>Merchant</th><td>0</td><td>10000</td></tr></tbody></table>
+    
+    <details><summary>Execution trace (15 events)</summary><pre>[
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;express&quot;,
+    &quot;pid&quot;: 459
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:20.685Z&quot;,
+    &quot;phase&quot;: &quot;verify&quot;,
+    &quot;result&quot;: {
+      &quot;isValid&quot;: true,
+      &quot;payer&quot;: &quot;HXB1hoWfA8Cst1ARLxwkWi2obyDqFP7KDWnqMfHKSmKE&quot;
+    }
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:20.688Z&quot;,
+    &quot;phase&quot;: &quot;artifact_prepared&quot;,
+    &quot;messageHash&quot;: &quot;b17fc197d761271a5f3a32ef8fb4b1423673b764c251386b7c2a32fcf40eb7eb&quot;
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:20.707Z&quot;,
+    &quot;phase&quot;: &quot;journal_prepared&quot;,
+    &quot;messageHash&quot;: &quot;b17fc197d761271a5f3a32ef8fb4b1423673b764c251386b7c2a32fcf40eb7eb&quot;,
+    &quot;signature&quot;: &quot;4u5X1ZDe9nNkZsJJxTJjGykG887RP8dTf9qrFVS8Kz5HRAoaM4zxkiGv6M8J4ySggUMZhwiQ11LaWZukBLwWXjYM&quot;,
+    &quot;artifactPersisted&quot;: true
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:20.710Z&quot;,
+    &quot;phase&quot;: &quot;crash_after_send&quot;,
+    &quot;signature&quot;: &quot;4u5X1ZDe9nNkZsJJxTJjGykG887RP8dTf9qrFVS8Kz5HRAoaM4zxkiGv6M8J4ySggUMZhwiQ11LaWZukBLwWXjYM&quot;,
+    &quot;messageHash&quot;: &quot;b17fc197d761271a5f3a32ef8fb4b1423673b764c251386b7c2a32fcf40eb7eb&quot;
+  },
+  {
+    &quot;event&quot;: &quot;target-process-terminated&quot;,
+    &quot;exitCode&quot;: 86,
+    &quot;signal&quot;: null
+  },
+  {
+    &quot;event&quot;: &quot;target-started&quot;,
+    &quot;adapter&quot;: &quot;express&quot;,
+    &quot;pid&quot;: 480
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:21.318Z&quot;,
+    &quot;phase&quot;: &quot;artifact_recovered&quot;,
+    &quot;messageHash&quot;: &quot;b17fc197d761271a5f3a32ef8fb4b1423673b764c251386b7c2a32fcf40eb7eb&quot;,
+    &quot;signature&quot;: &quot;4u5X1ZDe9nNkZsJJxTJjGykG887RP8dTf9qrFVS8Kz5HRAoaM4zxkiGv6M8J4ySggUMZhwiQ11LaWZukBLwWXjYM&quot;,
+    &quot;payerAuthenticated&quot;: true
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:21.330Z&quot;,
+    &quot;phase&quot;: &quot;artifact_recovered&quot;,
+    &quot;messageHash&quot;: &quot;b17fc197d761271a5f3a32ef8fb4b1423673b764c251386b7c2a32fcf40eb7eb&quot;,
+    &quot;signature&quot;: &quot;4u5X1ZDe9nNkZsJJxTJjGykG887RP8dTf9qrFVS8Kz5HRAoaM4zxkiGv6M8J4ySggUMZhwiQ11LaWZukBLwWXjYM&quot;,
+    &quot;payerAuthenticated&quot;: true
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:21.332Z&quot;,
+    &quot;phase&quot;: &quot;artifact_recovered&quot;,
+    &quot;messageHash&quot;: &quot;b17fc197d761271a5f3a32ef8fb4b1423673b764c251386b7c2a32fcf40eb7eb&quot;,
+    &quot;signature&quot;: &quot;4u5X1ZDe9nNkZsJJxTJjGykG887RP8dTf9qrFVS8Kz5HRAoaM4zxkiGv6M8J4ySggUMZhwiQ11LaWZukBLwWXjYM&quot;,
+    &quot;payerAuthenticated&quot;: true
+  },
+  {
+    &quot;source&quot;: &quot;target&quot;,
+    &quot;at&quot;: &quot;2026-10-07T23:57:21.333Z&quot;,
+    &quot;phase&quot;: &quot;artifact_recovered&quot;,
+    &quot;messageHash&quot;: &quot;b17fc197d761271a5f3a32ef8fb4b1423673b764c251386b7c2a32fcf40eb7eb&quot;,
+    &quot;signature&quot;: &quot;4u5X1ZDe9nNkZsJJxTJjGykG887RP8dTf9qrFVS8Kz5HRAoaM4zxkiGv6M8J4ySggUMZhwiQ11LaWZukBLwWXjYM&quot;,
+    &quot;payerAuthenticated&quot;: true
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;simulate&quot;,
+    &quot;sigVerify&quot;: false,
+    &quot;err&quot;: null,
+    &quot;unitsConsumed&quot;: 692
+  },
+  {
+    &quot;source&quot;: &quot;rpc&quot;,
+    &quot;event&quot;: &quot;send&quot;,
+    &quot;signature&quot;: &quot;4u5X1ZDe9nNkZsJJxTJjGykG887RP8dTf9qrFVS8Kz5HRAoaM4zxkiGv6M8J4ySggUMZhwiQ11LaWZukBLwWXjYM&quot;,
+    &quot;err&quot;: null,
+    &quot;logs&quot;: [
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 invoke [1]&quot;,
+      &quot;Program ComputeBudget111111111111111111111111111111 success&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units&quot;,
+      &quot;Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]&quot;,
+      &quot;Program log: Memo (len 32)&quot;,
+      &quot;Program log: a7039428c59e5a1cd312802cafd78c07&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units&quot;,
+      &quot;Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success&quot;
+    ],
+    &quot;unitsConsumed&quot;: 692,
+    &quot;slot&quot;: 447552000,
+    &quot;runtime&quot;: &quot;LiteSVM 1.5.0&quot;,
+    &quot;reused&quot;: false,
+    &quot;feePayer&quot;: &quot;BWuooTywMDMja2G9fqLfVJHtgoKV6QzQEZHNWgvMi1xN&quot;,
+    &quot;feePayerLamportsBefore&quot;: &quot;1994449840&quot;,
+    &quot;feePayerLamportsAfter&quot;: &quot;1994439839&quot;,
+    &quot;feePayerLamportsDelta&quot;: &quot;10001&quot;
+  }
+]</pre></details>
+  </article><footer>Generated by ShadowGate SVM. This file is standalone. Its observations are evidence of a particular test run, not a security certification.</footer></main></body></html>

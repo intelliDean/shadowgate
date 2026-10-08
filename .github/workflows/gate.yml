@@ -1,0 +1,38 @@
+name: ShadowGate local payment gate
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  local-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install pinned dependencies
+        run: npm ci
+      - name: Type check
+        run: npm run typecheck
+      - name: Verify experiment expectations and infrastructure
+        run: npm test
+      - name: Require recovered deployments to pass the release gate
+        run: npm run gate -- --profile recovered --output evidence/ci
+      - name: Preserve observed evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shadowgate-evidence
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 14

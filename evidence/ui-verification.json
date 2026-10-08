@@ -1,0 +1,32 @@
+{
+  "checkedAt": "2026-10-08T00:02:53.821Z",
+  "runId": "run-2026-10-08T00-02-30-294Z-97ec38bc",
+  "summary": {
+    "passed": 28,
+    "failed": 0,
+    "total": 28,
+    "gatePassed": 22,
+    "gateFailed": 6
+  },
+  "browser": "Chromium 133 via Playwright",
+  "desktop": "1440x1040",
+  "mobile": "390x844",
+  "mobileOverflow": false,
+  "pageErrors": [],
+  "concurrentRunStatus": 409,
+  "junitFailures": 6,
+  "interactions": [
+    "real comparison launched by button",
+    "scenario selection",
+    "evidence history",
+    "report inspection",
+    "JUnit download"
+  ],
+  "interfaceCheckedAt": "2026-10-08T00:03:24.787Z",
+  "profileFilterVisible": 16,
+  "requestEvidenceStatuses": [
+    409,
+    403,
+    200
+  ]
+}
