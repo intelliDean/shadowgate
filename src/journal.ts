@@ -16,8 +16,8 @@ export interface JournalEntry {
   mint: string;
   amount: string;
   network: string;
-  route: 'GET /paid';
-  artifact: PaidArtifact;
+  route: string;
+  artifact: any;
   state: 'prepared' | 'confirmed';
   preparedAt: string;
   confirmedAt?: string;
@@ -45,7 +45,7 @@ export class PaymentJournal {
     const file = JSON.parse(readFileSync(path, 'utf8'));
     if (file.version !== 1 || !Array.isArray(file.entries)) throw new Error('Unsupported or corrupt payment journal');
     for (const entry of file.entries) {
-      if (!/^[a-f0-9]{64}$/.test(entry.messageHash) || !entry.signature || !entry.payer || entry.route !== 'GET /paid') {
+      if (!/^[a-f0-9]{64}$/.test(entry.messageHash) || !entry.signature || !entry.payer || !entry.route || typeof entry.route !== 'string') {
         throw new Error('Invalid payment journal entry');
       }
       this.entries[entry.messageHash] = entry;

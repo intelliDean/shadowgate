@@ -120,7 +120,7 @@ async function initialize(config: TargetConfig): Promise<void> {
         mint: config.mint,
         amount: config.amount,
         network: NETWORK,
-        route: 'GET /paid', // internal journal route compatible with ShadowGate journal schema
+        route: 'GET /weather',
         artifact: weatherArtifact() as any,
         state: 'prepared',
         preparedAt: new Date().toISOString(),

@@ -1,0 +1,1856 @@
+{
+  "id": "run-2026-10-09T19-17-43-592Z-13c4d29b",
+  "createdAt": "2026-10-09T19:17:43.592Z",
+  "durationMs": 25034,
+  "profile": "all",
+  "runtime": "LiteSVM 1.5.0, genuine signed SPL execution, bounded local JSON-RPC. Local execution is not validator consensus or finality.",
+  "summary": {
+    "passed": 14,
+    "failed": 0,
+    "total": 14,
+    "gatePassed": 11,
+    "gateFailed": 3
+  },
+  "results": [
+    {
+      "id": "weather-baseline-normal",
+      "adapter": "weather",
+      "mode": "baseline",
+      "scenario": "normal",
+      "title": "Successful payment and delivery",
+      "expected": "One payment produces one recoverable protected result",
+      "observed": "HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered",
+      "passed": true,
+      "gatePassed": true,
+      "httpStatus": 200,
+      "paymentTransferred": true,
+      "resourceDelivered": true,
+      "feeLamports": "10001",
+      "before": {
+        "payer": "10000",
+        "merchant": "0",
+        "sponsorLamports": "1994449840"
+      },
+      "after": {
+        "payer": "0",
+        "merchant": "10000",
+        "sponsorLamports": "1994439839"
+      },
+      "requests": [
+        {
+          "step": "paid-request",
+          "status": 200,
+          "body": {
+            "report": {
+              "weather": "sunny",
+              "temperature": 70
+            }
+          },
+          "headers": {},
+          "delivered": true
+        }
+      ],
+      "trace": [
+        {
+          "event": "target-started",
+          "adapter": "weather",
+          "pid": 216805
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:45.024Z",
+          "phase": "verify",
+          "result": {
+            "isValid": true,
+            "payer": "67HBCaaDwJ2qH5zooy36uYCgVTCxx7L9bMYdY5Jv6H7G"
+          }
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:45.092Z",
+          "phase": "settle",
+          "result": {
+            "success": true,
+            "transaction": "4Y3Bqn1fPZVVD3D8pWFFmRyaQkB3e1VVBoBbxGHrRGSXijsDNptpY61ybc9A2s9A6pD9VTwyU9x8VnVN1BSNdxUQ",
+            "network": "solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1",
+            "payer": "67HBCaaDwJ2qH5zooy36uYCgVTCxx7L9bMYdY5Jv6H7G"
+          }
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "send",
+          "signature": "4Y3Bqn1fPZVVD3D8pWFFmRyaQkB3e1VVBoBbxGHrRGSXijsDNptpY61ybc9A2s9A6pD9VTwyU9x8VnVN1BSNdxUQ",
+          "err": null,
+          "logs": [
+            "Program ComputeBudget111111111111111111111111111111 invoke [1]",
+            "Program ComputeBudget111111111111111111111111111111 success",
+            "Program ComputeBudget111111111111111111111111111111 invoke [1]",
+            "Program ComputeBudget111111111111111111111111111111 success",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]",
+            "Program log: Memo (len 32)",
+            "Program log: 5eb069309e28f1c046e284b5e49baec3",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success"
+          ],
+          "unitsConsumed": 692,
+          "slot": 447552000,
+          "runtime": "LiteSVM 1.5.0",
+          "reused": false,
+          "feePayer": "8dnqXD7PqbPKVLPAaiDPBFtnHSKsVLsa8KsCbXhD7n2u",
+          "feePayerLamportsBefore": "1994449840",
+          "feePayerLamportsAfter": "1994439839",
+          "feePayerLamportsDelta": "10001"
+        }
+      ],
+      "durationMs": 1514,
+      "limitations": []
+    },
+    {
+      "id": "weather-baseline-lost-send-response",
+      "adapter": "weather",
+      "mode": "baseline",
+      "scenario": "lost-send-response",
+      "title": "RPC response lost after settlement",
+      "expected": "Detect settled payment with no delivered result, including attempted recovery",
+      "observed": "HTTP 402 · payer 10000→0 · merchant 0→10000 · artifact withheld",
+      "passed": true,
+      "gatePassed": false,
+      "httpStatus": 402,
+      "paymentTransferred": true,
+      "resourceDelivered": false,
+      "feeLamports": "10001",
+      "before": {
+        "payer": "10000",
+        "merchant": "0",
+        "sponsorLamports": "1994449840"
+      },
+      "after": {
+        "payer": "0",
+        "merchant": "10000",
+        "sponsorLamports": "1994439839"
+      },
+      "requests": [
+        {
+          "step": "paid-request",
+          "status": 402,
+          "body": {},
+          "headers": {},
+          "delivered": false
+        },
+        {
+          "step": "identical-retry",
+          "status": 402,
+          "body": {},
+          "headers": {},
+          "delivered": false
+        }
+      ],
+      "trace": [
+        {
+          "event": "target-started",
+          "adapter": "weather",
+          "pid": 216873
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:46.513Z",
+          "phase": "verify",
+          "result": {
+            "isValid": true,
+            "payer": "4eLqzrvParBy1WufURihUGY3kieSu4LiSMTk3DPsY45j"
+          }
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:46.548Z",
+          "phase": "settle",
+          "result": {
+            "success": false,
+            "errorReason": "invalid_exact_svm_transaction_failed",
+            "transaction": "",
+            "network": "solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1",
+            "payer": "4eLqzrvParBy1WufURihUGY3kieSu4LiSMTk3DPsY45j"
+          }
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:46.569Z",
+          "phase": "verify",
+          "result": {
+            "isValid": false,
+            "invalidReason": "invalid_exact_svm_transaction_simulation_failed",
+            "invalidMessage": "Simulation failed: {\"liteSvmError\":\"TransactionErrorInstructionError { index: 2, error: InstructionErrorCustom { code: 1 } }\",\"detail\":\"FailedTransactionMetadata(FailedTransactionMetadata { err: InstructionError(2, Custom(1)), meta: TransactionMetadata { signature: 1111111111111111111111111111111111111111111111111111111111111111, logs: [\\\"Program ComputeBudget111111111111111111111111111111 invoke [1]\\\", \\\"Program ComputeBudget111111111111111111111111111111 success\\\", \\\"Program ComputeBudget111111111111111111111111111111 invoke [1]\\\", \\\"Program ComputeBudget111111111111111111111111111111 success\\\", \\\"Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]\\\", \\\"Program log: Error: insufficient funds\\\", \\\"Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 193 of 19700 compute units\\\", \\\"Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA failed: custom program error: 0x1\\\"], inner_instructions: [[], [], [], []], compute_units_consumed: 493, return_data: TransactionReturnData { program_id: TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA, data: [] }, fee: 10001 } })\"}",
+            "payer": "4eLqzrvParBy1WufURihUGY3kieSu4LiSMTk3DPsY45j"
+          }
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "send",
+          "signature": "2Q315UCi1jyaFrWP7rqrgGhbwhiXkuWcUSsmAmLe8jLifZbo8JNDrzsRqAWFWHt8XHR7qfeb1kPq4hdUzLiHcEgB",
+          "err": null,
+          "logs": [
+            "Program ComputeBudget111111111111111111111111111111 invoke [1]",
+            "Program ComputeBudget111111111111111111111111111111 success",
+            "Program ComputeBudget111111111111111111111111111111 invoke [1]",
+            "Program ComputeBudget111111111111111111111111111111 success",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]",
+            "Program log: Memo (len 32)",
+            "Program log: ab2a0e04cf47b0b73fa6336760c638aa",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success"
+          ],
+          "unitsConsumed": 692,
+          "slot": 447552000,
+          "runtime": "LiteSVM 1.5.0",
+          "reused": false,
+          "feePayer": "97PK3RF9xPvN8BHs175x6TiJRSvuStMsdcXaufXe1yD",
+          "feePayerLamportsBefore": "1994449840",
+          "feePayerLamportsAfter": "1994439839",
+          "feePayerLamportsDelta": "10001"
+        },
+        {
+          "source": "rpc",
+          "event": "drop-send-response-after-runtime-success",
+          "signature": "2Q315UCi1jyaFrWP7rqrgGhbwhiXkuWcUSsmAmLe8jLifZbo8JNDrzsRqAWFWHt8XHR7qfeb1kPq4hdUzLiHcEgB",
+          "requests": 6,
+          "sends": 1,
+          "executed": 1,
+          "simulations": 2,
+          "droppedResponses": 1
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": {
+            "liteSvmError": "TransactionErrorInstructionError { index: 2, error: InstructionErrorCustom { code: 1 } }",
+            "detail": "FailedTransactionMetadata(FailedTransactionMetadata { err: InstructionError(2, Custom(1)), meta: TransactionMetadata { signature: 1111111111111111111111111111111111111111111111111111111111111111, logs: [\"Program ComputeBudget111111111111111111111111111111 invoke [1]\", \"Program ComputeBudget111111111111111111111111111111 success\", \"Program ComputeBudget111111111111111111111111111111 invoke [1]\", \"Program ComputeBudget111111111111111111111111111111 success\", \"Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]\", \"Program log: Error: insufficient funds\", \"Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 193 of 19700 compute units\", \"Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA failed: custom program error: 0x1\"], inner_instructions: [[], [], [], []], compute_units_consumed: 493, return_data: TransactionReturnData { program_id: TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA, data: [] }, fee: 10001 } })"
+          },
+          "unitsConsumed": 493
+        }
+      ],
+      "durationMs": 1446,
+      "limitations": []
+    },
+    {
+      "id": "weather-baseline-prebroadcast-failure",
+      "adapter": "weather",
+      "mode": "baseline",
+      "scenario": "prebroadcast-failure",
+      "title": "Failure before broadcast",
+      "expected": "No payment and no protected result, including authenticated recovery",
+      "observed": "HTTP 402 · payer 10000→10000 · merchant 0→0 · artifact withheld",
+      "passed": true,
+      "gatePassed": true,
+      "httpStatus": 402,
+      "paymentTransferred": false,
+      "resourceDelivered": false,
+      "feeLamports": "0",
+      "before": {
+        "payer": "10000",
+        "merchant": "0",
+        "sponsorLamports": "1994449840"
+      },
+      "after": {
+        "payer": "10000",
+        "merchant": "0",
+        "sponsorLamports": "1994449840"
+      },
+      "requests": [
+        {
+          "step": "paid-request",
+          "status": 402,
+          "body": {},
+          "headers": {},
+          "delivered": false
+        }
+      ],
+      "trace": [
+        {
+          "event": "target-started",
+          "adapter": "weather",
+          "pid": 216885
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:47.788Z",
+          "phase": "verify",
+          "result": {
+            "isValid": true,
+            "payer": "2pvLRCktTuZ4TUPYdjgCtMBwWpup1ApV4rMbDDMNEzp5"
+          }
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:47.813Z",
+          "phase": "before_send_failure",
+          "signature": "2uZCSub1uag3xwYUhxghvCDqqHVqEHStiA7Rogys48iioa1VgRaTShey5y6HXJhb915vDRBUCtttW4PxUijBJ1SN"
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:47.821Z",
+          "phase": "settle",
+          "result": {
+            "success": false,
+            "errorReason": "invalid_exact_svm_transaction_failed",
+            "transaction": "",
+            "network": "solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1",
+            "payer": "2pvLRCktTuZ4TUPYdjgCtMBwWpup1ApV4rMbDDMNEzp5"
+          }
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        }
+      ],
+      "durationMs": 1235,
+      "limitations": []
+    },
+    {
+      "id": "weather-baseline-confirmation-failure",
+      "adapter": "weather",
+      "mode": "baseline",
+      "scenario": "confirmation-failure",
+      "title": "Confirmation observation failure",
+      "expected": "One payment produces one recoverable protected result",
+      "observed": "HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered",
+      "passed": true,
+      "gatePassed": true,
+      "httpStatus": 200,
+      "paymentTransferred": true,
+      "resourceDelivered": true,
+      "feeLamports": "10001",
+      "before": {
+        "payer": "10000",
+        "merchant": "0",
+        "sponsorLamports": "1994449840"
+      },
+      "after": {
+        "payer": "0",
+        "merchant": "10000",
+        "sponsorLamports": "1994439839"
+      },
+      "requests": [
+        {
+          "step": "paid-request",
+          "status": 200,
+          "body": {
+            "report": {
+              "weather": "sunny",
+              "temperature": 70
+            }
+          },
+          "headers": {},
+          "delivered": true
+        }
+      ],
+      "trace": [
+        {
+          "event": "target-started",
+          "adapter": "weather",
+          "pid": 216897
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:49.055Z",
+          "phase": "verify",
+          "result": {
+            "isValid": true,
+            "payer": "8Rvm1syQN8tHyVLgNJCRLGw7yvQWF4JXgCCmyedZmvcx"
+          }
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:49.087Z",
+          "phase": "confirm_observation_failure"
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:49.093Z",
+          "phase": "settle",
+          "result": {
+            "success": false,
+            "errorReason": "settlement_pending",
+            "errorMessage": "CONTROLLED_CONFIRM_OBSERVATION_FAILURE",
+            "transaction": "2U7Wy9SBAmBA38VKxBygqPfAKQkB9q2eMZNbdeuL6pGABiMS5RvMsFmXHPfFVUQJtLEUmKUvSzZ51kcEngMFjv2r",
+            "network": "solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1",
+            "payer": "8Rvm1syQN8tHyVLgNJCRLGw7yvQWF4JXgCCmyedZmvcx"
+          }
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:49.107Z",
+          "phase": "settle",
+          "result": {
+            "success": true,
+            "transaction": "2U7Wy9SBAmBA38VKxBygqPfAKQkB9q2eMZNbdeuL6pGABiMS5RvMsFmXHPfFVUQJtLEUmKUvSzZ51kcEngMFjv2r",
+            "network": "solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1",
+            "payer": "8Rvm1syQN8tHyVLgNJCRLGw7yvQWF4JXgCCmyedZmvcx"
+          }
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "send",
+          "signature": "2U7Wy9SBAmBA38VKxBygqPfAKQkB9q2eMZNbdeuL6pGABiMS5RvMsFmXHPfFVUQJtLEUmKUvSzZ51kcEngMFjv2r",
+          "err": null,
+          "logs": [
+            "Program ComputeBudget111111111111111111111111111111 invoke [1]",
+            "Program ComputeBudget111111111111111111111111111111 success",
+            "Program ComputeBudget111111111111111111111111111111 invoke [1]",
+            "Program ComputeBudget111111111111111111111111111111 success",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]",
+            "Program log: Memo (len 32)",
+            "Program log: 31b2461dbeda8009d1521ee5e2eeb4ab",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success"
+          ],
+          "unitsConsumed": 692,
+          "slot": 447552000,
+          "runtime": "LiteSVM 1.5.0",
+          "reused": false,
+          "feePayer": "GrF7BiCTp6Hjemps7su2urF7XH3xTqUawo5RRifchNoF",
+          "feePayerLamportsBefore": "1994449840",
+          "feePayerLamportsAfter": "1994439839",
+          "feePayerLamportsDelta": "10001"
+        }
+      ],
+      "durationMs": 1274,
+      "limitations": []
+    },
+    {
+      "id": "weather-baseline-process-restart",
+      "adapter": "weather",
+      "mode": "baseline",
+      "scenario": "process-restart",
+      "title": "Process dies after settlement",
+      "expected": "Detect settled payment with no delivered result, including attempted recovery",
+      "observed": "HTTP 404 · payer 10000→0 · merchant 0→10000 · artifact withheld",
+      "passed": true,
+      "gatePassed": false,
+      "httpStatus": 404,
+      "paymentTransferred": true,
+      "resourceDelivered": false,
+      "feeLamports": "10001",
+      "before": {
+        "payer": "10000",
+        "merchant": "0",
+        "sponsorLamports": "1994449840"
+      },
+      "after": {
+        "payer": "0",
+        "merchant": "10000",
+        "sponsorLamports": "1994439839"
+      },
+      "requests": [
+        {
+          "step": "paid-request",
+          "status": 0,
+          "body": {
+            "error": "Transport disconnected or timed out"
+          },
+          "delivered": false
+        },
+        {
+          "step": "payer-recovery-after-restart",
+          "status": 404,
+          "body": {
+            "text": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<title>Error</title>\n</head>\n<body>\n<pre>Cannot POST /recover</pre>\n</body>\n</html>\n"
+          },
+          "headers": {},
+          "delivered": false
+        }
+      ],
+      "trace": [
+        {
+          "event": "target-started",
+          "adapter": "weather",
+          "pid": 216909
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:50.666Z",
+          "phase": "verify",
+          "result": {
+            "isValid": true,
+            "payer": "5WEgh1jZkeqniqdwGK7PZtnLNnFc7RvuWWy5tz5mf5h3"
+          }
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:50.692Z",
+          "phase": "crash_after_send",
+          "signature": "3QxwFUC7gkqJcg6efrm2Tv91RX3ezVU7Y2mJiwg9Fa5wCeEFdG2JsWJuUej5WFSrtYHJVigZUyd5S4R5dVXNfBjY",
+          "messageHash": "e8c9772416341e9af82577452c8ec96dfad1d9e2d83436902a17995d6e752817"
+        },
+        {
+          "event": "target-process-terminated",
+          "exitCode": 86,
+          "signal": null
+        },
+        {
+          "event": "target-started",
+          "adapter": "weather",
+          "pid": 216941
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "send",
+          "signature": "3QxwFUC7gkqJcg6efrm2Tv91RX3ezVU7Y2mJiwg9Fa5wCeEFdG2JsWJuUej5WFSrtYHJVigZUyd5S4R5dVXNfBjY",
+          "err": null,
+          "logs": [
+            "Program ComputeBudget111111111111111111111111111111 invoke [1]",
+            "Program ComputeBudget111111111111111111111111111111 success",
+            "Program ComputeBudget111111111111111111111111111111 invoke [1]",
+            "Program ComputeBudget111111111111111111111111111111 success",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]",
+            "Program log: Memo (len 32)",
+            "Program log: 8c37ba07dc166a11b8f59eb2179ec8d0",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success"
+          ],
+          "unitsConsumed": 692,
+          "slot": 447552000,
+          "runtime": "LiteSVM 1.5.0",
+          "reused": false,
+          "feePayer": "HkYTPTMDgKDaRJCVc2YBPFyQJGhoQSAorsURA3w1Nq5n",
+          "feePayerLamportsBefore": "1994449840",
+          "feePayerLamportsAfter": "1994439839",
+          "feePayerLamportsDelta": "10001"
+        }
+      ],
+      "durationMs": 2819,
+      "limitations": []
+    },
+    {
+      "id": "weather-baseline-fee-policy",
+      "adapter": "weather",
+      "mode": "baseline",
+      "scenario": "fee-policy",
+      "title": "Sponsor compute-budget policy",
+      "expected": "Uncapped fixture accepts compute budget above sponsor policy",
+      "observed": "HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered",
+      "passed": true,
+      "gatePassed": false,
+      "httpStatus": 200,
+      "paymentTransferred": true,
+      "resourceDelivered": true,
+      "feeLamports": "1010000",
+      "before": {
+        "payer": "10000",
+        "merchant": "0",
+        "sponsorLamports": "1994449840"
+      },
+      "after": {
+        "payer": "0",
+        "merchant": "10000",
+        "sponsorLamports": "1993439840"
+      },
+      "requests": [
+        {
+          "step": "paid-request",
+          "status": 200,
+          "body": {
+            "report": {
+              "weather": "sunny",
+              "temperature": 70
+            }
+          },
+          "headers": {},
+          "delivered": true
+        }
+      ],
+      "trace": [
+        {
+          "event": "target-started",
+          "adapter": "weather",
+          "pid": 216953
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:53.160Z",
+          "phase": "verify",
+          "result": {
+            "isValid": true,
+            "payer": "BdLYcAH2tJax7i9Pw49g7QhgNqaeG5gsWAGd6dUqLxFZ"
+          }
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:53.203Z",
+          "phase": "settle",
+          "result": {
+            "success": true,
+            "transaction": "3ndftmVhtQFoEFcQUGXgGyjghtypyePmCB8D1Bu5eWz3kFc99KxPceqN2ijJxePTEbHeyF6pDCegamMd9AZZYVXp",
+            "network": "solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1",
+            "payer": "BdLYcAH2tJax7i9Pw49g7QhgNqaeG5gsWAGd6dUqLxFZ"
+          }
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "send",
+          "signature": "3ndftmVhtQFoEFcQUGXgGyjghtypyePmCB8D1Bu5eWz3kFc99KxPceqN2ijJxePTEbHeyF6pDCegamMd9AZZYVXp",
+          "err": null,
+          "logs": [
+            "Program ComputeBudget111111111111111111111111111111 invoke [1]",
+            "Program ComputeBudget111111111111111111111111111111 success",
+            "Program ComputeBudget111111111111111111111111111111 invoke [1]",
+            "Program ComputeBudget111111111111111111111111111111 success",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 999700 compute units",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]",
+            "Program log: Memo (len 32)",
+            "Program log: 21f00fa253d62e62500503dea0396386",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 999595 compute units",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success"
+          ],
+          "unitsConsumed": 692,
+          "slot": 447552000,
+          "runtime": "LiteSVM 1.5.0",
+          "reused": false,
+          "feePayer": "9sBKjNbjZPWxwySzbFMua9HW479G4HW3xX8qAZEAeen8",
+          "feePayerLamportsBefore": "1994449840",
+          "feePayerLamportsAfter": "1993439840",
+          "feePayerLamportsDelta": "1010000"
+        }
+      ],
+      "durationMs": 1253,
+      "limitations": [
+        "Compute-limit rejection proven; signature-count and price caps are configured but not independently exercised."
+      ]
+    },
+    {
+      "id": "weather-recovered-normal",
+      "adapter": "weather",
+      "mode": "recovered",
+      "scenario": "normal",
+      "title": "Successful payment and delivery",
+      "expected": "One payment produces one recoverable protected result",
+      "observed": "HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered",
+      "passed": true,
+      "gatePassed": true,
+      "httpStatus": 200,
+      "paymentTransferred": true,
+      "resourceDelivered": true,
+      "feeLamports": "10001",
+      "before": {
+        "payer": "10000",
+        "merchant": "0",
+        "sponsorLamports": "1994449840"
+      },
+      "after": {
+        "payer": "0",
+        "merchant": "10000",
+        "sponsorLamports": "1994439839"
+      },
+      "requests": [
+        {
+          "step": "paid-request",
+          "status": 200,
+          "body": {
+            "report": {
+              "weather": "sunny",
+              "temperature": 70
+            }
+          },
+          "headers": {},
+          "delivered": true
+        }
+      ],
+      "trace": [
+        {
+          "event": "target-started",
+          "adapter": "weather",
+          "pid": 216965
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:54.641Z",
+          "phase": "verify",
+          "result": {
+            "isValid": true,
+            "payer": "3pfsUQfKNxTndLrmNoPv1bHhC35d3m4HkiE1EHLzJ96D"
+          }
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:54.684Z",
+          "phase": "journal_prepared",
+          "messageHash": "a0936290bcc8c5e433f05eea438c22ab3942d095f50fa9f48dd8ec216224bf85",
+          "signature": "61iXLhSHTsfYJGSE1ox1Ay52hhgYbGWQkpDFnM46UCTNkpnJCSb5CLmzxdhVL12t7kCKSWCwY52eshLeFx8cS9Mc",
+          "artifactPersisted": true
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:54.694Z",
+          "phase": "settle",
+          "result": {
+            "success": true,
+            "transaction": "61iXLhSHTsfYJGSE1ox1Ay52hhgYbGWQkpDFnM46UCTNkpnJCSb5CLmzxdhVL12t7kCKSWCwY52eshLeFx8cS9Mc",
+            "network": "solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1",
+            "payer": "3pfsUQfKNxTndLrmNoPv1bHhC35d3m4HkiE1EHLzJ96D"
+          }
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "send",
+          "signature": "61iXLhSHTsfYJGSE1ox1Ay52hhgYbGWQkpDFnM46UCTNkpnJCSb5CLmzxdhVL12t7kCKSWCwY52eshLeFx8cS9Mc",
+          "err": null,
+          "logs": [
+            "Program ComputeBudget111111111111111111111111111111 invoke [1]",
+            "Program ComputeBudget111111111111111111111111111111 success",
+            "Program ComputeBudget111111111111111111111111111111 invoke [1]",
+            "Program ComputeBudget111111111111111111111111111111 success",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]",
+            "Program log: Memo (len 32)",
+            "Program log: 0ff1b7cc75e5b08856ac7705146dd2c1",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success"
+          ],
+          "unitsConsumed": 692,
+          "slot": 447552000,
+          "runtime": "LiteSVM 1.5.0",
+          "reused": false,
+          "feePayer": "HaFm6gbPWJRDxdx7PqsdaYRDei49LDDzX2BkPppabrKZ",
+          "feePayerLamportsBefore": "1994449840",
+          "feePayerLamportsAfter": "1994439839",
+          "feePayerLamportsDelta": "10001"
+        }
+      ],
+      "durationMs": 1479,
+      "limitations": []
+    },
+    {
+      "id": "weather-recovered-lost-send-response",
+      "adapter": "weather",
+      "mode": "recovered",
+      "scenario": "lost-send-response",
+      "title": "RPC response lost after settlement",
+      "expected": "One payment produces one recoverable protected result",
+      "observed": "HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered",
+      "passed": true,
+      "gatePassed": true,
+      "httpStatus": 200,
+      "paymentTransferred": true,
+      "resourceDelivered": true,
+      "feeLamports": "10001",
+      "before": {
+        "payer": "10000",
+        "merchant": "0",
+        "sponsorLamports": "1994449840"
+      },
+      "after": {
+        "payer": "0",
+        "merchant": "10000",
+        "sponsorLamports": "1994439839"
+      },
+      "requests": [
+        {
+          "step": "paid-request",
+          "status": 200,
+          "body": {
+            "report": {
+              "weather": "sunny",
+              "temperature": 70
+            }
+          },
+          "headers": {},
+          "delivered": true
+        }
+      ],
+      "trace": [
+        {
+          "event": "target-started",
+          "adapter": "weather",
+          "pid": 216998
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:56.455Z",
+          "phase": "verify",
+          "result": {
+            "isValid": true,
+            "payer": "MeDWHnc5jmUJa4YPnN9ALLVoQP9DARndS6hnrbL92vM"
+          }
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:56.494Z",
+          "phase": "journal_prepared",
+          "messageHash": "0ae6e1557fe765ac9d2bf85ccb2b833b83064c3e12a6ea3f60efa279a98cc8d3",
+          "signature": "4TXcsgDhz8MFBqAQyK4VyaoV1X7xpZdeXQ1krtmPskF9vV5RY3xsA9KUYT4rpzPRjX5k3WF8dG9wkP2TdZiecGa6",
+          "artifactPersisted": true
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:56.511Z",
+          "phase": "ambiguous_send_reconciliation",
+          "signature": "4TXcsgDhz8MFBqAQyK4VyaoV1X7xpZdeXQ1krtmPskF9vV5RY3xsA9KUYT4rpzPRjX5k3WF8dG9wkP2TdZiecGa6",
+          "status": {
+            "slot": 447552000,
+            "confirmations": 1,
+            "err": null,
+            "confirmationStatus": "confirmed"
+          }
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:56.516Z",
+          "phase": "settle",
+          "result": {
+            "success": true,
+            "transaction": "4TXcsgDhz8MFBqAQyK4VyaoV1X7xpZdeXQ1krtmPskF9vV5RY3xsA9KUYT4rpzPRjX5k3WF8dG9wkP2TdZiecGa6",
+            "network": "solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1",
+            "payer": "MeDWHnc5jmUJa4YPnN9ALLVoQP9DARndS6hnrbL92vM"
+          }
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "send",
+          "signature": "4TXcsgDhz8MFBqAQyK4VyaoV1X7xpZdeXQ1krtmPskF9vV5RY3xsA9KUYT4rpzPRjX5k3WF8dG9wkP2TdZiecGa6",
+          "err": null,
+          "logs": [
+            "Program ComputeBudget111111111111111111111111111111 invoke [1]",
+            "Program ComputeBudget111111111111111111111111111111 success",
+            "Program ComputeBudget111111111111111111111111111111 invoke [1]",
+            "Program ComputeBudget111111111111111111111111111111 success",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]",
+            "Program log: Memo (len 32)",
+            "Program log: 2bff62d7063c44d62843731894f21a93",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success"
+          ],
+          "unitsConsumed": 692,
+          "slot": 447552000,
+          "runtime": "LiteSVM 1.5.0",
+          "reused": false,
+          "feePayer": "4M8VpfJQc6fuh63tELwyfBqWoezpWhWq8xmTAAKg1Lg8",
+          "feePayerLamportsBefore": "1994449840",
+          "feePayerLamportsAfter": "1994439839",
+          "feePayerLamportsDelta": "10001"
+        },
+        {
+          "source": "rpc",
+          "event": "drop-send-response-after-runtime-success",
+          "signature": "4TXcsgDhz8MFBqAQyK4VyaoV1X7xpZdeXQ1krtmPskF9vV5RY3xsA9KUYT4rpzPRjX5k3WF8dG9wkP2TdZiecGa6",
+          "requests": 7,
+          "sends": 1,
+          "executed": 1,
+          "simulations": 3,
+          "droppedResponses": 1
+        }
+      ],
+      "durationMs": 1805,
+      "limitations": []
+    },
+    {
+      "id": "weather-recovered-prebroadcast-failure",
+      "adapter": "weather",
+      "mode": "recovered",
+      "scenario": "prebroadcast-failure",
+      "title": "Failure before broadcast",
+      "expected": "No payment and no protected result, including authenticated recovery",
+      "observed": "HTTP 402 · payer 10000→10000 · merchant 0→0 · artifact withheld",
+      "passed": true,
+      "gatePassed": true,
+      "httpStatus": 402,
+      "paymentTransferred": false,
+      "resourceDelivered": false,
+      "feeLamports": "0",
+      "before": {
+        "payer": "10000",
+        "merchant": "0",
+        "sponsorLamports": "1994449840"
+      },
+      "after": {
+        "payer": "10000",
+        "merchant": "0",
+        "sponsorLamports": "1994449840"
+      },
+      "requests": [
+        {
+          "step": "paid-request",
+          "status": 402,
+          "body": {},
+          "headers": {},
+          "delivered": false
+        },
+        {
+          "step": "unpaid-journal-recovery",
+          "status": 409,
+          "body": {
+            "error": "Payment is not confirmed",
+            "paid": false
+          },
+          "headers": {},
+          "delivered": false
+        }
+      ],
+      "trace": [
+        {
+          "event": "target-started",
+          "adapter": "weather",
+          "pid": 217050
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:57.789Z",
+          "phase": "verify",
+          "result": {
+            "isValid": true,
+            "payer": "47FkeawYeMsAiGyiQtSTHGNF6WgY7Mc36D6czP9RExc6"
+          }
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:57.837Z",
+          "phase": "journal_prepared",
+          "messageHash": "82fc1d542764fa33b1ef33246c667fc67ad3453a0a4013e72a3b0923ccae0df0",
+          "signature": "3pjNmMfdXpf933Ag7AksUMfPCkRExo29wNwtGso79cVS2MmKDbYTNpqiNcySnEkTjenxnVaaW3VB6Hq1nLo7Jute",
+          "artifactPersisted": true
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:57.837Z",
+          "phase": "before_send_failure",
+          "signature": "3pjNmMfdXpf933Ag7AksUMfPCkRExo29wNwtGso79cVS2MmKDbYTNpqiNcySnEkTjenxnVaaW3VB6Hq1nLo7Jute"
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:57.844Z",
+          "phase": "settle",
+          "result": {
+            "success": false,
+            "errorReason": "invalid_exact_svm_transaction_failed",
+            "transaction": "",
+            "network": "solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1",
+            "payer": "47FkeawYeMsAiGyiQtSTHGNF6WgY7Mc36D6czP9RExc6"
+          }
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        }
+      ],
+      "durationMs": 1337,
+      "limitations": []
+    },
+    {
+      "id": "weather-recovered-confirmation-failure",
+      "adapter": "weather",
+      "mode": "recovered",
+      "scenario": "confirmation-failure",
+      "title": "Confirmation observation failure",
+      "expected": "One payment produces one recoverable protected result",
+      "observed": "HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered",
+      "passed": true,
+      "gatePassed": true,
+      "httpStatus": 200,
+      "paymentTransferred": true,
+      "resourceDelivered": true,
+      "feeLamports": "10001",
+      "before": {
+        "payer": "10000",
+        "merchant": "0",
+        "sponsorLamports": "1994449840"
+      },
+      "after": {
+        "payer": "0",
+        "merchant": "10000",
+        "sponsorLamports": "1994439839"
+      },
+      "requests": [
+        {
+          "step": "paid-request",
+          "status": 200,
+          "body": {
+            "report": {
+              "weather": "sunny",
+              "temperature": 70
+            }
+          },
+          "headers": {},
+          "delivered": true
+        }
+      ],
+      "trace": [
+        {
+          "event": "target-started",
+          "adapter": "weather",
+          "pid": 217062
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:59.166Z",
+          "phase": "verify",
+          "result": {
+            "isValid": true,
+            "payer": "5aHukKVxjGN2eZ5H4ZYTA8vu3PzFZdp1SmfmTfNrJWVJ"
+          }
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:59.214Z",
+          "phase": "journal_prepared",
+          "messageHash": "e9c6e13b140ff3cf420c54dd8a48a139be1e2b3dfccff4d026d41d2011e5b91a",
+          "signature": "5XYzv5qxBeZnZkGcqgdkbz9SvhAqhP9PjYdPydNHSiXW62rb5CXca7Qm2SQt6fZ5bYEfhuV3SMoVM8ue7wyEQo3q",
+          "artifactPersisted": true
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:59.220Z",
+          "phase": "confirm_observation_failure"
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:59.229Z",
+          "phase": "settle",
+          "result": {
+            "success": false,
+            "errorReason": "settlement_pending",
+            "errorMessage": "CONTROLLED_CONFIRM_OBSERVATION_FAILURE",
+            "transaction": "5XYzv5qxBeZnZkGcqgdkbz9SvhAqhP9PjYdPydNHSiXW62rb5CXca7Qm2SQt6fZ5bYEfhuV3SMoVM8ue7wyEQo3q",
+            "network": "solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1",
+            "payer": "5aHukKVxjGN2eZ5H4ZYTA8vu3PzFZdp1SmfmTfNrJWVJ"
+          }
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:59.240Z",
+          "phase": "settlement_retry_reconciled",
+          "messageHash": "e9c6e13b140ff3cf420c54dd8a48a139be1e2b3dfccff4d026d41d2011e5b91a",
+          "signature": "5XYzv5qxBeZnZkGcqgdkbz9SvhAqhP9PjYdPydNHSiXW62rb5CXca7Qm2SQt6fZ5bYEfhuV3SMoVM8ue7wyEQo3q"
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:17:59.240Z",
+          "phase": "settle",
+          "result": {
+            "success": true,
+            "network": "solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1",
+            "transaction": "5XYzv5qxBeZnZkGcqgdkbz9SvhAqhP9PjYdPydNHSiXW62rb5CXca7Qm2SQt6fZ5bYEfhuV3SMoVM8ue7wyEQo3q",
+            "payer": "5aHukKVxjGN2eZ5H4ZYTA8vu3PzFZdp1SmfmTfNrJWVJ"
+          }
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "send",
+          "signature": "5XYzv5qxBeZnZkGcqgdkbz9SvhAqhP9PjYdPydNHSiXW62rb5CXca7Qm2SQt6fZ5bYEfhuV3SMoVM8ue7wyEQo3q",
+          "err": null,
+          "logs": [
+            "Program ComputeBudget111111111111111111111111111111 invoke [1]",
+            "Program ComputeBudget111111111111111111111111111111 success",
+            "Program ComputeBudget111111111111111111111111111111 invoke [1]",
+            "Program ComputeBudget111111111111111111111111111111 success",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]",
+            "Program log: Memo (len 32)",
+            "Program log: a39ec51a9e2197c4eb9a7f4c69ac5930",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success"
+          ],
+          "unitsConsumed": 692,
+          "slot": 447552000,
+          "runtime": "LiteSVM 1.5.0",
+          "reused": false,
+          "feePayer": "AwyKiciFphMYs2QF9sVaTnus7sVUGPwEjJtYv1Po6KES",
+          "feePayerLamportsBefore": "1994449840",
+          "feePayerLamportsAfter": "1994439839",
+          "feePayerLamportsDelta": "10001"
+        }
+      ],
+      "durationMs": 1359,
+      "limitations": []
+    },
+    {
+      "id": "weather-recovered-process-restart",
+      "adapter": "weather",
+      "mode": "recovered",
+      "scenario": "process-restart",
+      "title": "Process dies after settlement",
+      "expected": "One payment produces one recoverable protected result",
+      "observed": "HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered",
+      "passed": true,
+      "gatePassed": true,
+      "httpStatus": 200,
+      "paymentTransferred": true,
+      "resourceDelivered": true,
+      "feeLamports": "10001",
+      "before": {
+        "payer": "10000",
+        "merchant": "0",
+        "sponsorLamports": "1994449840"
+      },
+      "after": {
+        "payer": "0",
+        "merchant": "10000",
+        "sponsorLamports": "1994439839"
+      },
+      "requests": [
+        {
+          "step": "paid-request",
+          "status": 0,
+          "body": {
+            "error": "Transport disconnected or timed out"
+          },
+          "delivered": false
+        },
+        {
+          "step": "payer-recovery-after-restart",
+          "status": 200,
+          "body": {
+            "report": {
+              "weather": "sunny",
+              "temperature": 70
+            }
+          },
+          "headers": {},
+          "delivered": true
+        }
+      ],
+      "trace": [
+        {
+          "event": "target-started",
+          "adapter": "weather",
+          "pid": 217094
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:18:00.465Z",
+          "phase": "verify",
+          "result": {
+            "isValid": true,
+            "payer": "8kBLeoYxBRh1UjynjHLxT22eKnba48C6pdn7vtY2YNmT"
+          }
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:18:00.505Z",
+          "phase": "journal_prepared",
+          "messageHash": "5840e46a4aa9f55196f743aca47eaf7e1e329fed50953e005a23e13e7dfa718d",
+          "signature": "kx1v87hQmsJRu5vJpFVUg5r55YAxv4fW5wq3xtBdewYxU88PoE64T4rgASPTA7Pk7Kp2pYfFpqUgHA29kgPZFjL",
+          "artifactPersisted": true
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:18:00.511Z",
+          "phase": "crash_after_send",
+          "signature": "kx1v87hQmsJRu5vJpFVUg5r55YAxv4fW5wq3xtBdewYxU88PoE64T4rgASPTA7Pk7Kp2pYfFpqUgHA29kgPZFjL",
+          "messageHash": "5840e46a4aa9f55196f743aca47eaf7e1e329fed50953e005a23e13e7dfa718d"
+        },
+        {
+          "event": "target-process-terminated",
+          "exitCode": 86,
+          "signal": null
+        },
+        {
+          "event": "durable-journal-observed-before-restart",
+          "entries": 1,
+          "state": "prepared",
+          "artifactPersisted": true
+        },
+        {
+          "event": "target-started",
+          "adapter": "weather",
+          "pid": 217125
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:18:01.637Z",
+          "phase": "artifact_recovered",
+          "messageHash": "5840e46a4aa9f55196f743aca47eaf7e1e329fed50953e005a23e13e7dfa718d",
+          "signature": "kx1v87hQmsJRu5vJpFVUg5r55YAxv4fW5wq3xtBdewYxU88PoE64T4rgASPTA7Pk7Kp2pYfFpqUgHA29kgPZFjL",
+          "payerAuthenticated": true
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "send",
+          "signature": "kx1v87hQmsJRu5vJpFVUg5r55YAxv4fW5wq3xtBdewYxU88PoE64T4rgASPTA7Pk7Kp2pYfFpqUgHA29kgPZFjL",
+          "err": null,
+          "logs": [
+            "Program ComputeBudget111111111111111111111111111111 invoke [1]",
+            "Program ComputeBudget111111111111111111111111111111 success",
+            "Program ComputeBudget111111111111111111111111111111 invoke [1]",
+            "Program ComputeBudget111111111111111111111111111111 success",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]",
+            "Program log: Memo (len 32)",
+            "Program log: 32165012141b68b8fb59bfd8b479834f",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success"
+          ],
+          "unitsConsumed": 692,
+          "slot": 447552000,
+          "runtime": "LiteSVM 1.5.0",
+          "reused": false,
+          "feePayer": "7LRvaraWdJvjza4dEyZmKgrJDrVf242zB6HicD164Er8",
+          "feePayerLamportsBefore": "1994449840",
+          "feePayerLamportsAfter": "1994439839",
+          "feePayerLamportsDelta": "10001"
+        }
+      ],
+      "durationMs": 2387,
+      "limitations": []
+    },
+    {
+      "id": "weather-recovered-fee-policy",
+      "adapter": "weather",
+      "mode": "recovered",
+      "scenario": "fee-policy",
+      "title": "Sponsor compute-budget policy",
+      "expected": "Configured SDK cap rejects before payment",
+      "observed": "HTTP 402 · payer 10000→10000 · merchant 0→0 · artifact withheld",
+      "passed": true,
+      "gatePassed": true,
+      "httpStatus": 402,
+      "paymentTransferred": false,
+      "resourceDelivered": false,
+      "feeLamports": "0",
+      "before": {
+        "payer": "10000",
+        "merchant": "0",
+        "sponsorLamports": "1994449840"
+      },
+      "after": {
+        "payer": "10000",
+        "merchant": "0",
+        "sponsorLamports": "1994449840"
+      },
+      "requests": [
+        {
+          "step": "paid-request",
+          "status": 402,
+          "body": {},
+          "headers": {},
+          "delivered": false
+        }
+      ],
+      "trace": [
+        {
+          "event": "target-started",
+          "adapter": "weather",
+          "pid": 217138
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:18:02.849Z",
+          "phase": "verify",
+          "result": {
+            "isValid": false,
+            "invalidReason": "invalid_exact_svm_payload_transaction_instructions_compute_limit_instruction_too_high",
+            "payer": ""
+          }
+        }
+      ],
+      "durationMs": 1200,
+      "limitations": [
+        "Compute-limit rejection proven; signature-count and price caps are configured but not independently exercised."
+      ]
+    },
+    {
+      "id": "weather-recovered-wrong-payer",
+      "adapter": "weather",
+      "mode": "recovered",
+      "scenario": "wrong-payer",
+      "title": "Wrong wallet attempts recovery",
+      "expected": "Reject wrong wallet; rightful payer recovers stored result",
+      "observed": "HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered",
+      "passed": true,
+      "gatePassed": true,
+      "httpStatus": 200,
+      "paymentTransferred": true,
+      "resourceDelivered": true,
+      "feeLamports": "10001",
+      "before": {
+        "payer": "10000",
+        "merchant": "0",
+        "sponsorLamports": "1994449840"
+      },
+      "after": {
+        "payer": "0",
+        "merchant": "10000",
+        "sponsorLamports": "1994439839"
+      },
+      "requests": [
+        {
+          "step": "paid-request",
+          "status": 0,
+          "body": {
+            "error": "Transport disconnected or timed out"
+          },
+          "delivered": false
+        },
+        {
+          "step": "public-payment-replay",
+          "status": 409,
+          "body": {
+            "error": "Payment already prepared; use payer-authenticated /recover"
+          },
+          "headers": {},
+          "delivered": false
+        },
+        {
+          "step": "wrong-wallet-recovery",
+          "status": 403,
+          "body": {
+            "error": "Payer signature required"
+          },
+          "headers": {},
+          "delivered": false
+        },
+        {
+          "step": "payer-recovery-after-restart",
+          "status": 200,
+          "body": {
+            "report": {
+              "weather": "sunny",
+              "temperature": 70
+            }
+          },
+          "headers": {},
+          "delivered": true
+        }
+      ],
+      "trace": [
+        {
+          "event": "target-started",
+          "adapter": "weather",
+          "pid": 217150
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:18:04.458Z",
+          "phase": "verify",
+          "result": {
+            "isValid": true,
+            "payer": "DVUGG9QUH7GyemcvCvr5NFDJ43R9rB5SNL6jYoSfcXW6"
+          }
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:18:04.508Z",
+          "phase": "journal_prepared",
+          "messageHash": "4b412eb67d6a4fe1534be127e9f905df9d6fbcc83217ee265e17e1d8a8782239",
+          "signature": "4cdT5B9wfJMvDCkq3AiwcgzvZpyuvt3GJfFYqH4o1DuQDauuLUZv9N4evarUKsSYGD7BhqDKoqpV5DYh9FSd9eUM",
+          "artifactPersisted": true
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:18:04.514Z",
+          "phase": "crash_after_send",
+          "signature": "4cdT5B9wfJMvDCkq3AiwcgzvZpyuvt3GJfFYqH4o1DuQDauuLUZv9N4evarUKsSYGD7BhqDKoqpV5DYh9FSd9eUM",
+          "messageHash": "4b412eb67d6a4fe1534be127e9f905df9d6fbcc83217ee265e17e1d8a8782239"
+        },
+        {
+          "event": "target-process-terminated",
+          "exitCode": 86,
+          "signal": null
+        },
+        {
+          "event": "durable-journal-observed-before-restart",
+          "entries": 1,
+          "state": "prepared",
+          "artifactPersisted": true
+        },
+        {
+          "event": "target-started",
+          "adapter": "weather",
+          "pid": 217195
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:18:05.724Z",
+          "phase": "recovery_auth_rejected",
+          "messageHash": "4b412eb67d6a4fe1534be127e9f905df9d6fbcc83217ee265e17e1d8a8782239"
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:18:05.737Z",
+          "phase": "artifact_recovered",
+          "messageHash": "4b412eb67d6a4fe1534be127e9f905df9d6fbcc83217ee265e17e1d8a8782239",
+          "signature": "4cdT5B9wfJMvDCkq3AiwcgzvZpyuvt3GJfFYqH4o1DuQDauuLUZv9N4evarUKsSYGD7BhqDKoqpV5DYh9FSd9eUM",
+          "payerAuthenticated": true
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "send",
+          "signature": "4cdT5B9wfJMvDCkq3AiwcgzvZpyuvt3GJfFYqH4o1DuQDauuLUZv9N4evarUKsSYGD7BhqDKoqpV5DYh9FSd9eUM",
+          "err": null,
+          "logs": [
+            "Program ComputeBudget111111111111111111111111111111 invoke [1]",
+            "Program ComputeBudget111111111111111111111111111111 success",
+            "Program ComputeBudget111111111111111111111111111111 invoke [1]",
+            "Program ComputeBudget111111111111111111111111111111 success",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]",
+            "Program log: Memo (len 32)",
+            "Program log: 9b1e17fb4ef2c94781bfe3a940c57c86",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success"
+          ],
+          "unitsConsumed": 692,
+          "slot": 447552000,
+          "runtime": "LiteSVM 1.5.0",
+          "reused": false,
+          "feePayer": "6yJN9eVGTVqDkNJyYTgKebPcxi3SSzDWtoaybcthKTGU",
+          "feePayerLamportsBefore": "1994449840",
+          "feePayerLamportsAfter": "1994439839",
+          "feePayerLamportsDelta": "10001"
+        }
+      ],
+      "durationMs": 2874,
+      "limitations": []
+    },
+    {
+      "id": "weather-recovered-recovery-replay",
+      "adapter": "weather",
+      "mode": "recovered",
+      "scenario": "recovery-replay",
+      "title": "Repeated authorized recovery",
+      "expected": "Repeated recovery returns same artifact without another debit",
+      "observed": "HTTP 200 · payer 10000→0 · merchant 0→10000 · artifact delivered",
+      "passed": true,
+      "gatePassed": true,
+      "httpStatus": 200,
+      "paymentTransferred": true,
+      "resourceDelivered": true,
+      "feeLamports": "10001",
+      "before": {
+        "payer": "10000",
+        "merchant": "0",
+        "sponsorLamports": "1994449840"
+      },
+      "after": {
+        "payer": "0",
+        "merchant": "10000",
+        "sponsorLamports": "1994439839"
+      },
+      "requests": [
+        {
+          "step": "paid-request",
+          "status": 0,
+          "body": {
+            "error": "Transport disconnected or timed out"
+          },
+          "delivered": false
+        },
+        {
+          "step": "payer-recovery-after-restart",
+          "status": 200,
+          "body": {
+            "report": {
+              "weather": "sunny",
+              "temperature": 70
+            }
+          },
+          "headers": {},
+          "delivered": true
+        },
+        {
+          "step": "repeat-recovery",
+          "status": 200,
+          "body": {
+            "report": {
+              "weather": "sunny",
+              "temperature": 70
+            }
+          },
+          "headers": {},
+          "delivered": true
+        },
+        {
+          "step": "repeat-recovery",
+          "status": 200,
+          "body": {
+            "report": {
+              "weather": "sunny",
+              "temperature": 70
+            }
+          },
+          "headers": {},
+          "delivered": true
+        },
+        {
+          "step": "repeat-recovery",
+          "status": 200,
+          "body": {
+            "report": {
+              "weather": "sunny",
+              "temperature": 70
+            }
+          },
+          "headers": {},
+          "delivered": true
+        }
+      ],
+      "trace": [
+        {
+          "event": "target-started",
+          "adapter": "weather",
+          "pid": 217228
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:18:07.441Z",
+          "phase": "verify",
+          "result": {
+            "isValid": true,
+            "payer": "6FihzasEqtDUHCbZYW4hw9gpTJFRWjH2nQSyMGfon4mK"
+          }
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:18:07.474Z",
+          "phase": "journal_prepared",
+          "messageHash": "415aa3015550d6a09531b5358e4f2d521e941639bb9723066753ee816af8b6dc",
+          "signature": "4AV7Dhd6EUDynQJZEeVboDr4cQ4LCNR2DZFJutvrvQYsrSXCE43DjFeYT8N6VEjvXM7p4XvW6eKnXzP599PSn7fu",
+          "artifactPersisted": true
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:18:07.479Z",
+          "phase": "crash_after_send",
+          "signature": "4AV7Dhd6EUDynQJZEeVboDr4cQ4LCNR2DZFJutvrvQYsrSXCE43DjFeYT8N6VEjvXM7p4XvW6eKnXzP599PSn7fu",
+          "messageHash": "415aa3015550d6a09531b5358e4f2d521e941639bb9723066753ee816af8b6dc"
+        },
+        {
+          "event": "target-process-terminated",
+          "exitCode": 86,
+          "signal": null
+        },
+        {
+          "event": "durable-journal-observed-before-restart",
+          "entries": 1,
+          "state": "prepared",
+          "artifactPersisted": true
+        },
+        {
+          "event": "target-started",
+          "adapter": "weather",
+          "pid": 217240
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:18:08.590Z",
+          "phase": "artifact_recovered",
+          "messageHash": "415aa3015550d6a09531b5358e4f2d521e941639bb9723066753ee816af8b6dc",
+          "signature": "4AV7Dhd6EUDynQJZEeVboDr4cQ4LCNR2DZFJutvrvQYsrSXCE43DjFeYT8N6VEjvXM7p4XvW6eKnXzP599PSn7fu",
+          "payerAuthenticated": true
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:18:08.607Z",
+          "phase": "artifact_recovered",
+          "messageHash": "415aa3015550d6a09531b5358e4f2d521e941639bb9723066753ee816af8b6dc",
+          "signature": "4AV7Dhd6EUDynQJZEeVboDr4cQ4LCNR2DZFJutvrvQYsrSXCE43DjFeYT8N6VEjvXM7p4XvW6eKnXzP599PSn7fu",
+          "payerAuthenticated": true
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:18:08.609Z",
+          "phase": "artifact_recovered",
+          "messageHash": "415aa3015550d6a09531b5358e4f2d521e941639bb9723066753ee816af8b6dc",
+          "signature": "4AV7Dhd6EUDynQJZEeVboDr4cQ4LCNR2DZFJutvrvQYsrSXCE43DjFeYT8N6VEjvXM7p4XvW6eKnXzP599PSn7fu",
+          "payerAuthenticated": true
+        },
+        {
+          "source": "target",
+          "at": "2026-10-09T19:18:08.612Z",
+          "phase": "artifact_recovered",
+          "messageHash": "415aa3015550d6a09531b5358e4f2d521e941639bb9723066753ee816af8b6dc",
+          "signature": "4AV7Dhd6EUDynQJZEeVboDr4cQ4LCNR2DZFJutvrvQYsrSXCE43DjFeYT8N6VEjvXM7p4XvW6eKnXzP599PSn7fu",
+          "payerAuthenticated": true
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "simulate",
+          "sigVerify": false,
+          "err": null,
+          "unitsConsumed": 692
+        },
+        {
+          "source": "rpc",
+          "event": "send",
+          "signature": "4AV7Dhd6EUDynQJZEeVboDr4cQ4LCNR2DZFJutvrvQYsrSXCE43DjFeYT8N6VEjvXM7p4XvW6eKnXzP599PSn7fu",
+          "err": null,
+          "logs": [
+            "Program ComputeBudget111111111111111111111111111111 invoke [1]",
+            "Program ComputeBudget111111111111111111111111111111 success",
+            "Program ComputeBudget111111111111111111111111111111 invoke [1]",
+            "Program ComputeBudget111111111111111111111111111111 success",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 105 of 19700 compute units",
+            "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr invoke [1]",
+            "Program log: Memo (len 32)",
+            "Program log: d1172f30488535c7854c14e98d565d75",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr consumed 287 of 19595 compute units",
+            "Program MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr success"
+          ],
+          "unitsConsumed": 692,
+          "slot": 447552000,
+          "runtime": "LiteSVM 1.5.0",
+          "reused": false,
+          "feePayer": "F8znouFK2Gzsp64NsNttPcXwscgooYV8RWWPgu2uMffu",
+          "feePayerLamportsBefore": "1994449840",
+          "feePayerLamportsAfter": "1994439839",
+          "feePayerLamportsDelta": "10001"
+        }
+      ],
+      "durationMs": 2863,
+      "limitations": []
+    }
+  ],
+  "versions": {
+    "x402": "2.28.0",
+    "litesvm": "1.5.0",
+    "node": "v26.8.1"
+  },
+  "limitations": [
+    "Middleware deployments exercise both bundled and external application adapters.",
+    "All assets are ephemeral local test tokens; no mainnet or devnet transactions.",
+    "Recovery example assumes trusted RPC, single journal writer and stored immutable artifacts.",
+    "No arbitrary business-side-effect exactly-once guarantee, chain reorg, blockhash-expiry, database-corruption or distributed-consensus coverage.",
+    "A passing release gate covers these scenarios and is not a security audit."
+  ]
+}

@@ -13,7 +13,7 @@ else{
     ? ['hono', 'express', 'weather']
     : values.adapter
     ? [values.adapter as Adapter]
-    : undefined;
+    : ['hono', 'express', 'weather'];
   const report=await runSuite({profile,adapters,outputDir:values.output,targetEntrypoint:values.target});
   console.log(`\n${report.summary.passed}/${report.summary.total} experiment checks passed. ${report.summary.gateFailed} release-gate failures.\nReport: ${values.output??'evidence'}/${report.id}.html`);
   process.exitCode=command==='compare'?(report.summary.failed?1:0):(report.results.every(r=>r.gatePassed)&&report.summary.failed===0?0:1);
