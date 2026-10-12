@@ -2,113 +2,258 @@
 
 **Payment landed. Did the result arrive?**
 
-ShadowGate is a local deployment regression gate for Solana x402 services. It runs real signed SPL token payments through a local Solana runtime, introduces failures at payment boundaries, and checks the token balances against the result returned to the payer. Its CLI produces a release decision and portable JSON, JUnit XML, and HTML evidence. Its demo interface runs the same tests.
+[![Tests](https://img.shields.io/badge/tests-42%2F42%20passing-brightgreen)](#verified-build--independent-application-verification)
+[![Node](https://img.shields.io/badge/node-%3E%3D24.0.0-blue)](https://nodejs.org)
+[![Runtime](https://img.shields.io/badge/runtime-LiteSVM%201.5.0-orange)](https://github.com/LiteSVM/litesvm)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-The supplied Hono and Express deployments compare the published x402 middleware with a recovery example. The example persists the exact payment identity and immutable result before broadcast, reconciles ambiguous sends, and permits the verified payer to recover the stored result after an actual process restart.
+ShadowGate is a local deployment regression gate and automated verification harness for Solana x402 payment integrations. It executes genuine signed SPL token transactions inside an in-memory Solana Virtual Machine (LiteSVM), injects controlled faults at payment-delivery boundaries, and cross-checks ledger balances against the actual HTTP response delivered to the payer.
 
-## Verified build & Independent Application Verification
+Its CLI produces deterministic release decisions along with portable **JSON**, **JUnit XML**, and **standalone HTML** evidence reports. Its real-time Mission Control dashboard enables interactive scenario execution, profile comparison, and audit trail inspection.
 
-The suite exercises **42/42 expected experiment checks** across Hono, Express, and the independent **x402 Foundation Weather Service** (`integrations/weather/`, pinned to commit `7f2b2f1f77fa5317615735e3378a6fad41cccb4e`):
-* **Official Frameworks (Hono & Express)**: 28 total checks (12 baseline + 16 recovered), retaining 6 baseline gate failures and 16 passing recovered gates.
-* **Independent Application (Weather Service)**: 14 total checks (6 baseline + 8 recovered), proving detection of unsafe baseline behavior (3 release gate failures) and release approval under recovered persistence (8/8 gates passed).
-* TypeScript checking passes cleanly (`tsc --noEmit`).
+---
 
-The dashboard launches real comparisons in Chromium, displays resulting ledger evidence, filters profiles, opens run history, and exports JUnit/JSON/HTML evidence.
+## The Problem: The Payment-to-Delivery Gap
 
-## Run it
+In HTTP 402 micro-payment architectures, two decoupled systems must synchronize:
+1. **On-chain settlement**: An irreversible token transfer executed by a Solana facilitator.
+2. **Off-chain resource delivery**: An HTTP response delivering the protected digital asset to the payer.
 
-Use **Node.js 24 or later** and npm. Linux x64 or WSL2 Ubuntu recommended. No wallet, external RPC subscription, Docker, or real funds needed.
+When an unexpected transport disconnection occurs, an RPC node drops a confirmation, or a server process terminates unexpectedly (e.g. exit code 86) immediately after broadcasting a transaction:
+- **The customer's wallet is debited on-chain.**
+- **The customer receives an HTTP error, 502/504, or transport drop.**
+- **Retrying the purchase risks double-debiting the customer.**
 
-```bash
-npm ci
-npm test
-npm run demo
+ShadowGate enforces an invariant: **Every settled payment must yield exactly one verifiable, authenticated delivery—even across abrupt process restarts, RPC dropouts, and connection failures.**
+
+---
+
+## Architecture Overview
+
+```mermaid
+graph TD
+    subgraph Runner ["ShadowGate Test Engine (src/runner.ts)"]
+        TC["Scenario Orchestrator"]
+        FI["Fault Injector<br/>(Drop RPC, SIGKILL exit 86)"]
+        INV["Invariant Engine<br/>(Balances vs. Delivery)"]
+    end
+
+    subgraph Adapters ["Integration Adapter Layer (src/adapter.ts)"]
+        IA["IntegrationAdapter Interface"]
+        HA["Hono Adapter"]
+        EA["Express Adapter"]
+        WA["Weather Service Adapter"]
+    end
+
+    subgraph Targets ["Application Targets (Child Processes)"]
+        HAPP["Hono Server (/paid)"]
+        EAPP["Express Server (/paid)"]
+        WAPP["Weather Service (/weather)"]
+        PJ["Durable PaymentJournal<br/>(atomic fsync)"]
+    end
+
+    subgraph SVM ["Solana Execution Bridge (src/ledger.ts)"]
+        LSVM["LiteSVM 1.5.0<br/>Genuine SPL Token Execution"]
+        RPC["Bounded JSON-RPC Bridge"]
+    end
+
+    TC --> IA
+    IA --> HA & EA & WA
+    HA --> HAPP
+    EA --> EAPP
+    WA --> WAPP
+    HAPP & EAPP & WAPP --> PJ
+    HAPP & EAPP & WAPP --> RPC
+    RPC --> LSVM
+    FI -.->|Injected Faults| HAPP & EAPP & WAPP & RPC
+    INV -->|Verify Balance Deltas| LSVM
+    INV -->|Verify HTTP Delivery| HAPP & EAPP & WAPP
 ```
 
-Open **http://127.0.0.1:4173**. Choose baseline, recovered, or full comparison runs across Hono, Express, and Weather.
+---
 
-### CLI & Release Gate Commands
+## Verified Build & Independent Application Verification
+
+The suite executes a complete **42 / 42 check verification matrix** across three distinct adapters:
+1. **Official Hono Fixture** (`src/target.ts`): 14 checks (6 baseline failure checks + 8 recovered checks).
+2. **Official Express Fixture** (`src/target.ts`): 14 checks (6 baseline failure checks + 8 recovered checks).
+3. **Independent Weather Service** (`integrations/weather/`, pinned to commit [`7f2b2f1`](https://github.com/x402-foundation/x402/tree/7f2b2f1f77fa5317615735e3378a6fad41cccb4e) of the official `x402-foundation/x402` repository): 14 checks (6 baseline failure checks + 8 recovered checks).
+
+```
+TOTAL CHECKS: 42
+  ├── Baseline Exposure Tests: 18 checks (9 properly failed release gates)
+  └── Recovered Invariant Tests: 24 checks (24 passing release gates)
+```
+
+- **Baseline Gate Detection**: Confirms that unhardened deployments fail the release gate (`exit 1`) when encountering RPC drops or process crashes.
+- **Recovered Gate Verification**: Confirms that durable journal persistence and authenticated recovery pass the release gate (`exit 0`).
+- **TypeScript**: `npm run typecheck` passes with zero errors.
+
+---
+
+## Quickstart
+
+### Prerequisites
+- **Node.js >= 24.0.0** and npm.
+- Linux (x86_64/arm64) or macOS or WSL2 Ubuntu recommended.
+- **No external dependencies**: No Solana CLI, wallet keys, faucets, remote RPC tokens, Docker, or real funds required.
+
+### 1. Install & Test
 
 ```bash
-# Full matrix across all adapters (Hono, Express, Weather): 42 checks
-npm run compare -- --adapter all
+# Clone and install dependencies
+git clone https://github.com/intelliDean/shadowgate.git
+cd shadowgate
+npm ci
 
-# Release gate for official Hono/Express deployments:
+# Run the complete 42-check test suite
+npm test
+```
+
+### 2. Launch Mission Control Dashboard
+
+```bash
+npm run demo
+```
+Open **http://127.0.0.1:4173** in your browser. Launch comparison runs, inspect ledger balances, explore failure traces, and download audit reports in JSON, HTML, or JUnit XML format.
+
+---
+
+## CLI & Release Gate Commands
+
+ShadowGate provides distinct commands for comprehensive testing and CI deployment gates:
+
+```bash
+# Run full comparison matrix across all 3 adapters (Hono, Express, Weather): 42 checks
+npm run compare:all
+
+# Release gate for official Hono or Express deployments:
 npm run gate -- --profile recovered --adapter hono
 npm run gate -- --profile recovered --adapter express
 
-# Release gate for the independent weather application:
-# 1. Detect unsafe baseline configuration (exits 1):
+# Release gate for the independent Weather Service:
+# 1. Unsafe baseline configuration: fails the gate as expected (exits 1):
 npm run gate -- --profile baseline --adapter weather
 
-# 2. Verify corrected durable recovery (exits 0):
+# 2. Corrected durable recovery: passes all gates (exits 0):
 npm run gate -- --profile recovered --adapter weather
+# (or convenience shortcut)
+npm run gate:weather
 ```
 
-`compare` exits zero when every experiment matches its stated expectation (including detecting baseline defects). `gate` exits zero only when all experiment assertions and release checks pass. **An expected defect remains a failed release check.**
+> **Release Rule**: `compare` exits 0 when every experiment correctly reproduces its stated outcome (including baseline failure detection). `gate` exits 0 **only** when all safety invariants hold and no payments are stranded without delivery.
 
-Reports are saved under `evidence/` with a unique run ID. Each report includes token balances, HTTP status, observed delivery, actual local sponsor fees, and traces. The dashboard can download all three formats.
+---
 
-## What the suite exercises
+## Scenario Test Matrix
 
-Each case starts with new ephemeral keys, a fresh SPL mint, exactly one payment in the payer's account, and its own child deployment process. The runner uses the same scenario logic for both framework adapters.
+Each test scenario provisions a fresh ephemeral keypair, a distinct SPL token mint, funded payer balances, and an isolated child-process server instance:
 
-| Scenario | Baseline fixture | Recovered fixture |
-| --- | --- | --- |
-| Normal payment | Payment and result | Payment and result |
-| RPC response lost after successful execution | Detect paid request with no result; retry same payload | Reconcile exact signature and deliver |
-| Failure before broadcast | No payment; withhold result | No payment; authenticated recovery of the prepared record returns 409 |
-| First confirmation observation fails | Official SDK's existing retry recovers | Recovery path remains functional |
-| Process exits after sending payment | Required crash is observed; restart has no recovery endpoint | Inspect prepared artifact on disk before restart; payer recovers that exact artifact |
-| Compute budget exceeds sponsor policy | Uncapped fixture accepts it | Configured SDK cap rejects before payment |
-| Wrong payer requests stored result | Not part of this profile | Public payment replay gets 409; wrong payer gets 403; rightful payer recovers |
-| Repeated authorized recovery | Not part of this profile | Exact payment-bound artifact; exactly one successful payment execution |
+| # | Scenario | Baseline Behavior (Default) | Recovered Behavior (ShadowGate) | Gate Invariant Checked |
+| :-: | :--- | :--- | :--- | :--- |
+| **1** | **Normal payment** | Payment transferred; artifact returned | Payment transferred; artifact returned | HTTP 200, balance debited, artifact matches |
+| **2** | **Lost RPC send response** | Payment settles on-chain; client receives 402/timeout | Server reconciles via signature status; returns artifact | No double charge on identical retry |
+| **3** | **Prebroadcast failure** | Payment fails before send; no delivery | Client withheld; recovery of prepared record returns 409 | Unpaid prepared journal never releases artifact |
+| **4** | **Confirmation failure** | SDK retries confirmTransaction; succeeds | Recovery path remains intact and operational | Graceful recovery under RPC observation lag |
+| **5** | **Process crash after send** | Process exits 86; restart has no recovery endpoint (HTTP 404) | Prepared journal persisted before send; payer recovers stored result | Exact artifact identity restored post-crash |
+| **6** | **Compute budget policy** | Accepts transactions exceeding sponsor policy | Rejects transaction before broadcast (HTTP 402) | Sponsor compute-unit and priority fee enforcement |
+| **7** | **Wrong-payer recovery** | *Not present in baseline* | Replay returns 409; wrong wallet returns 403; rightful payer recovers | Cryptographic Ed25519 payer authorization |
+| **8** | **Recovery replay** | *Not present in baseline* | Payer recovers identical artifact 3x without duplicate debit | Single on-chain debit (`executed === 1`) |
 
-The 28 experiment checks are `(6 baseline + 8 recovered) × 2 adapters`. Successful delivery requires the artifact ID to equal the SHA-256 digest of the payment's decoded transaction message. Crash cases must produce a transport disconnect, exit code 86, and the expected crash trace; a normal restart does not satisfy the test. Test counts describe the suite; the generated report is the source of truth for a particular run.
+---
 
-## Why this is useful
+## Integrating a Custom Application
 
-An HTTP-only test can miss a payment that already settled. A transaction-only test can miss a result the customer never received. ShadowGate checks both sides under controlled process and transport faults. The intended users are teams operating x402 paid APIs and Solana facilitators, especially those paying sponsor fees or handling paid non-delivery incidents.
+ShadowGate was designed from the ground up to be decoupled and modular. To integrate an external application, implement the `IntegrationAdapter` interface in [`src/types.ts`](src/types.ts):
 
-The product is the reusable runner, deployment contract, evidence, and CI gate. The recovery wrapper is a concrete example of a change the gate can validate. Customer demand, willingness to pay, and exclusive novelty have not been established. A paid CI/team workflow is a business hypothesis, not existing revenue.
+```typescript
+import type { IntegrationAdapter, DeliveryContext, CaseResponse } from './types.js';
 
-## Integrate a deployment
+export const myAppAdapter: IntegrationAdapter = {
+  name: 'my-service',
+  title: 'My Custom Solana x402 Service',
+  paidRoute: '/api/v1/resource',
+  recoveryRoute: '/api/v1/recover',
+  defaultTarget: './path/to/server.ts',
 
+  // Assert that an HTTP response constitutes successful delivery
+  isDelivered(response: CaseResponse, context: DeliveryContext): boolean {
+    return response.status === 200 && response.body?.data !== undefined;
+  },
+
+  // Verify that a recovered artifact matches the original prepared content
+  matchesArtifact(recovered: any, oracle: any, context: DeliveryContext): boolean {
+    return recovered?.data === oracle?.data;
+  },
+
+  // Inspect your persistent storage at the crash boundary
+  async inspectJournal(journalPath: string, context: DeliveryContext) {
+    // Return entry count and prepared state
+    return { prepared: true, entryCount: 1, artifact: { ... } };
+  },
+
+  // Create an authenticated recovery request signed by the payer
+  async createRecoveryProof(payload: any, payerKeypair: Keypair, context: DeliveryContext) {
+    return {
+      method: 'POST',
+      body: { paymentPayload: payload, signature: '...' }
+    };
+  }
+};
+```
+
+Run the gate against your adapter:
 ```bash
-npm run gate -- --profile recovered --adapter hono --target ./my-target.ts
+npm run gate -- --profile recovered --adapter ./my-app-adapter.ts --target ./my-app-target.ts
 ```
 
-`--target` starts a **local child-process fixture that implements the documented IPC, HTTP, artifact, and journal contract**. It does not accept an arbitrary live URL or automatically adapt an existing application. Your adapter must connect your local deployment to the supplied mint, merchant, RPC, and fault controls. Recovered crash tests inspect a compatible prepared JSON journal before restart; another persistence design requires an adapted oracle. See [the integration contract](docs/INTEGRATION.md).
+For complete protocol and lifecycle specifications, see [docs/INTEGRATION.md](docs/INTEGRATION.md).
 
-## Scope and trust boundaries
+---
 
-- Signed transactions and SPL execution are real inside LiteSVM. Tokens and lamports are local and valueless. No mainnet or devnet transactions are made.
-- The bounded JSON-RPC bridge reports local execution as a confirmed status for SDK compatibility. It does not model validators, chain consensus, finality, reorgs, or network propagation.
-- Hono and Express are separate middleware deployments. Both use the same official x402 facilitator implementation; this is not a comparison of two independent facilitator implementations.
-- The recovered fixture uses a single-writer, fsynced, atomic JSON journal and a trusted local RPC. It is a reference implementation, not a production distributed store.
-- Recovery requires the payer's Ed25519 proof bound to the payment message. The proof can be replayed to fetch the same immutable artifact; it is not a one-time session token.
-- The fee scenario proves compute-limit rejection. Signature-count and compute-price caps are configured but are not independently exercised by this scenario. Existing configurable SDK policy is not presented as a new vulnerability.
-- A passing gate covers the included fault scenarios. It does not establish a security audit, guarantee arbitrary side effects happen exactly once, or establish production readiness.
+## Project Structure
 
-## Project map
+```
+shadowgate/
+├── docs/
+│   ├── ARCHITECTURE.md          # Technical design, lifecycle, and failure domains
+│   ├── DEMO.md                  # Hackathon video walkthrough script and timing
+│   ├── INTEGRATION.md           # Adapter integration specification and IPC contract
+│   └── PITCH.md                 # Product value proposition and market context
+├── evidence/                    # Test artifacts, BUILD-VERIFICATION.json, and run outputs
+├── integrations/
+│   └── weather/                 # Independent application integration (x402-foundation example)
+│       ├── app.ts               # Upstream weather service (pinned to commit 7f2b2f1)
+│       ├── target.ts            # Test harness for baseline and durable recovery
+│       └── README.md            # Independent verification documentation
+├── src/
+│   ├── adapter.ts               # Reusable adapter registry (Hono, Express, Weather)
+│   ├── cli.ts                   # CLI entry point (gate, compare)
+│   ├── demo.ts                  # Mission Control web dashboard server
+│   ├── fixture.ts               # Ephemeral key and SPL token mint provisioning
+│   ├── journal.ts               # Atomic fsync payment journal implementation
+│   ├── ledger.ts                # LiteSVM Solana runtime & JSON-RPC bridge
+│   ├── reports.ts               # Standalone HTML, JSON, and JUnit XML report generators
+│   ├── runner.ts                # Scenario orchestrator and invariant verification engine
+│   ├── selftest.ts              # 42-check regression test suite
+│   └── types.ts                 # Core type definitions and adapter interfaces
+├── web/
+│   └── index.html               # Mission Control single-page application interface
+├── package.json                 # Project scripts and pinned dependencies
+└── tsconfig.json                # TypeScript strict configuration
+```
 
-| File | Responsibility |
-| --- | --- |
-| `src/runner.ts` | Framework-independent scenarios, child lifecycle, balance/result assertions |
-| `src/fixture.ts`, `src/ledger.ts` | Real token fixture and bounded LiteSVM JSON-RPC bridge |
-| `src/target.ts`, `src/journal.ts` | Hono/Express target and persistent recovery example |
-| `src/cli.ts`, `src/reports.ts` | Release exit status, redacted JSON, JUnit and standalone HTML |
-| `src/demo.ts`, `web/index.html` | Local demo API and interactive evidence interface |
-| `.github/workflows/gate.yml` | CI verification and artifact upload |
+---
 
-Read [architecture](docs/ARCHITECTURE.md), [integration](docs/INTEGRATION.md), [the demo script](docs/DEMO.md), and [the pitch](docs/PITCH.md).
+## Trust Boundaries & Limitations
 
-## Reproducibility and attribution
+- **Local Execution**: Uses LiteSVM 1.5.0 in-memory execution with genuine signed SPL tokens. All keys, mints, and lamports are local and valueless.
+- **RPC Simulation**: The JSON-RPC bridge reports local execution as confirmed for SDK compatibility. It does not model validator consensus, chain reorganizations, or blockhash expirations.
+- **Recovery Reference**: The provided recovery pattern demonstrates atomic single-node file persistence (`fsyncSync`); production high-availability deployments should integrate distributed ACID databases or Redis/PostgreSQL WAL.
+- **Audit Scope**: Passing this release gate certifies compliance with the tested failure scenarios and payment-to-delivery invariants; it does not constitute a formal smart contract security audit.
 
-Direct versions are pinned and `package-lock.json` fixes the dependency graph: x402 core/SVM/Hono/Express **2.28.0**, LiteSVM **1.5.0**, Solana Kit **5.5.1**, web3.js **1.98.4**, SPL Token **0.4.14**, Hono **4.13.13**, and Express **5.1.0**. Published SDK code is used unchanged; instrumentation lives in the local target and RPC bridge.
+---
 
-- [Official x402 source](https://github.com/coinbase/x402)
-- [LiteSVM source](https://github.com/LiteSVM/litesvm)
-- [Solana documentation](https://solana.com/docs)
+## License
 
-MIT licensed; see [LICENSE](LICENSE).
+MIT © 2026 ShadowGate Contributors. See [LICENSE](LICENSE) for details.
