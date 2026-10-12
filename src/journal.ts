@@ -35,29 +35,74 @@ export function artifactFor(messageHash: string): PaidArtifact {
   };
 }
 
+function validateJournalEntry(entry: any): void {
+  if (
+    !/^[a-f0-9]{64}$/.test(entry?.messageHash) ||
+    !entry?.signature ||
+    !entry?.payer ||
+    !entry?.route ||
+    typeof entry.route !== 'string'
+  ) {
+    throw new Error('Invalid payment journal entry');
+  }
+}
+
+function loadJournalEntries(path: string): Record<string, JournalEntry> {
+  const entries: Record<string, JournalEntry> = Object.create(null);
+  if (!existsSync(path)) return entries;
+  const file = JSON.parse(readFileSync(path, 'utf8'));
+  if (file.version !== 1 || !Array.isArray(file.entries)) {
+    throw new Error('Unsupported or corrupt payment journal');
+  }
+  for (const entry of file.entries) {
+    validateJournalEntry(entry);
+    entries[entry.messageHash] = entry;
+  }
+  return entries;
+}
+
+function atomicFsyncWrite(path: string, content: string): void {
+  const temporary = `${path}.${randomUUID()}.tmp`;
+  const fd = openSync(temporary, 'wx', 0o600);
+  try {
+    writeFileSync(fd, content);
+    fsyncSync(fd);
+  } finally {
+    closeSync(fd);
+  }
+  renameSync(temporary, path);
+  const directory = openSync(dirname(path), 'r');
+  try {
+    fsyncSync(directory);
+  } finally {
+    closeSync(directory);
+  }
+}
+
 /** Single-process journal. Every prepared artifact is fsynced before any broadcast. */
 export class PaymentJournal {
-  private entries: Record<string, JournalEntry> = Object.create(null);
+  private entries: Record<string, JournalEntry>;
 
   constructor(readonly path: string) {
     mkdirSync(dirname(path), { recursive: true, mode: 0o700 });
-    if (!existsSync(path)) return;
-    const file = JSON.parse(readFileSync(path, 'utf8'));
-    if (file.version !== 1 || !Array.isArray(file.entries)) throw new Error('Unsupported or corrupt payment journal');
-    for (const entry of file.entries) {
-      if (!/^[a-f0-9]{64}$/.test(entry.messageHash) || !entry.signature || !entry.payer || !entry.route || typeof entry.route !== 'string') {
-        throw new Error('Invalid payment journal entry');
-      }
-      this.entries[entry.messageHash] = entry;
-    }
+    this.entries = loadJournalEntries(path);
   }
 
-  get(messageHash: string): JournalEntry | undefined { return this.entries[messageHash]; }
+  get(messageHash: string): JournalEntry | undefined {
+    return this.entries[messageHash];
+  }
 
   prepare(entry: JournalEntry): JournalEntry {
     const old = this.entries[entry.messageHash];
     if (old) {
-      if (old.signature !== entry.signature || old.payer !== entry.payer || old.merchant !== entry.merchant || old.mint !== entry.mint || old.amount !== entry.amount || old.network !== entry.network) {
+      if (
+        old.signature !== entry.signature ||
+        old.payer !== entry.payer ||
+        old.merchant !== entry.merchant ||
+        old.mint !== entry.mint ||
+        old.amount !== entry.amount ||
+        old.network !== entry.network
+      ) {
         throw new Error('Conflicting payment journal identity');
       }
       return old;
@@ -77,14 +122,7 @@ export class PaymentJournal {
   }
 
   private flush(): void {
-    const temporary = `${this.path}.${randomUUID()}.tmp`;
-    const fd = openSync(temporary, 'wx', 0o600);
-    try {
-      writeFileSync(fd, JSON.stringify({ version: 1, entries: Object.values(this.entries) }, null, 2));
-      fsyncSync(fd);
-    } finally { closeSync(fd); }
-    renameSync(temporary, this.path);
-    const directory = openSync(dirname(this.path), 'r');
-    try { fsyncSync(directory); } finally { closeSync(directory); }
+    const data = JSON.stringify({ version: 1, entries: Object.values(this.entries) }, null, 2);
+    atomicFsyncWrite(this.path, data);
   }
 }
