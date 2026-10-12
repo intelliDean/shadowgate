@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { getTransactionDecoder } from '@solana/kit';
 import { Keypair } from '@solana/web3.js';
-import type { DeliveryContext, IntegrationAdapter, JournalInspection, RecoveryRequest } from './types.js';
+import type { IntegrationAdapter, JournalInspection, RecoveryRequest } from './types.js';
 
 const decoder = getTransactionDecoder();
 const MARKER = 'paid-result:shadowgate';
