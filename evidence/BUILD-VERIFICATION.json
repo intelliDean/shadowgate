@@ -62,7 +62,7 @@
     "integrations/weather/target.ts": "71050966fcf797cb87ed0ab78fe7de2bf52ba553ee0af3e619f7d86d9f16978a",
     "src/adapter.ts": "23b6edcdff334d35847bba5b4385f8afc46ceaec940c3453352b389c1a596796",
     "src/cli.ts": "43852654743da9c803606ed6547b4c93111d0aa1fad12183e750022cdeb9f7e0",
-    "src/demo.ts": "e3a712da3cba77bd3626d23f77b17196fb7b4b161ab549febb0643df9564d803",
+    "src/demo.ts": "e6d5723162bff03fb6baa211eee1deac0dc2027455ab80c6c413407c68efc5e4",
     "src/fixture.ts": "81f89cbe9b381a106e975e2c7ee52673ea6a3adc5c8adf24ea9596e7d0016b82",
     "src/journal.ts": "4cfef3ef2c30364ba631d7e78115b8855736a8e6f76091b4e195c211d1586809",
     "src/ledger.ts": "80ab59356b8939d3e69e8331ad7ee95baa8531532e80f10946b5f48c5f7a9845",
