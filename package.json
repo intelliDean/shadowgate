@@ -5,7 +5,9 @@
   "scripts": {
     "demo": "node --import tsx src/demo.ts",
     "gate": "node --import tsx src/cli.ts gate",
+    "gate:weather": "node --import tsx src/cli.ts gate --profile recovered --adapter weather",
     "compare": "node --import tsx src/cli.ts compare",
+    "compare:all": "node --import tsx src/cli.ts compare --adapter all",
     "test": "node --import tsx src/selftest.ts",
     "typecheck": "tsc --noEmit"
   },
