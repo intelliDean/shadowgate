@@ -10,11 +10,31 @@ import {ExactSvmScheme as ClientExact} from '@x402/svm/exact/client';
 import {getAdapter} from './adapter.js';
 import {createFixture} from './fixture.js';
 import {saveReport} from './reports.js';
-import type {Adapter,CaseResult,DeliveryContext,Profile,RunReport} from './types.js';
+import type {Adapter,CaseResult,DeliveryContext,IntegrationAdapter,Profile,RunReport} from './types.js';
 
 type Mode='baseline'|'recovered';
 type Scenario='normal'|'lost-send-response'|'prebroadcast-failure'|'confirmation-failure'|'process-restart'|'fee-policy'|'wrong-payer'|'recovery-replay';
+
+type TargetProcess = {
+  child: ChildProcess;
+  url: string;
+  close: () => Promise<void>;
+};
+
+type HttpResponse = {
+  status: number;
+  body: any;
+  headers?: Headers;
+};
+
+type BalanceSnapshot = {
+  merchant: string;
+  payer: string;
+  sponsorLamports: string;
+};
+
 const scenarios:Scenario[]=['normal','lost-send-response','prebroadcast-failure','confirmation-failure','process-restart','fee-policy'];
+
 const titles:Record<Scenario,string>={
   normal:'Successful payment and delivery',
   'lost-send-response':'RPC response lost after settlement',
@@ -25,9 +45,10 @@ const titles:Record<Scenario,string>={
   'wrong-payer':'Wrong wallet attempts recovery',
   'recovery-replay':'Repeated authorized recovery'
 };
+
 const decoder=getTransactionDecoder();
 
-async function launch(config:any,trace:any[],target?:string){
+async function launch(config:any,trace:any[],target?:string):Promise<TargetProcess>{
   const child=fork(target?resolve(target):fileURLToPath(new URL('./target.ts',import.meta.url)),[],{
     execArgv:['--import','tsx'],
     stdio:['ignore','pipe','pipe','ipc'],
@@ -51,7 +72,7 @@ async function launch(config:any,trace:any[],target?:string){
   return {child,url:ready.url,close:()=>stop(child)};
 }
 
-async function stop(child:ChildProcess){
+async function stop(child:ChildProcess):Promise<void>{
   if(child.exitCode!==null||child.signalCode!==null)return;
   await new Promise<void>(resolveStop=>{
     const timer=setTimeout(()=>child.kill('SIGKILL'),1000);
@@ -60,7 +81,7 @@ async function stop(child:ChildProcess){
   });
 }
 
-async function request(url:string,options:RequestInit={}){
+async function request(url:string,options:RequestInit={}):Promise<HttpResponse>{
   try {
     const r=await fetch(url,{...options,signal:AbortSignal.timeout(10000)});
     const text=await r.text();
@@ -72,139 +93,303 @@ async function request(url:string,options:RequestInit={}){
   }
 }
 
+async function launchTarget(
+  adapter: IntegrationAdapter,
+  config: any,
+  trace: any[],
+  targetEntry?: string
+): Promise<TargetProcess> {
+  return adapter.launch
+    ? await adapter.launch(config, trace, targetEntry)
+    : await launch(config, trace, targetEntry);
+}
+
+function buildTargetConfig(
+  adapter: IntegrationAdapter,
+  mode: Mode,
+  scenario: Scenario,
+  fixture: any,
+  dir: string,
+  crash: boolean
+) {
+  return {
+    adapter: adapter.name,
+    mode,
+    rpcUrl: fixture.ledger.url,
+    feeSecret: Array.from(fixture.feePayer.secretKey),
+    merchant: fixture.merchant.publicKey.toBase58(),
+    mint: fixture.mint.publicKey.toBase58(),
+    amount: '10000',
+    journalPath: join(dir, 'journal.json'),
+    caps: mode === 'recovered',
+    fault: crash
+      ? 'crash-after-send'
+      : scenario === 'prebroadcast-failure'
+      ? 'before-send'
+      : scenario === 'confirmation-failure'
+      ? 'confirm'
+      : 'none'
+  };
+}
+
+async function obtainPaymentPayload(
+  targetUrl: string,
+  adapter: IntegrationAdapter,
+  fixture: any,
+  scenario: Scenario
+): Promise<{ payload: any; deliveryContext: DeliveryContext; headers: Record<string, string> }> {
+  const challengeResponse = await fetch(`${targetUrl}${adapter.paidRoute}`, { signal: AbortSignal.timeout(10000) });
+  const challengeHeader = challengeResponse.headers.get('PAYMENT-REQUIRED');
+  if (challengeResponse.status !== 402 || !challengeHeader) {
+    throw new Error(`Target must expose x402 v2 challenge on GET ${adapter.paidRoute}`);
+  }
+  const challenge = JSON.parse(Buffer.from(challengeHeader, 'base64').toString());
+  const requirements = challenge.accepts[0];
+  const client = new ClientExact(fixture.payerSigner, { rpcUrl: fixture.ledger.url });
+  const partial = await client.createPaymentPayload(2, requirements);
+  const payload: any = { ...partial, accepted: requirements, resource: challenge.resource };
+
+  if (scenario === 'fee-policy') {
+    const tx = VersionedTransaction.deserialize(Buffer.from(payload.payload.transaction, 'base64'));
+    const message = TransactionMessage.decompile(tx.message);
+    message.instructions = [
+      ComputeBudgetProgram.setComputeUnitLimit({ units: 1_000_000 }),
+      ComputeBudgetProgram.setComputeUnitPrice({ microLamports: 1_000_000 }),
+      ...message.instructions.filter(ix => !ix.programId.equals(ComputeBudgetProgram.programId))
+    ];
+    const changed = new VersionedTransaction(message.compileToV0Message());
+    changed.sign([fixture.payer]);
+    payload.payload.transaction = Buffer.from(changed.serialize()).toString('base64');
+  }
+
+  if (scenario === 'lost-send-response') {
+    fixture.ledger.dropNextSendResponse();
+  }
+
+  const decodedTx = decoder.decode(Buffer.from(payload.payload.transaction, 'base64'));
+  const messageHash = createHash('sha256').update(Buffer.from(decodedTx.messageBytes)).digest('hex');
+  const expectedArtifactId = messageHash;
+  const deliveryContext: DeliveryContext = { payload, messageHash, expectedArtifactId, tx: decodedTx };
+  const headers = { 'PAYMENT-SIGNATURE': Buffer.from(JSON.stringify(payload)).toString('base64') };
+
+  return { payload, deliveryContext, headers };
+}
+
+async function verifyUnpaidRecoveryRejection(
+  targetUrl: string,
+  adapter: IntegrationAdapter,
+  payload: any,
+  fixture: any,
+  deliveryContext: DeliveryContext,
+  requests: any[]
+): Promise<boolean> {
+  const proof = await adapter.createRecoveryProof(payload, fixture.payer, deliveryContext);
+  const deniedRaw = await request(`${targetUrl}${adapter.recoveryRoute}`, {
+    method: proof.method ?? 'POST',
+    headers: proof.headers ?? { 'content-type': 'application/json' },
+    body: typeof proof.body === 'string' ? proof.body : JSON.stringify(proof.body)
+  });
+  const deniedDelivered = adapter.isDelivered(deniedRaw, deliveryContext);
+  const denied = { ...deniedRaw, delivered: deniedDelivered };
+  requests.push({ step: 'unpaid-journal-recovery', ...denied });
+  return deniedDelivered || denied.status !== 409;
+}
+
+type CrashRecoveryContext = {
+  child: TargetProcess;
+  adapter: IntegrationAdapter;
+  config: any;
+  targetEntry?: string;
+  payload: any;
+  headers: Record<string, string>;
+  fixture: any;
+  deliveryContext: DeliveryContext;
+  scenario: Scenario;
+  mode: Mode;
+  response: any;
+  trace: any[];
+  requests: any[];
+};
+
+async function handleCrashAndRecovery(ctx: CrashRecoveryContext) {
+  const { child, adapter, config, targetEntry, payload, headers, fixture, deliveryContext, scenario, mode, response, trace, requests } = ctx;
+  await child.close();
+  trace.push({ event: 'target-process-terminated', exitCode: child.child.exitCode, signal: child.child.signalCode });
+  if (response.status !== 0 || child.child.exitCode !== 86 || !trace.some(e => e.phase === 'crash_after_send')) {
+    throw new Error('The target did not hit the required crash-after-send boundary');
+  }
+
+  let storedArtifact: any;
+  if (mode === 'recovered') {
+    const inspection = await adapter.inspectJournal(config.journalPath, deliveryContext);
+    if (!inspection.prepared || inspection.entryCount !== 1) {
+      throw new Error('Missing durable prepared journal at crash boundary');
+    }
+    storedArtifact = inspection.artifact;
+    trace.push({
+      event: 'durable-journal-observed-before-restart',
+      entries: inspection.entryCount,
+      state: 'prepared',
+      artifactPersisted: Boolean(storedArtifact)
+    });
+  }
+
+  const restartedChild = await launchTarget(adapter, { ...config, fault: 'none' }, trace, targetEntry);
+
+  let unsafeDelivery = false;
+  if (scenario === 'wrong-payer') {
+    const publicReplayRaw = await request(`${restartedChild.url}${adapter.paidRoute}`, { headers });
+    const publicDelivered = adapter.isDelivered(publicReplayRaw, deliveryContext);
+    const publicReplay = { ...publicReplayRaw, delivered: publicDelivered };
+    requests.push({ step: 'public-payment-replay', ...publicReplay });
+    unsafeDelivery = publicDelivered || publicReplay.status !== 409;
+
+    const wrongProof = await adapter.createRecoveryProof(payload, Keypair.generate(), deliveryContext);
+    const wrongRaw = await request(`${restartedChild.url}${adapter.recoveryRoute}`, {
+      method: wrongProof.method ?? 'POST',
+      headers: wrongProof.headers ?? { 'content-type': 'application/json' },
+      body: typeof wrongProof.body === 'string' ? wrongProof.body : JSON.stringify(wrongProof.body)
+    });
+    const wrongDelivered = adapter.isDelivered(wrongRaw, deliveryContext);
+    const wrong = { ...wrongRaw, delivered: wrongDelivered };
+    requests.push({ step: 'wrong-wallet-recovery', ...wrong });
+    unsafeDelivery = unsafeDelivery || wrongDelivered || wrong.status !== 403;
+  }
+
+  const proof = await adapter.createRecoveryProof(payload, fixture.payer, deliveryContext);
+  const recoverResponseRaw = await request(`${restartedChild.url}${adapter.recoveryRoute}`, {
+    method: proof.method ?? 'POST',
+    headers: proof.headers ?? { 'content-type': 'application/json' },
+    body: typeof proof.body === 'string' ? proof.body : JSON.stringify(proof.body)
+  });
+  const delivered = adapter.isDelivered(recoverResponseRaw, deliveryContext);
+  const finalResponse = { ...recoverResponseRaw, delivered };
+  requests.push({ step: 'payer-recovery-after-restart', ...finalResponse });
+
+  let recoveryStable = true;
+  if (mode === 'recovered' && !adapter.matchesArtifact(finalResponse.body, storedArtifact, deliveryContext)) {
+    recoveryStable = false;
+  }
+
+  if (scenario === 'recovery-replay') {
+    const repeatRaw = await Promise.all(Array.from({ length: 3 }, () =>
+      request(`${restartedChild.url}${adapter.recoveryRoute}`, {
+        method: proof.method ?? 'POST',
+        headers: proof.headers ?? { 'content-type': 'application/json' },
+        body: typeof proof.body === 'string' ? proof.body : JSON.stringify(proof.body)
+      })
+    ));
+    const repeat = repeatRaw.map(r => ({ ...r, delivered: adapter.isDelivered(r, deliveryContext) }));
+    requests.push(...repeat.map(r => ({ step: 'repeat-recovery', ...r })));
+    recoveryStable =
+      recoveryStable &&
+      repeat.every(r => r.status === 200 && r.delivered && adapter.matchesArtifact(r.body, storedArtifact, deliveryContext));
+  }
+
+  return {
+    restartedChild,
+    finalResponse,
+    storedArtifact,
+    recoveryStable,
+    unsafeDelivery
+  };
+}
+
+type EvaluationParams = {
+  scenario: Scenario;
+  mode: Mode;
+  adapter: IntegrationAdapter;
+  before: BalanceSnapshot;
+  after: BalanceSnapshot;
+  response: any;
+  requests: any[];
+  storedArtifact: any;
+  deliveryContext: DeliveryContext;
+  unsafeDelivery: boolean;
+  recoveryStable: boolean;
+  executedCount: number;
+};
+
+function evaluateScenarioOutcome(params: EvaluationParams) {
+  const { scenario, mode, adapter, before, after, response, requests, storedArtifact, deliveryContext, unsafeDelivery, recoveryStable, executedCount } = params;
+  const transferred = after.merchant === '10000' && after.payer === '0';
+  const untouched = after.merchant === '0' && after.payer === '10000';
+  const fee = (BigInt(before.sponsorLamports) - BigInt(after.sponsorLamports)).toString();
+  let expected = '';
+  let passed = false;
+  let gatePassed = false;
+
+  if (scenario === 'prebroadcast-failure') {
+    expected = 'No payment and no protected result, including authenticated recovery';
+    passed = untouched && !response.delivered && response.status !== 200 && !unsafeDelivery;
+    gatePassed = passed;
+  } else if (scenario === 'fee-policy') {
+    expected = mode === 'baseline' ? 'Uncapped fixture accepts compute budget above sponsor policy' : 'Configured SDK cap rejects before payment';
+    passed = mode === 'baseline' ? transferred && response.delivered && BigInt(fee) > 100_000n : untouched && !response.delivered && response.status !== 200;
+    gatePassed = untouched && !response.delivered && BigInt(fee) <= 100_000n;
+  } else if (mode === 'baseline' && ['lost-send-response', 'process-restart'].includes(scenario)) {
+    const retryDelivered = requests.some(r => r.step === 'identical-retry' && r.delivered && r.status === 200 && adapter.matchesArtifact(r.body, storedArtifact, deliveryContext));
+    expected = 'Detect settled payment with no delivered result, including attempted recovery';
+    passed = transferred && !response.delivered && response.status !== 200 && !retryDelivered;
+    gatePassed = transferred && ((response.delivered && adapter.matchesArtifact(response.body, storedArtifact, deliveryContext)) || retryDelivered);
+  } else {
+    expected = scenario === 'wrong-payer' ? 'Reject wrong wallet; rightful payer recovers stored result' : scenario === 'recovery-replay' ? 'Repeated recovery returns same artifact without another debit' : 'One payment produces one recoverable protected result';
+    const artifactMatch = adapter.matchesArtifact(response.body, storedArtifact, deliveryContext);
+    passed = transferred && response.delivered && response.status === 200 && artifactMatch && !unsafeDelivery && recoveryStable && executedCount === 1;
+    gatePassed = passed;
+  }
+
+  return { expected, passed, gatePassed, transferred, fee };
+}
+
 async function runCase(adapterName:Adapter,mode:Mode,scenario:Scenario,target?:string):Promise<CaseResult>{
   const started=Date.now();const trace:any[]=[];const requests:any[]=[];
   const fixture=await createFixture();const dir=await mkdtemp(join(tmpdir(),'shadowgate-'));
   const adapter=await getAdapter(adapterName);
   const targetEntry=target?resolve(target):(adapter.defaultTarget?resolve(adapter.defaultTarget):undefined);
-  let child:Awaited<ReturnType<typeof launch>>|undefined;
+  let child:TargetProcess|undefined;
   const crash=['process-restart','wrong-payer','recovery-replay'].includes(scenario);
-  const config={
-    adapter:adapter.name,
-    mode,
-    rpcUrl:fixture.ledger.url,
-    feeSecret:Array.from(fixture.feePayer.secretKey),
-    merchant:fixture.merchant.publicKey.toBase58(),
-    mint:fixture.mint.publicKey.toBase58(),
-    amount:'10000',
-    journalPath:join(dir,'journal.json'),
-    caps:mode==='recovered',
-    fault:crash?'crash-after-send':scenario==='prebroadcast-failure'?'before-send':scenario==='confirmation-failure'?'confirm':'none'
-  };
+  const config=buildTargetConfig(adapter,mode,scenario,fixture,dir,crash);
   const before=fixture.balances();
 
   try {
-    child=adapter.launch?await adapter.launch(config,trace,targetEntry):await launch(config,trace,targetEntry);
-    const challengeResponse=await fetch(`${child.url}${adapter.paidRoute}`,{signal:AbortSignal.timeout(10000)});
-    const challengeHeader=challengeResponse.headers.get('PAYMENT-REQUIRED');
-    if(challengeResponse.status!==402||!challengeHeader){
-      throw new Error(`Target must expose x402 v2 challenge on GET ${adapter.paidRoute}`);
-    }
-    const challenge=JSON.parse(Buffer.from(challengeHeader,'base64').toString());
-    const requirements=challenge.accepts[0];
-    const client=new ClientExact(fixture.payerSigner,{rpcUrl:fixture.ledger.url});
-    const partial=await client.createPaymentPayload(2,requirements);
-    const payload:any={...partial,accepted:requirements,resource:challenge.resource};
+    child=await launchTarget(adapter,config,trace,targetEntry);
+    const {payload,deliveryContext,headers}=await obtainPaymentPayload(child.url,adapter,fixture,scenario);
 
-    if(scenario==='fee-policy'){
-      const tx=VersionedTransaction.deserialize(Buffer.from(payload.payload.transaction,'base64'));
-      const message=TransactionMessage.decompile(tx.message);
-      message.instructions=[
-        ComputeBudgetProgram.setComputeUnitLimit({units:1_000_000}),
-        ComputeBudgetProgram.setComputeUnitPrice({microLamports:1_000_000}),
-        ...message.instructions.filter(ix=>!ix.programId.equals(ComputeBudgetProgram.programId))
-      ];
-      const changed=new VersionedTransaction(message.compileToV0Message());
-      changed.sign([fixture.payer]);
-      payload.payload.transaction=Buffer.from(changed.serialize()).toString('base64');
-    }
-    if(scenario==='lost-send-response')fixture.ledger.dropNextSendResponse();
-
-    const decodedTx=decoder.decode(Buffer.from(payload.payload.transaction,'base64'));
-    const messageHash=createHash('sha256').update(Buffer.from(decodedTx.messageBytes)).digest('hex');
-    const expectedArtifactId=messageHash;
-    const deliveryContext:DeliveryContext={payload,messageHash,expectedArtifactId,tx:decodedTx};
-    const headers={'PAYMENT-SIGNATURE':Buffer.from(JSON.stringify(payload)).toString('base64')};
-
-    let responseRaw=await request(`${child.url}${adapter.paidRoute}`,{headers});
-    let delivered=adapter.isDelivered(responseRaw,deliveryContext);
-    let response={...responseRaw,delivered};
+    const responseRaw=await request(`${child.url}${adapter.paidRoute}`,{headers});
+    const initialDelivered=adapter.isDelivered(responseRaw,deliveryContext);
+    let response={...responseRaw,delivered:initialDelivered};
     requests.push({step:'paid-request',...response});
 
-    let unsafeDelivery=false, recoveryStable=true, storedArtifact:any;
+    let unsafeDelivery=false;
+    let recoveryStable=true;
+    let storedArtifact:any;
 
     if(scenario==='prebroadcast-failure'&&mode==='recovered'){
-      const proof=await adapter.createRecoveryProof(payload,fixture.payer,deliveryContext);
-      const deniedRaw=await request(`${child.url}${adapter.recoveryRoute}`,{
-        method:proof.method??'POST',
-        headers:proof.headers??{'content-type':'application/json'},
-        body:typeof proof.body==='string'?proof.body:JSON.stringify(proof.body)
-      });
-      const deniedDelivered=adapter.isDelivered(deniedRaw,deliveryContext);
-      const denied={...deniedRaw,delivered:deniedDelivered};
-      requests.push({step:'unpaid-journal-recovery',...denied});
-      unsafeDelivery=deniedDelivered||denied.status!==409;
+      unsafeDelivery=await verifyUnpaidRecoveryRejection(child.url,adapter,payload,fixture,deliveryContext,requests);
     }
 
     if(crash){
-      await child.close();
-      trace.push({event:'target-process-terminated',exitCode:child.child.exitCode,signal:child.child.signalCode});
-      if(response.status!==0||child.child.exitCode!==86||!trace.some(e=>e.phase==='crash_after_send')){
-        throw new Error('The target did not hit the required crash-after-send boundary');
-      }
-      if(mode==='recovered'){
-        const inspection=await adapter.inspectJournal(config.journalPath,deliveryContext);
-        if(!inspection.prepared||inspection.entryCount!==1){
-          throw new Error('Missing durable prepared journal at crash boundary');
-        }
-        storedArtifact=inspection.artifact;
-        trace.push({event:'durable-journal-observed-before-restart',entries:inspection.entryCount,state:'prepared',artifactPersisted:!!storedArtifact});
-      }
-      child=adapter.launch?await adapter.launch({...config,fault:'none'},trace,targetEntry):await launch({...config,fault:'none'},trace,targetEntry);
-
-      if(scenario==='wrong-payer'){
-        const publicReplayRaw=await request(`${child.url}${adapter.paidRoute}`,{headers});
-        const publicDelivered=adapter.isDelivered(publicReplayRaw,deliveryContext);
-        const publicReplay={...publicReplayRaw,delivered:publicDelivered};
-        requests.push({step:'public-payment-replay',...publicReplay});
-        unsafeDelivery=publicDelivered||publicReplay.status!==409;
-
-        const wrongProof=await adapter.createRecoveryProof(payload,Keypair.generate(),deliveryContext);
-        const wrongRaw=await request(`${child.url}${adapter.recoveryRoute}`,{
-          method:wrongProof.method??'POST',
-          headers:wrongProof.headers??{'content-type':'application/json'},
-          body:typeof wrongProof.body==='string'?wrongProof.body:JSON.stringify(wrongProof.body)
-        });
-        const wrongDelivered=adapter.isDelivered(wrongRaw,deliveryContext);
-        const wrong={...wrongRaw,delivered:wrongDelivered};
-        requests.push({step:'wrong-wallet-recovery',...wrong});
-        unsafeDelivery=unsafeDelivery||wrongDelivered||wrong.status!==403;
-      }
-
-      const proof=await adapter.createRecoveryProof(payload,fixture.payer,deliveryContext);
-      const recoverResponseRaw=await request(`${child.url}${adapter.recoveryRoute}`,{
-        method:proof.method??'POST',
-        headers:proof.headers??{'content-type':'application/json'},
-        body:typeof proof.body==='string'?proof.body:JSON.stringify(proof.body)
+      const crashOutcome=await handleCrashAndRecovery({
+        child,
+        adapter,
+        config,
+        targetEntry,
+        payload,
+        headers,
+        fixture,
+        deliveryContext,
+        scenario,
+        mode,
+        response,
+        trace,
+        requests
       });
-      delivered=adapter.isDelivered(recoverResponseRaw,deliveryContext);
-      response={...recoverResponseRaw,delivered};
-      requests.push({step:'payer-recovery-after-restart',...response});
-
-      if(mode==='recovered'&&!adapter.matchesArtifact(response.body,storedArtifact,deliveryContext)){
-        recoveryStable=false;
-      }
-
-      if(scenario==='recovery-replay'){
-        const repeatRaw=await Promise.all(Array.from({length:3},()=>request(`${child!.url}${adapter.recoveryRoute}`,{
-          method:proof.method??'POST',
-          headers:proof.headers??{'content-type':'application/json'},
-          body:typeof proof.body==='string'?proof.body:JSON.stringify(proof.body)
-        })));
-        const repeat=repeatRaw.map(r=>({...r,delivered:adapter.isDelivered(r,deliveryContext)}));
-        requests.push(...repeat.map(r=>({step:'repeat-recovery',...r})));
-        recoveryStable=recoveryStable&&repeat.every(r=>r.status===200&&r.delivered&&adapter.matchesArtifact(r.body,storedArtifact,deliveryContext));
-      }
+      child=crashOutcome.restartedChild;
+      response=crashOutcome.finalResponse;
+      storedArtifact=crashOutcome.storedArtifact;
+      recoveryStable=crashOutcome.recoveryStable;
+      unsafeDelivery=unsafeDelivery||crashOutcome.unsafeDelivery;
     } else if(scenario==='lost-send-response'&&mode==='baseline'){
       const retryRaw=await request(`${child.url}${adapter.paidRoute}`,{headers});
       const retryDelivered=adapter.isDelivered(retryRaw,deliveryContext);
@@ -212,30 +397,20 @@ async function runCase(adapterName:Adapter,mode:Mode,scenario:Scenario,target?:s
     }
 
     const after=fixture.balances();
-    const transferred=after.merchant==='10000'&&after.payer==='0';
-    const untouched=after.merchant==='0'&&after.payer==='10000';
-    const fee=(BigInt(before.sponsorLamports)-BigInt(after.sponsorLamports)).toString();
-    let expected='',passed=false,gatePassed=false;
-
-    if(scenario==='prebroadcast-failure'){
-      expected='No payment and no protected result, including authenticated recovery';
-      passed=untouched&&!response.delivered&&response.status!==200&&!unsafeDelivery;
-      gatePassed=passed;
-    } else if(scenario==='fee-policy'){
-      expected=mode==='baseline'?'Uncapped fixture accepts compute budget above sponsor policy':'Configured SDK cap rejects before payment';
-      passed=mode==='baseline'?transferred&&response.delivered&&BigInt(fee)>100_000n:untouched&&!response.delivered&&response.status!==200;
-      gatePassed=untouched&&!response.delivered&&BigInt(fee)<=100_000n;
-    } else if(mode==='baseline'&&['lost-send-response','process-restart'].includes(scenario)){
-      const retryDelivered=requests.some(r=>r.step==='identical-retry'&&r.delivered&&r.status===200&&adapter.matchesArtifact(r.body,storedArtifact,deliveryContext));
-      expected='Detect settled payment with no delivered result, including attempted recovery';
-      passed=transferred&&!response.delivered&&response.status!==200&&!retryDelivered;
-      gatePassed=transferred&&((response.delivered&&adapter.matchesArtifact(response.body,storedArtifact,deliveryContext))||retryDelivered);
-    } else {
-      expected=scenario==='wrong-payer'?'Reject wrong wallet; rightful payer recovers stored result':scenario==='recovery-replay'?'Repeated recovery returns same artifact without another debit':'One payment produces one recoverable protected result';
-      const artifactMatch=adapter.matchesArtifact(response.body,storedArtifact,deliveryContext);
-      passed=transferred&&response.delivered&&response.status===200&&artifactMatch&&!unsafeDelivery&&recoveryStable&&fixture.ledger.counters.executed===1;
-      gatePassed=passed;
-    }
+    const evaluation=evaluateScenarioOutcome({
+      scenario,
+      mode,
+      adapter,
+      before,
+      after,
+      response,
+      requests,
+      storedArtifact,
+      deliveryContext,
+      unsafeDelivery,
+      recoveryStable,
+      executedCount:fixture.ledger.counters.executed
+    });
 
     return {
       id:`${adapter.name}-${mode}-${scenario}`,
@@ -243,14 +418,14 @@ async function runCase(adapterName:Adapter,mode:Mode,scenario:Scenario,target?:s
       mode,
       scenario,
       title:titles[scenario],
-      expected,
+      expected:evaluation.expected,
       observed:`HTTP ${response.status||'disconnected'} · payer ${before.payer}→${after.payer} · merchant ${before.merchant}→${after.merchant} · artifact ${response.delivered?'delivered':'withheld'}`,
-      passed,
-      gatePassed,
+      passed:evaluation.passed,
+      gatePassed:evaluation.gatePassed,
       httpStatus:response.status,
-      paymentTransferred:transferred,
+      paymentTransferred:evaluation.transferred,
       resourceDelivered:response.delivered,
-      feeLamports:fee,
+      feeLamports:evaluation.fee,
       before,
       after,
       requests,
