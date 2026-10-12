@@ -6,17 +6,19 @@ ShadowGate is a local release gate that proves whether a Solana x402 payment fai
 
 ## 45-second spoken pitch
 
-“A paid API can fail even when its payment succeeds. If the RPC connection drops after Solana executes a transaction, an HTTP test may see only an error while the customer has already paid.
+“A paid API can fail even when its payment succeeds. If an RPC connection drops or a server process terminates immediately after Solana settles a transaction, an HTTP test sees only a timeout while the customer's wallet has already been debited.
 
-ShadowGate runs your local deployment through controlled payment and process failures, using real signed SPL execution. It compares token balances with delivery, then emits a CI release decision and readable evidence.
+ShadowGate runs your local deployment through controlled transport and process faults, using genuine signed SPL execution inside LiteSVM. It compares on-chain token balances with actual HTTP delivery, emitting a deterministic CI release decision and portable audit evidence.
 
-Our Hono and Express examples reproduce a lost-response failure and demonstrate exact-payment reconciliation, durable recovery after a process restart, and rejection of the wrong payer. The same scenarios drive both deployments.
+Through our reusable IntegrationAdapter, the exact same failure matrix drives official Hono and Express middleware, as well as an independently developed x402 Weather Service. It proves exact-payment reconciliation, durable recovery after a process restart (exit 86), and rejection of wrong-wallet replays—without double-charging the customer.
 
-Our first users are teams operating paid APIs and Solana facilitators. We help them catch paid non-delivery and sponsor-policy regressions before shipping.”
+Our first users are teams operating paid APIs and Solana facilitators, helping them block paid non-delivery and fee-policy regressions before release.”
 
 ## What makes the project substantial
 
 The build crosses actual HTTP middleware, a separate facilitator HTTP endpoint in the target process, signed Solana transaction construction, SPL execution, injected transport loss, durable artifact persistence, payer authentication, process restarts, and CI evidence. It validates the relationship between settlement and application delivery rather than only checking HTTP schemas or individual transaction validity.
+
+The runner is decoupled from sample routes and journal schemas via the `IntegrationAdapter` interface. Any third-party application can configure its startup command, payment route, result checks, and recovery interface while preserving the core payment-to-delivery invariants.
 
 The recovery wrapper is not the entire product. The reusable gate makes a deployment's behavior reproducible and reviewable as dependencies and configuration change. The exact missing capability versus every current competitor has not been comprehensively established; avoid “first,” “only,” or “no competitor” claims.
 
@@ -34,11 +36,12 @@ A plausible model is an open-source local runner with paid shared CI history, ma
 
 ## What the demonstration proves
 
-- It can execute real signed local SPL payments through the published x402 packages.
-- It can observe the difference between a failed HTTP request and an unpaid request.
-- It can test both Hono and Express through shared scenario code.
-- It can exercise deterministic process death, restart, and authenticated recovery of a stored artifact.
-- It can convert observed failures into a nonzero release-gate result and portable evidence.
+- It executes real signed local SPL payments through published x402 packages in sub-second time.
+- It observes the difference between a failed HTTP transport response and an unpaid request.
+- It drives 42 automated verification checks across three distinct adapters (Hono, Express, and the independent Weather Service pinned to commit `7f2b2f1`).
+- It catches unsafe baseline behavior (release gate exits 1) and verifies corrected durable recovery (release gate exits 0).
+- It exercises deterministic process death (exit code 86), restart, and authenticated Ed25519 recovery without double-debiting the customer (`counters.executed === 1`).
+- It produces portable evidence bundles (JSON, JUnit XML, standalone HTML).
 
 Use the latest generated report to substantiate each claim. Local execution does not prove mainnet finality, arbitrary business-side-effect correctness, an audited payment system, or commercial demand.
 
