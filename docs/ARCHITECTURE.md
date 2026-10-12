@@ -4,20 +4,47 @@ ShadowGate evaluates one concrete boundary: **a payment that actually executes m
 
 ## Execution model
 
-The parent runner creates a fresh LiteSVM instance and real SPL mint and token accounts. It starts a loopback JSON-RPC bridge, then forks a target process. Initialization travels over Node IPC, including temporary keys and deployment configuration. The target starts the resource server and facilitator. The runner acts as the payer through HTTP, while the ledger independently records execution and balances.
+The parent test runner ([`src/runner.ts`](file:///mnt/data/Projects/shadowgate/src/runner.ts)) creates a fresh LiteSVM instance and real SPL mint and token accounts. It starts a loopback JSON-RPC bridge ([`src/ledger.ts`](file:///mnt/data/Projects/shadowgate/src/ledger.ts)), then forks an isolated target child process. Initialization travels over Node IPC, including temporary keys and deployment configuration. The target starts the resource server and facilitator. The runner acts as the payer through HTTP, while the ledger independently records execution and balances.
 
 ```mermaid
 flowchart TD
-  R["Runner and assertions"] -->|"IPC configuration and restart"| T["Child deployment: Hono or Express"]
-  R -->|"HTTP payment and recovery"| T
-  T -->|"Official x402 SDK"| L["Local RPC fault bridge"]
-  L --> S["LiteSVM and SPL accounts"]
-  T --> J["Persistent artifact journal"]
-  S -->|"Balances and execution trace"| R
-  R --> E["JSON, JUnit, HTML and demo UI"]
+  R["Runner & Assertions<br/>(src/runner.ts)"] -->|"Target Config & IPC"| A["IntegrationAdapter Layer<br/>(src/adapter.ts)"]
+  A -->|"Fork Child Process"| T["Target Deployments<br/>(Hono, Express, Weather)"]
+  R -->|"HTTP Payment & Recovery"| T
+  T -->|"Official x402 SDK"| L["Local RPC Fault Bridge<br/>(src/ledger.ts)"]
+  L --> S["LiteSVM 1.5.0<br/>Genuine SPL Accounts"]
+  T --> J["Persistent PaymentJournal<br/>(atomic fsync)"]
+  S -->|"Balances & Execution Trace"| R
+  R --> E["Portable Reports<br/>(JSON, JUnit, HTML, Dashboard)"]
 ```
 
 Every case receives an independent ledger and target. Process-restart cases preserve the case's ledger and journal, terminate the first target process, and launch a new one. All resources are cleaned up after the case. Report evidence is retained; ephemeral keys and test journals are not exported.
+
+## The IntegrationAdapter Layer
+
+The runner is decoupled from specific framework routes and journal locations via the [`IntegrationAdapter`](file:///mnt/data/Projects/shadowgate/src/adapter.ts) interface. This abstraction handles:
+- **`buildTargetConfig`**: Generating route paths, ports, mint definitions, and runtime profiles.
+- **`launchTarget`**: Spawning the target child process and handling IPC handshakes.
+- **`requestPayment`**: Constructing and delivering the HTTP request with x402 authorization headers.
+- **`verifyDelivery`**: Validating that the delivered HTTP response matches the expected protected asset.
+- **`recover`**: Issuing an Ed25519-signed recovery request for a previously settled payment.
+
+ShadowGate provides three first-class adapters:
+1. **`hono`**: Drives the official Hono target fixture (`src/target.ts`).
+2. **`express`**: Drives the official Express target fixture (`src/target.ts`).
+3. **`weather`**: Drives the independently developed x402 Weather Service (`integrations/weather/target.ts`, pinned to `x402-foundation/x402@7f2b2f1`).
+
+Developers can also point the runner at third-party applications by implementing [`IntegrationAdapter`](file:///mnt/data/Projects/shadowgate/src/adapter.ts) in an external TypeScript module.
+
+## The 42-Check Verification Matrix
+
+ShadowGate executes 14 core scenarios across each of the 3 targets, yielding a full **42-check matrix**:
+
+| Category | Scenarios per Target | Invariants Verified |
+| :--- | :---: | :--- |
+| **Baseline Failure Mode** | 6 checks | Demonstrates unmitigated transport loss (`lost-send-response`), crash non-delivery (`process-restart`), and confirms that release gates exit with code 1. |
+| **Recovered Invariants** | 8 checks | Proves exact-signature reconciliation, post-crash retrieval across PIDs, wrong-wallet rejection (403), repeat idempotency, and pre-broadcast zero-debit. |
+| **Total Suite** | **42 checks** (14 × 3) | **100% automated passing suite** (`npm test`). |
 
 ## The fault that matters
 
@@ -47,7 +74,7 @@ The runner signs this exact UTF-8 message with the payer's Ed25519 key:
 shadowgate-recover:v1:<payment-message-sha256>:<64-hex-character-nonce>
 ```
 
-The target verifies against the payer identity obtained from official payment verification and saved in the journal. A public transaction signature alone is insufficient. Replaying an already-paid payload through `GET /paid` after restart returns 409; the caller must use authenticated recovery. A wrong-wallet proof returns 403. Even a rightful proof returns 409 if the prepared entry has no executed payment. Recovery is read-only with respect to payment: it returns the same artifact and never broadcasts a replacement payment.
+The target verifies against the payer identity obtained from official payment verification and saved in the journal. A public transaction signature alone is insufficient. Replaying an already-paid payload through the protected route after restart returns 409; the caller must use authenticated recovery. A wrong-wallet proof returns 403. Even a rightful proof returns 409 if the prepared entry has no executed payment. Recovery is read-only with respect to payment: it returns the same artifact and never broadcasts a replacement payment.
 
 The current proof intentionally permits repeated retrieval. A captured valid proof can retrieve the same artifact. A production application handling private data would need TLS and a defined proof expiration, audience binding, and session/replay policy. The local demo uses loopback and valueless fixtures.
 
@@ -57,7 +84,7 @@ The current proof intentionally permits repeated retrieval. A captured valid pro
 
 JSON reports preserve structured observations. JUnit encodes failed release checks as failures. Standalone HTML exposes balances and traces. The demo runs the same `runSuite` function and reads these report files; it has no separate source of example outcomes. Report export redacts credential-like fields, while transaction signatures remain useful public identifiers.
 
-The local demo binds to loopback, validates Host and Origin on run requests, limits request bodies, rejects concurrent runs, and constrains report IDs. It is a local developer application, not a hosted multitenant service.
+The local demo dashboard binds to loopback, validates Host and Origin on run requests, limits request bodies, rejects concurrent runs, and constrains report IDs. It is a local developer application, not a hosted multitenant service.
 
 ## Boundaries of the runtime
 
@@ -67,4 +94,4 @@ The bridge's status mapping is a local compatibility surface. A `confirmed` resu
 
 ## Extension point
 
-New deployments implement the local target contract in [INTEGRATION.md](INTEGRATION.md). The runner retains its payer, faults, assertions, and report format. Adding a new framework is adapter work; changing a fundamental payment scheme may also require a new scenario family. Current coverage is exact-SVM x402 v2 using the pinned packages, not every x402 scheme or network.
+New deployments implement the local target contract described in [INTEGRATION.md](file:///mnt/data/Projects/shadowgate/docs/INTEGRATION.md). The runner retains its payer, faults, assertions, and report format. Adding a new framework is adapter work; changing a fundamental payment scheme may also require a new scenario family. Current coverage is exact-SVM x402 v2 using the pinned packages, not every x402 scheme or network.
