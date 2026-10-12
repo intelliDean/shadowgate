@@ -8,15 +8,22 @@ import type { DeliveryContext, IntegrationAdapter, JournalInspection, RecoveryRe
 const decoder = getTransactionDecoder();
 const MARKER = 'paid-result:shadowgate';
 
+function createEd25519PrivateKey(secretKey: Uint8Array) {
+  return createPrivateKey({
+    key: Buffer.concat([
+      Buffer.from('302e020100300506032b657004220420', 'hex'),
+      Buffer.from(secretKey.slice(0, 32)),
+    ]),
+    format: 'der',
+    type: 'pkcs8',
+  });
+}
+
 export function defaultRecoveryProof(payload: any, key: Keypair): RecoveryRequest {
   const tx = decoder.decode(Buffer.from(payload.payload.transaction, 'base64'));
   const messageHash = createHash('sha256').update(Buffer.from(tx.messageBytes)).digest('hex');
   const nonce = randomBytes(32).toString('hex');
-  const secret = createPrivateKey({
-    key: Buffer.concat([Buffer.from('302e020100300506032b657004220420', 'hex'), Buffer.from(key.secretKey.slice(0, 32))]),
-    format: 'der',
-    type: 'pkcs8',
-  });
+  const secret = createEd25519PrivateKey(key.secretKey);
   const signature = sign(null, Buffer.from(`shadowgate-recover:v1:${messageHash}:${nonce}`), secret).toString('base64');
   return {
     body: { paymentPayload: payload, nonce, signature },
@@ -100,17 +107,23 @@ export function registerAdapter(adapter: IntegrationAdapter): void {
   registry.set(adapter.name, adapter);
 }
 
+async function loadCustomAdapterModule(path: string): Promise<IntegrationAdapter | undefined> {
+  const mod = await import(path);
+  const candidate = mod.default || mod.adapter || mod;
+  if (candidate && typeof candidate === 'object' && 'paidRoute' in candidate && 'isDelivered' in candidate) {
+    return candidate as IntegrationAdapter;
+  }
+  return undefined;
+}
+
 export async function getAdapter(nameOrPath: string): Promise<IntegrationAdapter> {
   const existing = registry.get(nameOrPath.toLowerCase());
   if (existing) return existing;
 
   // Support path to custom adapter module
   if (nameOrPath.includes('/') || nameOrPath.endsWith('.ts') || nameOrPath.endsWith('.js')) {
-    const mod = await import(nameOrPath);
-    const candidate = mod.default || mod.adapter || mod;
-    if (candidate && typeof candidate === 'object' && 'paidRoute' in candidate && 'isDelivered' in candidate) {
-      return candidate as IntegrationAdapter;
-    }
+    const custom = await loadCustomAdapterModule(nameOrPath);
+    if (custom) return custom;
   }
 
   throw new Error(`Unknown or invalid adapter: "${nameOrPath}". Available: ${Array.from(registry.keys()).join(', ')}`);
