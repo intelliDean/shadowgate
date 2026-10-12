@@ -59,7 +59,7 @@
   ],
   "sourceSha256": {
     "integrations/weather/app.ts": "02576399cadab33e4cdcaf0832d2adea404fd4f8f88701402f587786257dd099",
-    "integrations/weather/target.ts": "438cb1a478a5b87f1284321fdbaa3dfafc8a372c414251bd63cab35b79ecb924",
+    "integrations/weather/target.ts": "71050966fcf797cb87ed0ab78fe7de2bf52ba553ee0af3e619f7d86d9f16978a",
     "src/adapter.ts": "23b6edcdff334d35847bba5b4385f8afc46ceaec940c3453352b389c1a596796",
     "src/cli.ts": "43852654743da9c803606ed6547b4c93111d0aa1fad12183e750022cdeb9f7e0",
     "src/demo.ts": "e3a712da3cba77bd3626d23f77b17196fb7b4b161ab549febb0643df9564d803",

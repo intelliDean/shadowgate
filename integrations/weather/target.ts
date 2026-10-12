@@ -87,17 +87,34 @@ export function weatherArtifact(): any {
   };
 }
 
-async function initialize(config: TargetConfig): Promise<void> {
+function validateConfig(config: TargetConfig): void {
   if (!['baseline', 'recovered'].includes(config.mode)) throw new Error('Invalid target mode');
   if (!/^http:\/\/(127\.0\.0\.1|localhost):\d+\/?$/.test(config.rpcUrl)) throw new Error('Fixture RPC must be local');
   if (!/^\d+$/.test(config.amount) || BigInt(config.amount) <= 0n) throw new Error('Invalid payment amount');
+}
 
-  const journal = config.mode === 'recovered' ? new PaymentJournal(config.journalPath) : undefined;
+function verifyPayerSignature(payer: string, messageHash: string, nonce: unknown, signature: unknown): boolean {
+  if (typeof nonce !== 'string' || !/^[0-9a-f]{64}$/i.test(nonce) || typeof signature !== 'string') {
+    return false;
+  }
+  try {
+    const key = createPublicKey({
+      key: Buffer.concat([Buffer.from('302a300506032b6570032100', 'hex'), new PublicKey(payer).toBuffer()]),
+      format: 'der',
+      type: 'spki',
+    });
+    const proof = Buffer.from(signature, 'base64');
+    return proof.length === 64 && verifySignature(null, Buffer.from(`shadowgate-recover:v1:${messageHash}:${nonce}`), key, proof);
+  } catch {
+    return false;
+  }
+}
+
+async function createInstrumentedSigner(config: TargetConfig, journal: PaymentJournal | undefined) {
   const secret = Uint8Array.from(config.feeSecret);
   const key = await createKeyPairSignerFromBytes(secret);
   secret.fill(0);
   config.feeSecret.fill(0);
-
   const stockSigner = toFacilitatorSvmSigner(key, { defaultRpcUrl: config.rpcUrl });
   const signer: any = { ...stockSigner };
   let firstConfirmation = true;
@@ -177,18 +194,14 @@ async function initialize(config: TargetConfig): Promise<void> {
     };
   }
 
-  const scheme = new FacilitatorExact(
-    signer,
-    undefined,
-    config.caps
-      ? {
-          maxComputeUnits: 60_000,
-          maxRequiredSignatures: 2,
-          maxPriorityFeeMicroLamports: 1_000,
-        }
-      : undefined
-  );
-  const facilitator = new x402Facilitator().register(NETWORK, scheme);
+  return signer;
+}
+
+function createFacilitatorApp(
+  config: TargetConfig,
+  journal: PaymentJournal | undefined,
+  facilitator: x402Facilitator
+): Hono {
   const facilitatorApp = new Hono();
   facilitatorApp.get('/supported', c => c.json(facilitator.getSupported() as any));
 
@@ -238,6 +251,114 @@ async function initialize(config: TargetConfig): Promise<void> {
       return c.json(result);
     });
   }
+
+  return facilitatorApp;
+}
+
+function checkRequiresRecovery(journal: PaymentJournal | undefined, header: string | undefined): boolean {
+  if (!journal || !header) return false;
+  try {
+    const payload = JSON.parse(Buffer.from(header, 'base64').toString('utf8'));
+    return Boolean(journal.get(hashPayload(payload)));
+  } catch {
+    return false;
+  }
+}
+
+async function handleRecoveryRequest(
+  body: any,
+  config: TargetConfig,
+  journal: PaymentJournal | undefined
+): Promise<{ status: number; body: any }> {
+  if (!journal) return { status: 404, body: { error: 'Recovery not enabled' } };
+  let messageHash: string;
+  try {
+    messageHash = hashPayload(body.paymentPayload);
+  } catch {
+    return { status: 400, body: { error: 'Malformed payment payload' } };
+  }
+  const entry: JournalEntry | undefined = journal.get(messageHash);
+  if (!entry) return { status: 404, body: { error: 'No prepared artifact for this payment' } };
+
+  const authenticated = verifyPayerSignature(entry.payer, messageHash, body?.nonce, body?.signature);
+  if (!authenticated) {
+    trace({ phase: 'recovery_auth_rejected', messageHash });
+    return { status: 403, body: { error: 'Payer signature required' } };
+  }
+
+  let status: any;
+  try {
+    status = await statusOf(config.rpcUrl, entry.signature);
+  } catch {
+    return { status: 503, body: { error: 'Payment observation unavailable; retry safely' } };
+  }
+
+  if (!confirmed(status)) return { status: 409, body: { error: 'Payment is not confirmed', paid: false } };
+  journal.confirm(messageHash);
+  trace({ phase: 'artifact_recovered', messageHash, signature: entry.signature, payerAuthenticated: true });
+  return { status: 200, body: entry.artifact };
+}
+
+function createWeatherApp(
+  config: TargetConfig,
+  resourceCore: any,
+  routes: any,
+  journal: PaymentJournal | undefined
+): express.Express {
+  const app = express();
+  app.disable('x-powered-by');
+  app.use(express.json({ limit: '64kb' }));
+  app.get('/health', (_req, res) => res.json({ ok: true, app: 'weather-express', mode: config.mode }));
+
+  if (config.mode === 'recovered') {
+    app.post('/recover', async (req, res, next) => {
+      try {
+        const result = await handleRecoveryRequest(req.body, config, journal);
+        res.setHeader('Cache-Control', 'private, no-store');
+        res.status(result.status).json(result.body);
+      } catch (error) {
+        next(error);
+      }
+    });
+
+    app.get('/weather', (req, res, next) => {
+      if (checkRequiresRecovery(journal, req.header('PAYMENT-SIGNATURE'))) {
+        res.setHeader('Cache-Control', 'private, no-store');
+        res.status(409).json({ error: 'Payment already prepared; use payer-authenticated /recover' });
+        return;
+      }
+      next();
+    });
+  }
+
+  app.use(paymentMiddleware(routes, resourceCore));
+
+  app.get('/weather', (_req, res) => {
+    res.json(weatherArtifact());
+  });
+
+  return app;
+}
+
+async function initialize(config: TargetConfig): Promise<void> {
+  validateConfig(config);
+
+  const journal = config.mode === 'recovered' ? new PaymentJournal(config.journalPath) : undefined;
+  const signer = await createInstrumentedSigner(config, journal);
+
+  const scheme = new FacilitatorExact(
+    signer,
+    undefined,
+    config.caps
+      ? {
+          maxComputeUnits: 60_000,
+          maxRequiredSignatures: 2,
+          maxPriorityFeeMicroLamports: 1_000,
+        }
+      : undefined
+  );
+  const facilitator = new x402Facilitator().register(NETWORK, scheme);
+  const facilitatorApp = createFacilitatorApp(config, journal, facilitator);
   const facilitatorUrl = await listenHono(facilitatorApp);
 
   const resourceCore = new x402ResourceServer(new HTTPFacilitatorClient({ url: facilitatorUrl })).register(
@@ -260,92 +381,7 @@ async function initialize(config: TargetConfig): Promise<void> {
     },
   };
 
-  function requiresRecovery(header: string | undefined): boolean {
-    if (!journal || !header) return false;
-    try {
-      const payload = JSON.parse(Buffer.from(header, 'base64').toString('utf8'));
-      return Boolean(journal.get(hashPayload(payload)));
-    } catch {
-      return false;
-    }
-  }
-
-  async function recover(body: any): Promise<{ status: number; body: any }> {
-    if (!journal) return { status: 404, body: { error: 'Recovery not enabled' } };
-    let messageHash: string;
-    try {
-      messageHash = hashPayload(body.paymentPayload);
-    } catch {
-      return { status: 400, body: { error: 'Malformed payment payload' } };
-    }
-    const entry: JournalEntry | undefined = journal.get(messageHash);
-    if (!entry) return { status: 404, body: { error: 'No prepared artifact for this payment' } };
-
-    let authenticated = false;
-    if (typeof body.nonce === 'string' && /^[0-9a-f]{64}$/i.test(body.nonce) && typeof body.signature === 'string') {
-      try {
-        const key = createPublicKey({
-          key: Buffer.concat([Buffer.from('302a300506032b6570032100', 'hex'), new PublicKey(entry.payer).toBuffer()]),
-          format: 'der',
-          type: 'spki',
-        });
-        const proof = Buffer.from(body.signature, 'base64');
-        authenticated =
-          proof.length === 64 &&
-          verifySignature(null, Buffer.from(`shadowgate-recover:v1:${messageHash}:${body.nonce}`), key, proof);
-      } catch {
-        authenticated = false;
-      }
-    }
-    if (!authenticated) {
-      trace({ phase: 'recovery_auth_rejected', messageHash });
-      return { status: 403, body: { error: 'Payer signature required' } };
-    }
-    let status: any;
-    try {
-      status = await statusOf(config.rpcUrl, entry.signature);
-    } catch {
-      return { status: 503, body: { error: 'Payment observation unavailable; retry safely' } };
-    }
-    if (!confirmed(status)) return { status: 409, body: { error: 'Payment is not confirmed', paid: false } };
-    journal.confirm(messageHash);
-    trace({ phase: 'artifact_recovered', messageHash, signature: entry.signature, payerAuthenticated: true });
-    return { status: 200, body: entry.artifact };
-  }
-
-  // The independent Express application from x402-foundation/x402/examples/typescript/servers/express
-  const app = express();
-  app.disable('x-powered-by');
-  app.use(express.json({ limit: '64kb' }));
-  app.get('/health', (_req, res) => res.json({ ok: true, app: 'weather-express', mode: config.mode }));
-
-  if (config.mode === 'recovered') {
-    app.post('/recover', async (req, res, next) => {
-      try {
-        const result = await recover(req.body);
-        res.setHeader('Cache-Control', 'private, no-store');
-        res.status(result.status).json(result.body);
-      } catch (error) {
-        next(error);
-      }
-    });
-
-    app.get('/weather', (req, res, next) => {
-      if (requiresRecovery(req.header('PAYMENT-SIGNATURE'))) {
-        res.setHeader('Cache-Control', 'private, no-store');
-        res.status(409).json({ error: 'Payment already prepared; use payer-authenticated /recover' });
-        return;
-      }
-      next();
-    });
-  }
-
-  app.use(paymentMiddleware(routes, resourceCore));
-
-  app.get('/weather', (_req, res) => {
-    res.json(weatherArtifact());
-  });
-
+  const app = createWeatherApp(config, resourceCore, routes, journal);
   const server = app.listen(config.port ?? 0, '127.0.0.1');
   servers.push(server);
   if (!server.listening) await once(server, 'listening');
